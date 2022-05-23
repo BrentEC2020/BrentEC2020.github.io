@@ -1,10 +1,10 @@
-const canvas = document.querySelector('canvas')
-const c = canvas.getContext('2d')
-canvas.width = 1500;
-canvas.height = 600;
+var canvas = document.querySelector('canvas')
+var c = canvas.getContext('2d')
+canvas.width = innerWidth
+canvas.height = innerHeight
 
-var ballX = 200;
-var ballY = 150;
+var ballX = canvas.width / 2;
+var ballY = canvas.height / 2;
 var ballDX = 0;
 var ballDY = 0;
 
@@ -12,6 +12,24 @@ function keyReleased() {
   ballDX = 0;
   ballDY = 0;
 }
+
+class Player {
+  constructor(x, y, radius, color) {
+    this.x = x
+    this.y = y
+    this.radius = radius
+    this.color = color
+  }
+  draw() {
+    c.beginPath()
+    c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false)
+    c.fillStyle = this.color
+    c.fill()
+  }
+}
+
+const player = new Player(ballX, ballY, 30, 'blue')
+player.draw()
 
 function draw() {
   background(0, 100, 200);
