@@ -8,3 +8,17 @@ head {
 h1 {
   font-family: pixelFont;
 }
+ /*bit of css that stylizes the links */
+ /* a {
+  color: DarkSlateGrey;
+  text-decoration: none;
+  /*text-transform: uppercase;
+}
+*/
+a {
+  background-color: red;
+  color: white;
+  padding: 1em 1.5em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
