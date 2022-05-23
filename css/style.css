@@ -1,0 +1,10 @@
+@font-face {
+  font-family: pixelFont;
+  src: url(04B_03__.TTF);
+}
+head {
+  font-family: pixelFont;
+}
+h1 {
+  font-family: pixelFont;
+}
