@@ -1,3 +1,8 @@
+const canvas = document.querySelector('canvas')
+const c = canvas.getContext('2d')
+canvas.width = 1500;
+canvas.height = 600;
+
 var ballX = 200;
 var ballY = 150;
 var ballDX = 0;
