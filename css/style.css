@@ -8,6 +8,9 @@ head {
 h1 {
   font-family: pixelFont;
 }
+a {
+  font-family: pixelFont;
+}
  /*bit of css that stylizes the links */
  /* a {
   color: DarkSlateGrey;
