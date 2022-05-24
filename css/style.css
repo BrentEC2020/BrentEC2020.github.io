@@ -8,6 +8,7 @@ head {
 h1 {
   font-family: pixelFont;
   text-align: center;
+  padding: 1rem;
 }
 a {
   font-family: pixelFont;
@@ -20,7 +21,7 @@ a {
 }
 */
  body {
-   background-color: oldlace;
+   background-color: gainsboro;
    margin: 0px;
  }
 
@@ -44,4 +45,31 @@ a {
   padding: 1em 1.5em;
   text-decoration: none;
   text-transform: uppercase;
+}
+p {
+  font-family: monospace;
+  font-size: 150%;
+  text-indent: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.subtitle {
+  border: 7px;
+  border-color: green;
+  border-style: double;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  background-color: DarkSeaGreen;
+}
+.ourinfo {
+  font-family: monospace;
+  font-size: 20px;
+  color: green;
+  text-align: center;
+}
+.title {
+  border: 7px;
+  border-style: solid;
+  border-color: black;
+  background-color: Tan;
 }
