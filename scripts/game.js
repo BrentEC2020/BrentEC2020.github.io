@@ -11,7 +11,8 @@ if((inHeight-headerHeight)<=inWidth){
   console.log(inHeight-headerHeight);
   canvas.height = canvas.width;
 } else {
-  canvas.height = canvas.width;
+  canvas.height = inWidth-20;
+  canvas.width = canvas.height;
 }
 
 base_image = new Image();
