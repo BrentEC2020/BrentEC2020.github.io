@@ -1,23 +1,25 @@
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");
-//variables to initialize canvas size
-const inHeight = innerHeight;
-const inWidth = innerWidth;
-const headerHeight = document.querySelector('#header').offsetHeight;
-if((inHeight-headerHeight)<=inWidth){
-  console.log(document.querySelector('#header').offsetHeight);
-  console.log(inHeight);
-  canvas.width = (inHeight-headerHeight-40);
-  console.log(inHeight-headerHeight);
-  canvas.height = canvas.width;
-} else {
-  canvas.height = inWidth-20;
-  canvas.width = canvas.height;
-}
+//constants to initialize canvas size
+function sizeCanvas(){
+  var inHeight = innerHeight; //innerHeight of the window
+  var inWidth = innerWidth; //innerWidth of the window
+  var headerHeight = document.querySelector('#header').offsetHeight; //height of our header
+  if((inHeight-headerHeight)<=inWidth){ //if the height is less than the width
+    canvas.width = inHeight-headerHeight-40;
+    canvas.height = canvas.width;
+  } else {
+    canvas.height = inWidth-20;
+    canvas.width = canvas.height;
+  }
+};
+sizeCanvas();
+window.addEventListener('resize', sizeCanvas);
+
 
 base_image = new Image();
 base_image.src = 'images/LAB.png';
-c.drawImage(base_image, 0, 0, canvas.width, canvas.height);
+c.drawImage(base_image, 0, 0,canvas.width,canvas.height);
 
 var ballX = canvas.width / 2;
 var ballY = canvas.height / 2;
@@ -38,14 +40,14 @@ class Player {
   }
   draw() {
     c.beginPath()
-    c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false)
-    c.fillStyle = this.color
-    c.fill()
+    c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+    c.fillStyle = this.color;
+    c.fill();
   }
 }
 
-const player = new Player(ballX, ballY, 30, 'blue')
-player.draw()
+const player = new Player(ballX, ballY, 30, 'blue');
+player.draw();
 
 function draw() {
   background(0, 100, 200);
