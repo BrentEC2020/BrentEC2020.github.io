@@ -1,7 +1,11 @@
-var canvas = document.querySelector('canvas')
-var c = canvas.getContext('2d')
+var canvas = document.querySelector("canvas")
+var c = canvas.getContext("2d")
 canvas.width = innerWidth
 canvas.height = innerHeight
+
+base_image = new Image();
+base_image.src = 'images/lab.png';
+c.drawImage(base_image, 0, 0, 1000, 1000);
 
 var ballX = canvas.width / 2;
 var ballY = canvas.height / 2;
