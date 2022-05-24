@@ -1,6 +1,6 @@
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");
-//constants to initialize canvas size
+//this function determines the size of the canvas and ensures that the user will not have to scroll to see the whole canvas
 function sizeCanvas(){
   var inHeight = innerHeight; //innerHeight of the window
   var inWidth = innerWidth; //innerWidth of the window
@@ -14,7 +14,7 @@ function sizeCanvas(){
   }
 };
 sizeCanvas();
-window.addEventListener('resize', sizeCanvas);
+window.addEventListener('resize', sizeCanvas);//resize the canvas when the window is resized
 
 
 base_image = new Image();
@@ -94,4 +94,30 @@ function draw() {
     ballX = 300;
   }
   circle(ballX, ballY, 20);
+
+
 }
+// make the draw background function (non interactable objects)
+
+
+// make the DO EVERYTHING FUNCTION (draw canvas)
+// function do_everything(){
+//
+//   //
+//
+//
+//
+//   const player = new Player(canvas.width / 2, canvas.height / 2 + 20, 30, 'black')
+//
+//   player.draw()
+//
+//   c.beginPath()
+//   c.fillStyle('black')
+//   c.fillRect(0,0,canvas.width,canvas.height)
+//
+//
+// }
+
+//
+
+//do_everything();
