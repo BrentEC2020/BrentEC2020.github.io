@@ -106,7 +106,7 @@ function controls() {
 		playerX = playerX + speed;
 	}
   // Interact using spacebar within a certain range
-  if (keys[32] == true && playerX >= 475 && playerX <= 550 && playerY <= 75) {
+  if (keys[32] == true && playerX >= 265 && playerX <= 450 && playerY >= 125 && playerY <= 200) {
     console.log("Interact Key Successful!");
   }
 
