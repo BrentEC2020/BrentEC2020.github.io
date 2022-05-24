@@ -2,14 +2,17 @@
   font-family: pixelFont;
   src: url(04B_03__.TTF);
 }
+
 head {
   font-family: pixelFont;
 }
+
 h1 {
   font-family: pixelFont;
   text-align: center;
   padding: 1rem;
 }
+
 a {
   font-family: pixelFont;
 }
@@ -31,6 +34,7 @@ a {
   margin-right: auto;
   width: 50%;
 }
+
 canvas {
    border: 2px solid grey;
    background-image: url(../images/LAB.png);
@@ -40,6 +44,7 @@ canvas {
       margin-right: auto;
       display: block;
 }
+
 a {
   background-color: Grey;
   color: white;
@@ -47,6 +52,7 @@ a {
   text-decoration: none;
   text-transform: uppercase;
 }
+
 p {
   font-family: monospace;
   font-size: 150%;
@@ -54,6 +60,7 @@ p {
   margin-left: 50px;
   margin-right: 50px;
 }
+
 .subtitle {
   border: 7px;
   border-color: green;
@@ -62,12 +69,14 @@ p {
   border-top-right-radius: 40px;
   background-color: DarkSeaGreen;
 }
+
 .ourinfo {
   font-family: monospace;
   font-size: 20px;
   color: green;
   text-align: center;
 }
+
 .title {
   border: 7px;
   border-style: solid;
@@ -75,7 +84,8 @@ p {
   background-color: Tan;
 }
 
-/* .centerp {
+.centerp {
   text-align: center;
   font-family: pixelFont;
-} */
+  font-size: 95%;
+}
