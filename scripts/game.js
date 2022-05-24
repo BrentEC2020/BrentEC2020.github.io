@@ -1,3 +1,4 @@
+// Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");
 var keys = [];
