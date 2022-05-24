@@ -1,12 +1,14 @@
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");
 //variables to initialize canvas size
-var inHeight = innerHeight;
-var inWidth = innerWidth;
-if((inHeight-document.querySelector('#header').offsetHeight)<=innerWidth){
+const inHeight = innerHeight;
+const inWidth = innerWidth;
+const headerHeight = document.querySelector('#header').offsetHeight;
+if((inHeight-headerHeight)<=inWidth){
   console.log(document.querySelector('#header').offsetHeight);
   console.log(inHeight);
-  canvas.width = (inHeight-document.querySelector('#header').offsetHeight)*.80;
+  canvas.width = (inHeight-headerHeight-40);
+  console.log(inHeight-headerHeight);
   canvas.height = canvas.width;
 } else {
   canvas.height = canvas.width;
