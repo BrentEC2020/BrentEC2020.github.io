@@ -36,8 +36,8 @@ a {
 }
 
 canvas {
-   border: 2px solid grey;
-   background-image: url(../images/LAB.png);
+   border: 0px solid grey;
+   /* background-image: url(../images/LAB.png); */
    padding-left: 0;
       padding-right: 0;
       margin-left: auto;

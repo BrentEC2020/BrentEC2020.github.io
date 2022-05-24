@@ -9,12 +9,15 @@ function sizeCanvas(){
   var inWidth = innerWidth; //innerWidth of the window
   var headerHeight = document.querySelector('#header').offsetHeight; //height of our header
   if((inHeight-headerHeight)<=inWidth){ //if the height is less than the width
+
+    //  NEED TO THINKI MORE ABOUT THIS
     canvas.width = inHeight-headerHeight-40;
     canvas.height = canvas.width;
   } else {
     canvas.height = inWidth-20;
     canvas.width = canvas.height;
   }
+  speed=canvas.height/64;
 };
 sizeCanvas();
 window.addEventListener('resize', sizeCanvas);
@@ -30,15 +33,24 @@ window.addEventListener("keyup", function(e) {
 })
 
 
-base_image = new Image();
-base_image.src = 'images/LAB.png';
-c.drawImage(base_image, 0, 0,canvas.width,canvas.height);
+current_image = new Image();
+//drawing of the image
+function drawBackground(src) {
+  //check is if the image is loaded
+  var isLoaded = current_image.complete && current_image.naturalHeight !== 0;
+  current_image.src = src;
+  if (isLoaded) {
+      //draw background image
+      c.drawImage(current_image, 0, 0,canvas.width,canvas.height);
+  }
+
+}
 
 // Initial Player position and size
-var playerX = 20;
-var playerY = 415;
-var playerSize = 25;
-var speed = 5;
+var playerX = 0;
+var playerY = 0;
+var playerSize = canvas.width/32;
+var speed = canvas.width/64;
 //var ballDX = 0;
 //var ballDY = 0;
 
@@ -72,38 +84,43 @@ function init() {
 function loop() {
 	draw();
 	controls();
+  console.log(playerX);
+  console.log(playerY);
 }
 
 // Draws the player and interactive object
 function draw() {
-	c.clearRect(0, 0, canvas.width, canvas.height);
+
+	c.clearRect(0, 0, canvas.width, canvas.height);//clear canvas
+  drawBackground('images/LAB.png'); //draw background with designated path
 	c.fillStyle = "red";
 	c.fillRect(playerX, playerY, playerSize, playerSize);
+  // Draws the Interactable Object
   c.fillRect(410, 45, 15, 55);
   c.fillRect(410, 110, 15, 15);
 }
 
-// Draws the Interactable Object
+
 
 
 function controls() {
 	// W key to move player up
-	if (keys[87] == true && playerY >= speed) {
+	if (keys[87] == true && playerY > 0) {
 		playerY = playerY - speed;
 	}
 
 	// S key to move player down
-	if (keys[83] == true && playerY <= (canvas.height - speed)) {
+	if (keys[83] == true && playerY < (canvas.height - playerSize)) {
 		playerY = playerY + speed;
 	}
 
 	// A key to move player right
-	if (keys[65] == true && playerX >= speed) {
+	if (keys[65] == true && playerX > 0) {
 		playerX = playerX - speed;
 	}
 
 	// D key to move player left
-	if (keys[68] == true && playerX <= (canvas.width - speed)) {
+	if (keys[68] == true && playerX < (canvas.width - playerSize)) {
 		playerX = playerX + speed;
 	}
   // Interact using spacebar within a certain range
