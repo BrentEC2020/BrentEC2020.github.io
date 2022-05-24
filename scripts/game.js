@@ -1,11 +1,20 @@
-var canvas = document.querySelector("canvas")
-var c = canvas.getContext("2d")
-canvas.width = innerWidth
-canvas.height = innerHeight
+var canvas = document.querySelector("canvas");
+var c = canvas.getContext("2d");
+//variables to initialize canvas size
+var inHeight = innerHeight;
+var inWidth = innerWidth;
+if((inHeight-document.querySelector('#header').offsetHeight)<=innerWidth){
+  console.log(document.querySelector('#header').offsetHeight);
+  console.log(inHeight);
+  canvas.width = (inHeight-document.querySelector('#header').offsetHeight)*.80;
+  canvas.height = canvas.width;
+} else {
+  canvas.height = canvas.width;
+}
 
 base_image = new Image();
-base_image.src = 'images/lab.png';
-c.drawImage(base_image, 0, 0, 1450, 1450);
+base_image.src = 'images/LAB.png';
+c.drawImage(base_image, 0, 0, canvas.width, canvas.height);
 
 var ballX = canvas.width / 2;
 var ballY = canvas.height / 2;
@@ -19,10 +28,10 @@ function keyReleased() {
 
 class Player {
   constructor(x, y, radius, color) {
-    this.x = x
-    this.y = y
-    this.radius = radius
-    this.color = color
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
   }
   draw() {
     c.beginPath()
