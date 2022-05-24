@@ -34,8 +34,8 @@ base_image.src = 'images/LAB.png';
 c.drawImage(base_image, 0, 0,canvas.width,canvas.height);
 
 // Initial Player position and size
-var playerX = 0;
-var playerY = 0;
+var playerX = 20;
+var playerY = 415;
 var playerSize = 25;
 var speed = 5;
 //var ballDX = 0;
@@ -78,7 +78,8 @@ function draw() {
 	c.clearRect(0, 0, canvas.width, canvas.height);
 	c.fillStyle = "red";
 	c.fillRect(playerX, playerY, playerSize, playerSize);
-  c.fillRect(500, 10, 50, 50);
+  c.fillRect(410, 45, 15, 55);
+  c.fillRect(410, 110, 15, 15);
 }
 
 // Draws the Interactable Object

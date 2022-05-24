@@ -33,6 +33,7 @@ a {
 }
 canvas {
    border: 2px solid grey;
+   background-image: url(../images/LAB.png);
    padding-left: 0;
       padding-right: 0;
       margin-left: auto;
@@ -73,24 +74,8 @@ p {
   border-color: black;
   background-color: Tan;
 }
-h2 {
-  font-family: pixelFont;
-  padding: 1rem;
-}
-ul{
-  font-family: monospace;
-  font-size: 150%;
-  text-indent: 50px;
-  margin-left: 50px;
-  margin-right: 50px;
-}
 
-.list {
-  font-weight: bold;
-}
-.orgs {
+/* .centerp {
+  text-align: center;
   font-family: pixelFont;
-  font-size: 150%;
-  color: olive;
-  padding: 1rem;
-}
+} */
