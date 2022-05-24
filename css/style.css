@@ -27,12 +27,20 @@ a {
    background-color: gainsboro;
    margin: 0px;
  }
+ #header{
+   overflow: hidden;
+ }
+ .w3-top{
+   overflow: initial;
+ }
 
 .center {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+  text-indent: 0px;
+  text-align: center;
 }
 
 canvas {
@@ -99,9 +107,7 @@ li {
   font-weight: bold;
 }
 
-<<<<<<< HEAD
-.centerp {
-=======
+
 
 /* .centerp {
 >>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3

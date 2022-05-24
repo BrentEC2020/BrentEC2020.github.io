@@ -5,19 +5,25 @@ var keys = [];
 
 //constants to initialize canvas size
 function sizeCanvas(){
-  var inHeight = innerHeight; //innerHeight of the window
-  var inWidth = innerWidth; //innerWidth of the window
-  var headerHeight = document.querySelector('#header').offsetHeight; //height of our header
-  if((inHeight-headerHeight)<=inWidth){ //if the height is less than the width
+  var header = $("#header"); //innerHeight of the window
+  var footer = $("#footer"); //innerWidth of the window
+  var inHeight = innerHeight;
+  var inWidth = innerWidth;
+  var headerHeight = header.outerHeight(true); //height of our header
+  var footerHeight = footer.outerHeight(true); //height of our header
+  if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
 
-    //  NEED TO THINKI MORE ABOUT THIS
-    canvas.width = inHeight-headerHeight-40;
+    //NEED TO THINK MORE ABOUT THIS
+    var remainder = (inHeight-headerHeight-footerHeight)%64;
+    canvas.width = inHeight-headerHeight-footerHeight-remainder;
     canvas.height = canvas.width;
-  } else {
-    canvas.height = inWidth-20;
+  }
+  else {
+    var remainder = (inWidth)%64;
+    canvas.height = inWidth-remainder;
     canvas.width = canvas.height;
   }
-  speed=canvas.height/64;
+  speed=canvas.height/128;
 };
 sizeCanvas();
 window.addEventListener('resize', sizeCanvas);
@@ -49,8 +55,8 @@ function drawBackground(src) {
 // Initial Player position and size
 var playerX = 0;
 var playerY = 0;
-var playerSize = canvas.width/32;
-var speed = canvas.width/64;
+var playerSize = canvas.width/16;
+var speed = canvas.width/128;
 //var ballDX = 0;
 //var ballDY = 0;
 
@@ -84,8 +90,6 @@ function init() {
 function loop() {
 	draw();
 	controls();
-  console.log(playerX);
-  console.log(playerY);
 }
 
 // Draws the player and interactive object
