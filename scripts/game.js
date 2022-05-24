@@ -1,6 +1,8 @@
 var canvas = document.querySelector("canvas");
 var c = canvas.getContext("2d");
-//this function determines the size of the canvas and ensures that the user will not have to scroll to see the whole canvas
+var keys = [];
+
+//constants to initialize canvas size
 function sizeCanvas(){
   var inHeight = innerHeight; //innerHeight of the window
   var inWidth = innerWidth; //innerWidth of the window
@@ -14,24 +16,37 @@ function sizeCanvas(){
   }
 };
 sizeCanvas();
-window.addEventListener('resize', sizeCanvas);//resize the canvas when the window is resized
+window.addEventListener('resize', sizeCanvas);
+
+// Checks if a key is pressed down
+window.addEventListener("keydown", function(e) {
+	keys[e.keyCode] = true;
+})
+
+// Checks if a key is released
+window.addEventListener("keyup", function(e) {
+	keys[e.keyCode] = false;
+})
 
 
 base_image = new Image();
 base_image.src = 'images/LAB.png';
 c.drawImage(base_image, 0, 0,canvas.width,canvas.height);
 
-var ballX = canvas.width / 2;
-var ballY = canvas.height / 2;
-var ballDX = 0;
-var ballDY = 0;
+// Initial Player position and size
+var playerX = 0;
+var playerY = 0;
+var playerSize = 25;
+var speed = 5;
+//var ballDX = 0;
+//var ballDY = 0;
 
-function keyReleased() {
+/*function keyReleased() {
   ballDX = 0;
   ballDY = 0;
-}
+}*/
 
-class Player {
+/*class Player {
   constructor(x, y, radius, color) {
     this.x = x;
     this.y = y;
@@ -44,80 +59,73 @@ class Player {
     c.fillStyle = this.color;
     c.fill();
   }
+}*/
+
+// Initializes full program
+function init() {
+	var playerX = 0;
+	var playerY = 0;
 }
 
-const player = new Player(ballX, ballY, 30, 'blue');
-player.draw();
+// Loops every time a key is pressed
+function loop() {
+	draw();
+	controls();
+}
 
+// Draws the player and interactive object
 function draw() {
-  background(0, 100, 200);
-
-  ballX += ballDX;
-  ballY += ballDY;
-
-  if (keyIsPressed) {
-
-    if (key == "w") {
-      ballDY = -1;
-      ballDX = 0;
-    }
-
-    if (key == "s") {
-      ballDY = 1;
-      ballDX = 0;
-    }
-
-    if (key == "a") {
-      ballDX = -1;
-      ballDY = 0;
-    }
-
-    if (key == "d") {
-      ballDX = 1;
-      ballDY = 0;
-    }
-  }
-
-  if (ballX > 400) {
-    ballX = 0;
-  }
-
-  if (ballX < 0) {
-    ballX = 400;
-  }
-
-  if (ballY > 300) {
-    ballY = 0;
-  }
-
-  if (ballX > 400) {
-    ballX = 300;
-  }
-  circle(ballX, ballY, 20);
-
-
+	c.clearRect(0, 0, canvas.width, canvas.height);
+	c.fillStyle = "red";
+	c.fillRect(playerX, playerY, playerSize, playerSize);
+  c.fillRect(500, 10, 50, 50);
 }
-// make the draw background function (non interactable objects)
+
+// Draws the Interactable Object
 
 
-// make the DO EVERYTHING FUNCTION (draw canvas)
-// function do_everything(){
-//
-//   //
-//
-//
-//
-//   const player = new Player(canvas.width / 2, canvas.height / 2 + 20, 30, 'black')
-//
-//   player.draw()
-//
-//   c.beginPath()
-//   c.fillStyle('black')
-//   c.fillRect(0,0,canvas.width,canvas.height)
-//
-//
-// }
+function controls() {
+	// W key to move player up
+	if (keys[87] == true && playerY >= speed) {
+		playerY = playerY - speed;
+	}
 
-//
+	// S key to move player down
+	if (keys[83] == true && playerY <= (canvas.height - speed)) {
+		playerY = playerY + speed;
+	}
 
-//do_everything();
+	// A key to move player right
+	if (keys[65] == true && playerX >= speed) {
+		playerX = playerX - speed;
+	}
+
+	// D key to move player left
+	if (keys[68] == true && playerX <= (canvas.width - speed)) {
+		playerX = playerX + speed;
+	}
+  // Interact using spacebar within a certain range
+  if (keys[32] == true && playerX >= 475 && playerX <= 550 && playerY <= 75) {
+    console.log("Interact Key Successful!");
+  }
+
+	/*if (ballX > 400) {
+		ballX = 0;
+	}
+
+	if (ballX < 0) {
+		ballX = 400;
+	}
+
+	if (ballY > 300) {
+		ballY = 0;
+	}
+
+	if (ballX > 400) {
+		ballX = 300;
+	}*/
+}
+
+// Refreshes State, so site doesn't crash (Calls Loop function every 1000/60 milliseconds)
+window.setInterval(loop, 1000/60);
+init();
