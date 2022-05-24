@@ -74,7 +74,19 @@ p {
   border-color: black;
   background-color: Tan;
 }
+ul {
+  font-family: monospace;
+  font-size: 20px;
+}
 
+.orgs {
+  font-family: pixelFont;
+  font-size: 25px;
+  color: olive;
+}
+li {
+  font-weight: bold;
+}
 /* .centerp {
   text-align: center;
   font-family: pixelFont;
