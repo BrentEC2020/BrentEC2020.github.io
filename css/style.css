@@ -89,10 +89,6 @@ ul {
   font-family: monospace;
   font-size: 20px;
 }
-
-<<<<<<< HEAD
-.centerp {
-=======
 .orgs {
   font-family: pixelFont;
   font-size: 25px;
@@ -102,6 +98,11 @@ ul {
 li {
   font-weight: bold;
 }
+
+<<<<<<< HEAD
+.centerp {
+=======
+
 /* .centerp {
 >>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3
   text-align: center;
