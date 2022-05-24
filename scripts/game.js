@@ -24,6 +24,7 @@ function sizeCanvas(){
     canvas.width = canvas.height;
   }
   speed=canvas.height/128;
+  playerSize = canvas.width/16;
 };
 sizeCanvas();
 window.addEventListener('resize', sizeCanvas);
