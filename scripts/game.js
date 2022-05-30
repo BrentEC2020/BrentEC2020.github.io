@@ -23,7 +23,7 @@ function sizeCanvas(){
     canvas.height = inWidth-remainder;
     canvas.width = canvas.height;
   }
-  movementSpeedspeed=canvas.height/128;
+  movementSpeed=canvas.height/128;
   playerSize = canvas.width/16;
 };
 sizeCanvas();
