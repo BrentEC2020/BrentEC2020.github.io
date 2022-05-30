@@ -1,19 +1,19 @@
 // Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
-var c = canvas.getContext("2d");
+var ctx = canvas.getContext("2d");
 var keys = [];
+var currentRoom; //keeps track of which room we are in
 
-//constants to initialize canvas size
+
+//sizes the canvas based on window size
 function sizeCanvas(){
-  var header = $("#header"); //innerHeight of the window
-  var footer = $("#footer"); //innerWidth of the window
-  var inHeight = innerHeight;
-  var inWidth = innerWidth;
+  var header = $("#header");
+  var footer = $("#footer");
+  var inHeight = innerHeight;//innerHeight of the window
+  var inWidth = innerWidth; //innerWidth of the window
   var headerHeight = header.outerHeight(true); //height of our header
   var footerHeight = footer.outerHeight(true); //height of our header
   if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
-
-    //NEED TO THINK MORE ABOUT THIS
     var remainder = (inHeight-headerHeight-footerHeight)%64;
     canvas.width = inHeight-headerHeight-footerHeight-remainder;
     canvas.height = canvas.width;
@@ -23,22 +23,11 @@ function sizeCanvas(){
     canvas.height = inWidth-remainder;
     canvas.width = canvas.height;
   }
-  speed=canvas.height/128;
+  movementSpeedspeed=canvas.height/128;
   playerSize = canvas.width/16;
 };
 sizeCanvas();
 window.addEventListener('resize', sizeCanvas);
-
-// Checks if a key is pressed down
-window.addEventListener("keydown", function(e) {
-	keys[e.keyCode] = true;
-})
-
-// Checks if a key is released
-window.addEventListener("keyup", function(e) {
-	keys[e.keyCode] = false;
-})
-
 
 current_image = new Image();
 //drawing of the image
@@ -47,107 +36,217 @@ function drawBackground(src) {
   var isLoaded = current_image.complete && current_image.naturalHeight !== 0;
   current_image.src = src;
   if (isLoaded) {
-      //draw background image
-      c.drawImage(current_image, 0, 0,canvas.width,canvas.height);
+    //draw background image
+    ctx.drawImage(current_image, 0, 0,canvas.width,canvas.height);
   }
+}
 
+function drawText() {
+  ctx.font = "pixelFont";
+  ctx.fillText('hello!', canvas.width/2,canvas.width/2);
 }
 
 // Initial Player position and size
 var playerX = 0;
 var playerY = 0;
 var playerSize = canvas.width/16;
-var speed = canvas.width/128;
-//var ballDX = 0;
-//var ballDY = 0;
 
-/*function keyReleased() {
-  ballDX = 0;
-  ballDY = 0;
-}*/
+var levelCols=8;                           // level width, in tiles
+var levelRows=8;                            // level height, in tiles
+var tileSize= canvas.width/8;                            // tile size, in pixels
+var playerCol=1;                                  // player starting column
+var playerRow=3;                                  // player starting row
+var spacebarPressed=false                         // are we pressing spacebar?
+var leftPressed=false;                            // are we pressing LEFT arrow key?
+var rightPressed=false;                           // are we pressing RIGHT arrow key?
+var upPressed=false;                              // are we pressing UP arrow key?
+var downPressed=false;                            // are we pressing DOWN arrow key?
+var movementSpeed=canvas.width/128;                              // the speed we are going to move, in pixels per frame
+var playerXSpeed=0;                               // player horizontal speed, in pixels per frame
+var playerYSpeed=0;                               // player vertical speed, in pixels per frame
 
-/*class Player {
-  constructor(x, y, radius, color) {
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-    this.color = color;
-  }
-  draw() {
-    c.beginPath()
-    c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
-    c.fillStyle = this.color;
-    c.fill();
-  }
-}*/
+var inDialogue = false; //keeps track of if dialogue is taking place
+
+
+function Room(src, objects, doors, bounds){
+  this.src = src;
+  this.objects = objects;
+  this.doors = doors;
+  this.bounds = bounds;
+}
+
+var room1 = new Room ();
+room1.src = 'images/LAB.png';
+room1.bounds = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,1],
+  [0,0,0,0,0,0,0,1],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
+
+currentRoom = room1;
 
 // Initializes full program
 function init() {
-	var playerX = 0;
-	var playerY = 0;
+  var playerCol = 1;
+  var playerRow = 3;
 }
+
+var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
+var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
 
 // Loops every time a key is pressed
 function loop() {
-	draw();
-	controls();
+  draw();
+  update();
 }
 
 // Draws the player and interactive object
 function draw() {
 
-	c.clearRect(0, 0, canvas.width, canvas.height);//clear canvas
-  drawBackground('images/LAB.png'); //draw background with designated path
-	c.fillStyle = "red";
-	c.fillRect(playerX, playerY, playerSize, playerSize);
+  ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
+  drawBackground(currentRoom.src); //draw background with designated path
+  ctx.fillStyle = "red";
+  //this code shows test bounds
+  for(i=0;i<levelRows;i++){
+    for(j=0;j<levelCols;j++){
+      if(currentRoom.bounds[i][j]==1){
+
+        ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
+      }
+    }
+  }
+  // player = green box
+  ctx.fillStyle = "#00ff00";
+  ctx.fillRect(playerXPos, playerYPos, tileSize, tileSize);
   // Draws the Interactable Object
-  c.fillRect(410, 45, 15, 55);
-  c.fillRect(410, 110, 15, 15);
+  ctx.fillRect(410, 45, 15, 55);
+  ctx.fillRect(410, 110, 15, 15);
+  if (inDialogue) {
+    drawText()
+  }
 }
 
+// this function will do its best to make stuff work at 60FPS - please notice I said "will do its best"
+
+window.requestAnimFrame = (function(callback) {
+  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+  function(callback) {
+    window.setTimeout(callback, 1000/60);
+  };
+})();
+
+
+// simple WASD listeners
+
+document.addEventListener("keydown", function(e){
+  console.log(e.keyCode);
+  switch(e.keyCode){
+    case 32:
+    spacebarPressed=true;
+    break;
+    case 65:
+    leftPressed=true;
+    break;
+    case 87:
+    upPressed=true;
+    break;
+    case 68:
+    rightPressed=true;
+    break;
+    case 83:
+    downPressed=true;
+    break;
+  }
+}, false);
+
+document.addEventListener("keyup", function(e){
+  switch(e.keyCode){
+    case 32:
+    spacebarPressed=false;
+    break;
+    case 65:
+    leftPressed=false;
+    break;
+    case 87:
+    upPressed=false;
+    break;
+    case 68:
+    rightPressed=false;
+    break;
+    case 83:
+    downPressed=false;
+    break;
+  }
+}, false);
 
 
 
-function controls() {
-	// W key to move player up
-	if (keys[87] == true && playerY > 0) {
-		playerY = playerY - speed;
-	}
+function update() {
 
-	// S key to move player down
-	if (keys[83] == true && playerY < (canvas.height - playerSize)) {
-		playerY = playerY + speed;
-	}
 
-	// A key to move player right
-	if (keys[65] == true && playerX > 0) {
-		playerX = playerX - speed;
-	}
-
-	// D key to move player left
-	if (keys[68] == true && playerX < (canvas.width - playerSize)) {
-		playerX = playerX + speed;
-	}
-  // Interact using spacebar within a certain range
-  if (keys[32] == true && playerX >= 265 && playerX <= 450 && playerY >= 125 && playerY <= 200) {
-    console.log("Interact Key Successful!");
+  if(rightPressed){
+    if (isPathTile(playerRow,playerCol+1)) {
+      playerCol+=1;
+    }else {
+      console.log("bound reached");
+    }
+  }
+  else{
+    if(leftPressed){
+      if (isPathTile(playerRow,playerCol-1)) {
+        playerCol-=1;
+      }else {
+        console.log("bound reached");
+      }
+    }
+    else{
+      if(upPressed){
+        if (isPathTile(playerRow-1,playerCol)) {
+          playerRow-=1;
+        }else {
+          console.log("bound reached");
+        }
+      }
+      else{
+        if(downPressed){
+          if (isPathTile(playerRow+1,playerCol)) {
+            playerRow+=1;
+          }else {
+            console.log("bound reached");
+          }
+        }
+        else{
+          if(spacebarPressed){
+            interact();
+          }
+        }
+      }
+    }
   }
 
-	/*if (ballX > 400) {
-		ballX = 0;
-	}
+  // updating player position
+  playerYPos=playerRow*tileSize;
+  playerXPos=playerCol*tileSize;
+}
 
-	if (ballX < 0) {
-		ballX = 400;
-	}
-
-	if (ballY > 300) {
-		ballY = 0;
-	}
-
-	if (ballX > 400) {
-		ballX = 300;
-	}*/
+//Check if tile is a path
+function isPathTile(row, col) {
+  if( ((row>=0)&&(row<levelRows))&&((col>=0)&&(col<levelCols)) ){
+    if(currentRoom.bounds[row][col] !== 1){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
 }
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/60 milliseconds)

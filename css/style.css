@@ -45,12 +45,12 @@ a {
 
 canvas {
    border: 0px solid grey;
-   /* background-image: url(../images/LAB.png); */
    padding-left: 0;
-      padding-right: 0;
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-family: pixelFont;
 }
 
 a {
@@ -105,6 +105,13 @@ ul {
 }
 li {
   font-weight: bold;
+}
+#preloadfont {
+  font-family: pixelFont;
+  opacity:0;
+  height:0;
+  width:0;
+  display:inline-block;
 }
 
 
