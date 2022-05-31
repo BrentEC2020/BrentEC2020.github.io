@@ -84,6 +84,7 @@ function Room(src, objects, doors, map){
 
 var room1 = new Room ();
 room1.src = 'images/LAB.png';
+//1 is a boundary, 2 is walkable interactions 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,1,1],
@@ -105,7 +106,7 @@ function init() {
 
 
 
-// Loops every time a key is pressed
+// Loops every interval
 function loop() {
   draw();
   update();
@@ -149,7 +150,6 @@ window.requestAnimFrame = (function(callback) {
   };
 })();
 
-
 // simple WASD listeners
 
 document.addEventListener("keydown", function(e){
@@ -157,6 +157,7 @@ document.addEventListener("keydown", function(e){
     case 32:
     spacebarPressed=true;
     break;
+
     case 65:
     leftPressed=true;
     break;
