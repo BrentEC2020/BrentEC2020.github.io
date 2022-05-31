@@ -1,12 +1,12 @@
 // Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
-var pixelFont = new FontFace('pixelFont', 'url(css/04B_03__.TTF)');
+var pixelFont = new FontFace('pixelFont', 'url(css/04B_03__.woff2)');
 var currentRoom; //keeps track of which room we are in
 
 pixelFont.load().then(function(font) {
   document.fonts.add(font);
-  ctx.font = "20px pixelFont"; // set font
+  ctx.font = "16px pixelFont"; // set font
   ctx.textAlign = "center";
 })
 //sizes the canvas based on window size
@@ -32,7 +32,7 @@ function sizeCanvas(){
   playerYPos = playerRow*tileSize;
   playerXPos = playerCol*tileSize;
   moveSpeed = canvas.height/64;
-  ctx.font = "30px pixelFont"; // set font
+  ctx.font = "16px pixelFont"; // set font
   ctx.textAlign = "center";
 };
 sizeCanvas();
@@ -75,22 +75,22 @@ var moveSpeed = canvas.height/64;
 var inDialogue = false; //keeps track of if dialogue is taking place
 
 
-function Room(src, objects, doors, bounds){
+function Room(src, objects, doors, map){
   this.src = src;
   this.objects = objects;
   this.doors = doors;
-  this.bounds = bounds;
+  this.map = map;
 }
 
 var room1 = new Room ();
 room1.src = 'images/LAB.png';
-room1.bounds = [
+room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,1],
-  [1,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,1],
-  [0,0,0,0,0,0,0,1],
+  [1,1,1,1,1,0,0,0],
+  [1,0,3,0,2,0,0,0],
+  [1,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
@@ -117,18 +117,21 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
   drawBackground(currentRoom.src); //draw background with designated path
   ctx.fillStyle = "red";
-  //this code shows test bounds
+  //this code shows test map
   for(i=0;i<levelRows;i++){
     for(j=0;j<levelCols;j++){
-      if(currentRoom.bounds[i][j]==1){
-
+      if(currentRoom.map[i][j]==3){
+        ctx.fillStyle = "red";
+        ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
+      } else if (currentRoom.map[i][j]==2) {
+        ctx.fillStyle = "black";
         ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
       }
     }
   }
   // player = green box
   ctx.fillStyle = "#00ff00";
-  ctx.fillRect(playerXPos, playerYPos, tileSize, tileSize);
+  ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
   ctx.fillStyle = "black";
   ctx.fillText(playerDirection,playerXPos+(tileSize/2),playerYPos+(tileSize/2),tileSize);
 
@@ -196,7 +199,7 @@ function update() {
   if (! ( (playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)) ) ) {
     movePlayer();
   }
-//if the player is done moving then do the updating
+  //if the player is done moving then do the updating
   else if(rightPressed){
     playerDirection='e';
     if (isPathTile(playerRow,playerCol+1)) {
@@ -228,7 +231,12 @@ function update() {
     }
   }
   else if(spacebarPressed){
-    interact();
+
+    if(!inDialogue){
+      interact();
+    }else {
+      advanceText();
+    }
   }
 
 }
@@ -236,7 +244,7 @@ function update() {
 //Check if tile is a path
 function isPathTile(row, col) {
   if( ( (row>=0)&&(row<levelRows) ) && ( (col>=0)&&(col<levelCols) ) ){
-    if(currentRoom.bounds[row][col] !== 1){
+    if((currentRoom.map[row][col] !== 1)&&(currentRoom.map[row][col] !== 3)){
       return true;
     }
   }
@@ -264,10 +272,28 @@ function movePlayer(){
 
 function interact() {
   //check if the player is standing on interactable tile
-    //do something
-  //check if the player is facing an interactable tile
-    //do something
+  if(currentRoom.map[playerRow][playerCol]==2){
+    console.log("interaction detected");
+  }
+  //do something
+
+  //check if the player is facing an interactable (non walkable) tile
+  if (( playerDirection == 'e' )&&(currentRoom.map[playerRow][playerCol+1]==3)) {
+    console.log("interaction detected");
+
+  } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)){
+    console.log("interaction detected");
+  } else if (( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==3)) {
+    console.log("interaction detected");
+  } else if (( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
+    console.log("interaction detected");
+  }
+  //do something
   //if we only want the thing to be interactable once, update the space to 0 or 1
+}
+
+function advanceText() {
+  //not sure what to do here but will ponder it
 }
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/60 milliseconds)
