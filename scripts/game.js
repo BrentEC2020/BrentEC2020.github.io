@@ -1,9 +1,14 @@
 // Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
+var pixelFont = new FontFace('pixelFont', 'url(css/04B_03__.TTF)');
 var currentRoom; //keeps track of which room we are in
 
-
+pixelFont.load().then(function(font) {
+  document.fonts.add(font);
+  ctx.font = "20px pixelFont"; // set font
+  ctx.textAlign = "center";
+})
 //sizes the canvas based on window size
 function sizeCanvas(){
   var header = $("#header");
@@ -22,9 +27,13 @@ function sizeCanvas(){
     canvas.height = inWidth-remainder;
     canvas.width = canvas.height;
   }
-  playerSize = canvas.width/16;
   tileSize = canvas.width/8;
+  playerSize = tileSize;
+  playerYPos = playerRow*tileSize;
+  playerXPos = playerCol*tileSize;
   moveSpeed = canvas.height/64;
+  ctx.font = "30px pixelFont"; // set font
+  ctx.textAlign = "center";
 };
 sizeCanvas();
 window.addEventListener('resize', sizeCanvas);
@@ -42,7 +51,6 @@ function drawBackground(src) {
 }
 
 function drawText() {
-  ctx.font = "pixelFont";
   ctx.fillText('hello!', canvas.width/2,canvas.width/2);
 }
 
@@ -121,6 +129,8 @@ function draw() {
   // player = green box
   ctx.fillStyle = "#00ff00";
   ctx.fillRect(playerXPos, playerYPos, tileSize, tileSize);
+  ctx.fillStyle = "black";
+  ctx.fillText(playerDirection,playerXPos+(tileSize/2),playerYPos+(tileSize/2),tileSize);
 
   if (inDialogue) {
     drawText()
