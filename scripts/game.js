@@ -1,7 +1,6 @@
 // Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
-var keys = [];
 var currentRoom; //keeps track of which room we are in
 
 
@@ -23,8 +22,9 @@ function sizeCanvas(){
     canvas.height = inWidth-remainder;
     canvas.width = canvas.height;
   }
-  movementSpeed=canvas.height/128;
   playerSize = canvas.width/16;
+  tileSize = canvas.width/8;
+  moveSpeed = canvas.height/64;
 };
 sizeCanvas();
 window.addEventListener('resize', sizeCanvas);
@@ -47,8 +47,7 @@ function drawText() {
 }
 
 // Initial Player position and size
-var playerX = 0;
-var playerY = 0;
+
 var playerSize = canvas.width/16;
 
 var levelCols=8;                           // level width, in tiles
@@ -61,10 +60,10 @@ var leftPressed=false;                            // are we pressing LEFT arrow 
 var rightPressed=false;                           // are we pressing RIGHT arrow key?
 var upPressed=false;                              // are we pressing UP arrow key?
 var downPressed=false;                            // are we pressing DOWN arrow key?
-var movementSpeed=canvas.width/128;                              // the speed we are going to move, in pixels per frame
-var playerXSpeed=0;                               // player horizontal speed, in pixels per frame
-var playerYSpeed=0;                               // player vertical speed, in pixels per frame
-
+var playerDirection = 'w';                        //what cardinal direction is the player facing
+var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
+var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
+var moveSpeed = canvas.height/64;
 var inDialogue = false; //keeps track of if dialogue is taking place
 
 
@@ -96,8 +95,7 @@ function init() {
   var playerRow = 3;
 }
 
-var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
-var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
+
 
 // Loops every time a key is pressed
 function loop() {
@@ -123,9 +121,7 @@ function draw() {
   // player = green box
   ctx.fillStyle = "#00ff00";
   ctx.fillRect(playerXPos, playerYPos, tileSize, tileSize);
-  // Draws the Interactable Object
-  ctx.fillRect(410, 45, 15, 55);
-  ctx.fillRect(410, 110, 15, 15);
+
   if (inDialogue) {
     drawText()
   }
@@ -144,21 +140,24 @@ window.requestAnimFrame = (function(callback) {
 // simple WASD listeners
 
 document.addEventListener("keydown", function(e){
-  console.log(e.keyCode);
   switch(e.keyCode){
     case 32:
     spacebarPressed=true;
     break;
     case 65:
+    playerDirection='w';
     leftPressed=true;
     break;
     case 87:
+    playerDirection='n';
     upPressed=true;
     break;
     case 68:
+    playerDirection='e';
     rightPressed=true;
     break;
     case 83:
+    playerDirection='s';
     downPressed=true;
     break;
   }
@@ -187,66 +186,79 @@ document.addEventListener("keyup", function(e){
 
 
 function update() {
-
-
-  if(rightPressed){
+  //first checks if the player is done moving before allowing the rows and columns to update
+  if (! ( (playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)) ) ) {
+    movePlayer();
+  }
+//if the player is done moving then do the updating
+  else if(rightPressed){
     if (isPathTile(playerRow,playerCol+1)) {
       playerCol+=1;
     }else {
-      console.log("bound reached");
+      //we could add little bump sound effects here if we wanted
     }
   }
-  else{
-    if(leftPressed){
-      if (isPathTile(playerRow,playerCol-1)) {
-        playerCol-=1;
-      }else {
-        console.log("bound reached");
-      }
+  else if(leftPressed){
+    if (isPathTile(playerRow,playerCol-1)) {
+      playerCol-=1;
+    }else {
+
     }
-    else{
-      if(upPressed){
-        if (isPathTile(playerRow-1,playerCol)) {
-          playerRow-=1;
-        }else {
-          console.log("bound reached");
-        }
-      }
-      else{
-        if(downPressed){
-          if (isPathTile(playerRow+1,playerCol)) {
-            playerRow+=1;
-          }else {
-            console.log("bound reached");
-          }
-        }
-        else{
-          if(spacebarPressed){
-            interact();
-          }
-        }
-      }
+  }
+  else if(upPressed){
+    if (isPathTile(playerRow-1,playerCol)) {
+      playerRow-=1;
+    }else {
     }
+  }
+  else if(downPressed){
+    playerDirection='s';
+    if (isPathTile(playerRow+1,playerCol)) {
+      playerRow+=1;
+    }else {
+    }
+  }
+  else if(spacebarPressed){
+    interact();
   }
 
-  // updating player position
-  playerYPos=playerRow*tileSize;
-  playerXPos=playerCol*tileSize;
 }
 
 //Check if tile is a path
 function isPathTile(row, col) {
-  if( ((row>=0)&&(row<levelRows))&&((col>=0)&&(col<levelCols)) ){
+  if( ( (row>=0)&&(row<levelRows) ) && ( (col>=0)&&(col<levelCols) ) ){
     if(currentRoom.bounds[row][col] !== 1){
       return true;
-    }
-    else {
-      return false;
     }
   }
   else {
     return false;
   }
+}
+
+//Handles smooth movement for the player
+function movePlayer(){
+  if (( playerDirection == 'e' )||(playerDirection== 'w')){
+    if (playerXPos>playerCol*tileSize) {
+      playerXPos-=moveSpeed;
+    } else {
+      playerXPos+=moveSpeed;
+    }
+  } else {
+    if (playerYPos>playerRow*tileSize) {
+      playerYPos-=moveSpeed;
+    } else {
+      playerYPos+=moveSpeed;
+    }
+  }
+}
+
+function interact() {
+  //check if the player is standing on interactable tile
+    //do something
+  //check if the player is facing an interactable tile
+    //do something
+  //if we only want the thing to be interactable once, update the space to 0 or 1
 }
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/60 milliseconds)

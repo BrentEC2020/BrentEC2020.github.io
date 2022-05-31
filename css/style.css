@@ -30,6 +30,9 @@ a {
  #header{
    overflow: hidden;
  }
+ #footer{
+   overflow: hidden;
+ }
  .w3-top{
    overflow: initial;
  }
