@@ -38,19 +38,14 @@ function sizeCanvas(){
 sizeCanvas();
 window.addEventListener('resize', sizeCanvas);
 
-current_image = new Image();
-//drawing of the image
-function drawBackground(src) {
-  //check is if the image is loaded
-  var isLoaded = current_image.complete && current_image.naturalHeight !== 0;
-  current_image.src = src;
-  if (isLoaded) {
-    //draw background image
-    ctx.drawImage(current_image, 0, 0,canvas.width,canvas.height);
-  }
-}
+var current_image = new Image();
+current_image.src = 'images/LAB.png';
+
+text_image = new Image();
+text_image.src = 'images/text_box.png';
 
 function drawText() {
+  ctx.drawImage(text_image, 0, 0, canvas.width,canvas.height);
   ctx.fillText('hello!', canvas.width/2,canvas.width/2);
 }
 
@@ -72,18 +67,18 @@ var playerDirection = 'w';                        //what cardinal direction is t
 var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
 var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
 var moveSpeed = canvas.height/64;
-var inDialogue = false; //keeps track of if dialogue is taking place
+var inDialogue = true; //keeps track of if dialogue is taking place
 
 
-function Room(src, objects, doors, map){
-  this.src = src;
+function Room(image, objects, doors, map){
+  this.image = image;
   this.objects = objects;
   this.doors = doors;
   this.map = map;
 }
 
 var room1 = new Room ();
-room1.src = 'images/LAB.png';
+room1.image = current_image;
 //1 is a boundary, 2 is walkable interactions 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
@@ -116,7 +111,8 @@ function loop() {
 function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
-  drawBackground(currentRoom.src); //draw background with designated path
+  //drawBackground(currentRoom.src); //draw background with designated path
+  ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);
   ctx.fillStyle = "red";
   //this code shows test map
   for(i=0;i<levelRows;i++){
@@ -133,11 +129,11 @@ function draw() {
   // player = green box
   ctx.fillStyle = "#00ff00";
   ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "white";
   ctx.fillText(playerDirection,playerXPos+(tileSize/2),playerYPos+(tileSize/2),tileSize);
 
   if (inDialogue) {
-    drawText()
+    drawText();
   }
 }
 
@@ -238,6 +234,8 @@ function update() {
     }else {
       advanceText();
     }
+  }else if (currentRoom.map[playerRow][playerCol]==5) {
+    //transition room
   }
 
 }
