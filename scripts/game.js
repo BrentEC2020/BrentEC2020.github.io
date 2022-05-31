@@ -145,19 +145,15 @@ document.addEventListener("keydown", function(e){
     spacebarPressed=true;
     break;
     case 65:
-    playerDirection='w';
     leftPressed=true;
     break;
     case 87:
-    playerDirection='n';
     upPressed=true;
     break;
     case 68:
-    playerDirection='e';
     rightPressed=true;
     break;
     case 83:
-    playerDirection='s';
     downPressed=true;
     break;
   }
@@ -192,6 +188,7 @@ function update() {
   }
 //if the player is done moving then do the updating
   else if(rightPressed){
+    playerDirection='e';
     if (isPathTile(playerRow,playerCol+1)) {
       playerCol+=1;
     }else {
@@ -199,6 +196,7 @@ function update() {
     }
   }
   else if(leftPressed){
+    playerDirection='w';
     if (isPathTile(playerRow,playerCol-1)) {
       playerCol-=1;
     }else {
@@ -206,6 +204,7 @@ function update() {
     }
   }
   else if(upPressed){
+    playerDirection='n';
     if (isPathTile(playerRow-1,playerCol)) {
       playerRow-=1;
     }else {
