@@ -4,7 +4,7 @@ var ctx = canvas.getContext("2d");
 var pixelFont = new FontFace('pixelFont', 'url(css/04B_03__.woff2)');
 var currentRoom; //keeps track of which room we are in
 
-
+// DONE (?)
 //sizes the canvas based on window size
 //i would just collapse this if i were you bc oh god why
 function sizeCanvas(){
@@ -43,6 +43,8 @@ function sizeCanvas(){
 }
 
 sizeCanvas();
+
+// DONE
 //when every dom element on the page loads
 window.addEventListener('load',function(){
   console.log('loaded');
@@ -69,7 +71,7 @@ text_box.src = 'images/text_box.png';
 
 
 
-
+// YIKES
 var playerSize = canvas.width/16;//playerSize in pixels
 
 var levelCols=8;// level width, in tiles
@@ -153,6 +155,7 @@ function loop() {
   update();
 }
 
+// NOT DONE
 //draws text box and text
 function drawText(){
   ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
@@ -163,6 +166,7 @@ function drawText(){
 
 }
 
+// WILL IT EVER BE DONE
 // Draws the player and interactive object
 function draw() {
 
@@ -194,7 +198,7 @@ function draw() {
 }
 
 
-
+// DONE
 // simple WASD listeners
 document.addEventListener("keydown", function(e){
   switch(e.keyCode){
@@ -215,7 +219,7 @@ document.addEventListener("keydown", function(e){
     break;
   }
 }, false);
-
+// DONE
 document.addEventListener("keyup", function(e){
   switch(e.keyCode){
     case 32:
@@ -237,6 +241,7 @@ document.addEventListener("keyup", function(e){
 }, false);
 
 
+// WILL IT EVER BE DONE
 //updates game variables, runs every frame
 function update() {
   //first checks if the player is done moving before allowing the rows and columns to update
@@ -314,6 +319,7 @@ function update() {
   }
 }
 
+//DONE
 //Check if the designated tile is walkable
 function isPathTile(row, col) {
   if( ( (row>=0)&&(row<levelRows) ) && ( (col>=0)&&(col<levelCols) ) ){
@@ -326,8 +332,8 @@ function isPathTile(row, col) {
   }
 }
 
+//DONE
 //Handles smooth movement for the player
-//i would collapse this if i wasnt working on it
 function movePlayer(){
   if (( playerDirection == 'e' )||(playerDirection== 'w')){ //if the player is facing left or right
     if (playerXPos>playerCol*tileSize) {//is the player has to move left
@@ -344,12 +350,15 @@ function movePlayer(){
   }
 }
 
+
+// NOT DONE
 //interacts with the specified item
 function interact(item) {
   console.log(item.text);
   //if we only want the thing to be interactable once, update the space to 0 or 1
 }
 
+// NOT DONE
 function advanceText() {
   //not sure what to do here but will ponder it
   inDialogue=false;
