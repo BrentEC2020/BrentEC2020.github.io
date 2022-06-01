@@ -77,8 +77,8 @@ var playerSize = canvas.width/16;//playerSize in pixels
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
 var tileSize= canvas.width/8; // tile size, in pixels
-var playerCol=1;// player starting column
-var playerRow=3; // player starting row
+var playerCol=0;// player starting column
+var playerRow=5; // player starting row
 var spacebarPressed=false; // are we pressing spacebar?
 var leftPressed=false; // are we pressing LEFT arrow key?
 var rightPressed=false;// are we pressing RIGHT arrow key?
@@ -111,13 +111,13 @@ function Room(image, items, doors, map){
 
 var room1 = new Room();
 room1.image = current_image;
-//1 is a boundary, 2 is walkable interactions 3 is nonwalkable interactions and 5 is doors
+//1 is a boundary, 2 is walkable interactions, 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
-  [1,1,1,1,1,0,0,0],
-  [1,0,3,0,2,0,0,0],
-  [1,0,0,0,0,0,0,0],
+  [0,1,0,0,1,0,0,0],
+  [0,1,3,0,2,0,0,0],
+  [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
@@ -138,12 +138,14 @@ var blackSquare = new Item();
 blackSquare.text = "this is a nice big long string so you can do all your fun operations on it bla bla bla hey bla bla bla hey bla bla bla hey bla bla bla hey look bla bla bla wow you made it to the very very end of the string!";
 blackSquare.row =3;
 blackSquare.col =4;
+
 //this is a test too
 var redSquare = new Item();
 redSquare.text= "red";
 redSquare.row=3;
 redSquare.col=2;
 currentRoom.items=[redSquare,blackSquare]
+
 // Initializes full program
 function init() {
   var playerCol = 1;
