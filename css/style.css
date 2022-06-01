@@ -3,9 +3,7 @@
   src: url(04B_03__.woff2);
 }
 
-head {
-  font-family: pixelFont;
-}
+
 
 h1 {
   font-family: pixelFont;
@@ -53,7 +51,6 @@ canvas {
     margin-left: auto;
     margin-right: auto;
     display: block;
-    font-family: pixelFont;
 }
 
 a {

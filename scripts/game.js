@@ -4,85 +4,111 @@ var ctx = canvas.getContext("2d");
 var pixelFont = new FontFace('pixelFont', 'url(css/04B_03__.woff2)');
 var currentRoom; //keeps track of which room we are in
 
-pixelFont.load().then(function(font) {
-  document.fonts.add(font);
-  ctx.font = "16px pixelFont"; // set font
-  ctx.textAlign = "center";
-})
+
 //sizes the canvas based on window size
+//i would just collapse this if i were you bc oh god why
 function sizeCanvas(){
-  var header = $("#header");
-  var footer = $("#footer");
+  var header = $("#header"); //use jQuery to get header
+  var footer = $("#footer"); //use jQuery to get footer
   var inHeight = innerHeight;//innerHeight of the window
   var inWidth = innerWidth; //innerWidth of the window
   var headerHeight = header.outerHeight(true); //height of our header
   var footerHeight = footer.outerHeight(true); //height of our header
   if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
-    var remainder = (inHeight-headerHeight-footerHeight)%64;
-    canvas.width = inHeight-headerHeight-footerHeight-remainder;
-    canvas.height = canvas.width;
+    remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
+    canvas.width = inHeight-headerHeight-footerHeight-remainder;//and then set the width using math
+    canvas.height = canvas.width; //do the same here because its a square
   }
-  else {
-    var remainder = (inWidth)%64;
-    canvas.height = inWidth-remainder;
+  else { //if the witcth is less than or equal to height
+    remainder = (inWidth)%64;
+    canvas.height = inWidth-remainder; // do the same thing essentially
     canvas.width = canvas.height;
   }
+  //recalculate all these variables ;-;
   tileSize = canvas.width/8;
   playerSize = tileSize;
   playerYPos = playerRow*tileSize;
   playerXPos = playerCol*tileSize;
   moveSpeed = canvas.height/64;
-  ctx.font = "16px pixelFont"; // set font
-  ctx.textAlign = "center";
-};
+
+  textAreax = (canvas.height/64)*7;
+  textAreaY1 = (canvas.height/64)*42;
+  textAreaY2 = (canvas.height/64)*46;
+  textAreaY3 = (canvas.height/64)*50;
+  textAreaY4 = (canvas.height/64)*54;
+
+  var fontsize = Math.trunc((canvas.height/64)*3);//quick maths
+  ctx.font = fontsize+"px pixelFont"; // set font
+  ctx.textBaseline = "top"; //set
+}
+
 sizeCanvas();
+//when every dom element on the page loads
+window.addEventListener('load',function(){
+  console.log('loaded');
+  //set the font
+  pixelFont.load().then(function(font) {
+    document.fonts.add(font);
+    fontsize = Math.trunc((canvas.height/64)*3);
+    ctx.font = fontsize+"px pixelFont"; // set font
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+  });
+  //initialize
+  init();
+});
+//when the user resizes the page resize the canvas
 window.addEventListener('resize', sizeCanvas);
+
 
 var current_image = new Image();
 current_image.src = 'images/LAB.png';
 
-text_image = new Image();
-text_image.src = 'images/text_box.png';
+text_box = new Image();
+text_box.src = 'images/text_box.png';
 
-function drawText() {
-  ctx.drawImage(text_image, 0, 0, canvas.width,canvas.height);
-  ctx.fillText('hello!', canvas.width/2,canvas.width/2);
-}
 
-// Initial Player position and size
 
-var playerSize = canvas.width/16;
 
-var levelCols=8;                           // level width, in tiles
-var levelRows=8;                            // level height, in tiles
-var tileSize= canvas.width/8;                            // tile size, in pixels
-var playerCol=1;                                  // player starting column
-var playerRow=3;                                  // player starting row
-var spacebarPressed=false                         // are we pressing spacebar?
-var leftPressed=false;                            // are we pressing LEFT arrow key?
-var rightPressed=false;                           // are we pressing RIGHT arrow key?
-var upPressed=false;                              // are we pressing UP arrow key?
-var downPressed=false;                            // are we pressing DOWN arrow key?
-var playerDirection = 'w';                        //what cardinal direction is the player facing
+var playerSize = canvas.width/16;//playerSize in pixels
+
+var levelCols=8;// level width, in tiles
+var levelRows=8; // level height, in tiles
+var tileSize= canvas.width/8; // tile size, in pixels
+var playerCol=1;// player starting column
+var playerRow=3; // player starting row
+var spacebarPressed=false; // are we pressing spacebar?
+var leftPressed=false; // are we pressing LEFT arrow key?
+var rightPressed=false;// are we pressing RIGHT arrow key?
+var upPressed=false; // are we pressing UP arrow key?
+var downPressed=false; // are we pressing DOWN arrow key?
+var playerDirection = 'w';//what cardinal direction is the player facing
 var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
 var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
 var moveSpeed = canvas.height/64;
 var inDialogue = true; //keeps track of if dialogue is taking place
+var textAreax = (canvas.height/64)*7;
+var textAreaY1 = (canvas.height/64)*42;
+var textAreaY2 = (canvas.height/64)*46;
+var textAreaY3 = (canvas.height/64)*50;
+var textAreaY4 = (canvas.height/64)*54;
 
 
-function Room(image, objects, doors, map){
+
+//room object template
+function Room(image, items, doors, map){
   this.image = image;
-  this.objects = objects;
+  this.items = items;
   this.doors = doors;
   this.map = map;
 }
 
-var room1 = new Room ();
+var room1 = new Room();
 room1.image = current_image;
 //1 is a boundary, 2 is walkable interactions 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,5,1],
   [1,1,1,1,1,0,0,0],
   [1,0,3,0,2,0,0,0],
   [1,0,0,0,0,0,0,0],
@@ -92,11 +118,31 @@ room1.map = [
 ]
 
 currentRoom = room1;
-
+//item object template
+function Item(image, text, interacted, row, col, walkable) {
+  this.image = image;
+  this.text = text;
+  this.interacted = interacted;
+  this.row = row;
+  this.col = col;
+  this.walkable = walkable;
+}
+//this is a test
+var blackSquare = new Item();
+blackSquare.text = "this is a nice big long string so you can do all your fun operations on it";
+blackSquare.row =3;
+blackSquare.col =4;
+//this is a test too
+var redSquare = new Item();
+redSquare.text= "red";
+redSquare.row=3;
+redSquare.col=2;
+currentRoom.items=[redSquare,blackSquare]
 // Initializes full program
 function init() {
   var playerCol = 1;
   var playerRow = 3;
+  console.log('initialized');
 }
 
 
@@ -107,12 +153,21 @@ function loop() {
   update();
 }
 
+//draws text box and text
+function drawText(){
+  ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
+  ctx.fillText("help", textAreax,textAreaY1);
+  ctx.fillText("help", textAreax,textAreaY2);
+  ctx.fillText("help", textAreax,textAreaY3);
+  ctx.fillText("help", textAreax,textAreaY4);
+
+}
+
 // Draws the player and interactive object
 function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
-  //drawBackground(currentRoom.src); //draw background with designated path
-  ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);
+  ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);//draw current room background
   ctx.fillStyle = "red";
   //this code shows test map
   for(i=0;i<levelRows;i++){
@@ -129,31 +184,23 @@ function draw() {
   // player = green box
   ctx.fillStyle = "#00ff00";
   ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
+  //player direction
   ctx.fillStyle = "white";
-  ctx.fillText(playerDirection,playerXPos+(tileSize/2),playerYPos+(tileSize/2),tileSize);
-
+  ctx.fillText(playerDirection,playerXPos+tileSize*.25,playerYPos+tileSize*.25);
+  //check if player is in dialogue and draw text
   if (inDialogue) {
     drawText();
   }
 }
 
-// this function will do its best to make stuff work at 60FPS - please notice I said "will do its best"
 
-window.requestAnimFrame = (function(callback) {
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-  function(callback) {
-    window.setTimeout(callback, 1000/60);
-  };
-})();
 
 // simple WASD listeners
-
 document.addEventListener("keydown", function(e){
   switch(e.keyCode){
     case 32:
     spacebarPressed=true;
     break;
-
     case 65:
     leftPressed=true;
     break;
@@ -190,57 +237,84 @@ document.addEventListener("keyup", function(e){
 }, false);
 
 
-
+//updates game variables, runs every frame
 function update() {
   //first checks if the player is done moving before allowing the rows and columns to update
   if (! ( (playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)) ) ) {
     movePlayer();
   }
   //if the player is done moving then do the updating
-  else if(rightPressed){
-    playerDirection='e';
-    if (isPathTile(playerRow,playerCol+1)) {
-      playerCol+=1;
-    }else {
-      //we could add little bump sound effects here if we wanted
-    }
-  }
-  else if(leftPressed){
-    playerDirection='w';
-    if (isPathTile(playerRow,playerCol-1)) {
-      playerCol-=1;
-    }else {
+  else{
+    if(spacebarPressed){
 
-    }
-  }
-  else if(upPressed){
-    playerDirection='n';
-    if (isPathTile(playerRow-1,playerCol)) {
-      playerRow-=1;
-    }else {
-    }
-  }
-  else if(downPressed){
-    playerDirection='s';
-    if (isPathTile(playerRow+1,playerCol)) {
-      playerRow+=1;
-    }else {
-    }
-  }
-  else if(spacebarPressed){
+      if(!inDialogue){
+        //check if the player is standing on interactable tile
+        if(currentRoom.map[playerRow][playerCol]==2){
+          interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==playerCol));
+        }
+        //do something
 
-    if(!inDialogue){
-      interact();
-    }else {
-      advanceText();
-    }
-  }else if (currentRoom.map[playerRow][playerCol]==5) {
-    //transition room
-  }
 
+        //check if the player is facing an interactable (non walkable) tile
+        if (( playerDirection == 'e' )&&(currentRoom.map[playerRow][playerCol+1]==3)) {
+          //call the interact function on the item in the proper position
+          interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol+1)));
+        } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)){
+          interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol-1)));
+        } else if (( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==3)) {
+          interact(currentRoom.items.find( (ite) => ite.row ==(playerRow-1)&&ite.col==playerCol));
+        } else if (( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
+          interact(currentRoom.items.find( (ite) => ite.row ==(playerRow+1)&&ite.col==playerCol));
+        }
+        //do something
+
+
+        //if we only want the thing to be interactable once, update the space to 0 or 1
+
+
+      }else {
+        advanceText();
+      }
+    }
+    if(rightPressed){
+      playerDirection='e';
+      if (isPathTile(playerRow,playerCol+1)) {
+        playerCol+=1;
+      }else {
+        //we could add little bump sound effects here if we wanted
+      }
+    }
+    else if(leftPressed){
+      playerDirection='w';
+      if (isPathTile(playerRow,playerCol-1)) {
+        playerCol-=1;
+      }else {
+        //we could add little bump sound effects here if we wanted
+      }
+    }
+    else if(upPressed){
+      playerDirection='n';
+      if (isPathTile(playerRow-1,playerCol)) {
+        playerRow-=1;
+      }else {
+        //we could add little bump sound effects here if we wanted
+      }
+    }
+    else if(downPressed){
+      playerDirection='s';
+      if (isPathTile(playerRow+1,playerCol)) {
+        playerRow+=1;
+      }else {
+        //we could add little bump sound effects here if we wanted
+      }
+    }
+    else if (currentRoom.map[playerRow][playerCol]==5) {
+      //transition room
+    }
+  }
 }
 
-//Check if tile is a path
+//Check if the designated tile is walkable
 function isPathTile(row, col) {
   if( ( (row>=0)&&(row<levelRows) ) && ( (col>=0)&&(col<levelCols) ) ){
     if((currentRoom.map[row][col] !== 1)&&(currentRoom.map[row][col] !== 3)){
@@ -253,48 +327,33 @@ function isPathTile(row, col) {
 }
 
 //Handles smooth movement for the player
+//i would collapse this if i wasnt working on it
 function movePlayer(){
-  if (( playerDirection == 'e' )||(playerDirection== 'w')){
-    if (playerXPos>playerCol*tileSize) {
-      playerXPos-=moveSpeed;
-    } else {
-      playerXPos+=moveSpeed;
+  if (( playerDirection == 'e' )||(playerDirection== 'w')){ //if the player is facing left or right
+    if (playerXPos>playerCol*tileSize) {//is the player has to move left
+      playerXPos-=moveSpeed;//change the pixel position
+    } else {//if the player has to move right
+      playerXPos+=moveSpeed;//change the pixel position
     }
-  } else {
-    if (playerYPos>playerRow*tileSize) {
-      playerYPos-=moveSpeed;
-    } else {
-      playerYPos+=moveSpeed;
+  } else {//if the player is facing up or down
+    if (playerYPos>playerRow*tileSize) {//if the player has to move up
+      playerYPos-=moveSpeed;//change the pixel position
+    } else {//if the player has to move down
+      playerYPos+=moveSpeed;//change the pixel position
     }
   }
 }
 
-function interact() {
-  //check if the player is standing on interactable tile
-  if(currentRoom.map[playerRow][playerCol]==2){
-    console.log("interaction detected");
-  }
-  //do something
-
-  //check if the player is facing an interactable (non walkable) tile
-  if (( playerDirection == 'e' )&&(currentRoom.map[playerRow][playerCol+1]==3)) {
-    console.log("interaction detected");
-
-  } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)){
-    console.log("interaction detected");
-  } else if (( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==3)) {
-    console.log("interaction detected");
-  } else if (( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
-    console.log("interaction detected");
-  }
-  //do something
+//interacts with the specified item
+function interact(item) {
+  console.log(item.text);
   //if we only want the thing to be interactable once, update the space to 0 or 1
 }
 
 function advanceText() {
   //not sure what to do here but will ponder it
+  inDialogue=false;
 }
 
-// Refreshes State, so site doesn't crash (Calls Loop function every 1000/60 milliseconds)
-window.setInterval(loop, 1000/60);
-init();
+// Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
+window.setInterval(loop, 1000/30);
