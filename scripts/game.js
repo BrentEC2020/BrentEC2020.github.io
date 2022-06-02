@@ -51,7 +51,7 @@ window.addEventListener('load',function(){
   //set the font
   pixelFont.load().then(function(font) {
     document.fonts.add(font);
-//annalivia test here
+    //annalivia test here
     let fontsize = Math.trunc((canvas.height/64)*2.8);
     ctx.font = fontsize+"px pixelFont"; // set font
     ctx.textAlign = "left";
@@ -93,17 +93,17 @@ var playerDirection = 'w';//what cardinal direction is the player facing
 var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
 var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
 var moveSpeed = canvas.height/64;
-var inDialogue = true; //keeps track of if dialogue is taking place
+var inDialogue = false; //keeps track of if dialogue is taking place
 var textAreax = (canvas.height/64)*7;
-var textAreaY1 = (canvas.height/64)*46;
-var textAreaY2 = (canvas.height/64)*50;
+var textAreaY1 = (canvas.height/64)*49;
+var textAreaY2 = (canvas.height/64)*52;
 var textAreaY3 = (canvas.height/64)*55;
 var textAreaY4 = (canvas.height/64)*58;
 var shownString = "";
 var hiddenString = "";
 var pageCount = 1;
 var currentPage = 1;
-var frameCount = 0;
+var stringFrameIndex = 0;
 
 
 //room object template
@@ -182,11 +182,57 @@ function loop() {
 //draws text box and text
 function drawText(pageStr){
   ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
-  //here were gonna seperate the string which already has /n in for the lines, this only takes the string for one "page" on the text box
-  ctx.fillText("this is a nice big long string so ", textAreax,textAreaY1);
-  ctx.fillText("help", textAreax,textAreaY2);
-  ctx.fillText("help", textAreax,textAreaY3);
-  ctx.fillText("help", textAreax,textAreaY4);
+  //here were gonna seperate the string which already has ^ in for the lines, this only takes the string for one "page" on the text box
+  var string1="";
+  var string2="";
+  var string3="";
+  var string4="";
+  var startingIndex=0;
+  var stringIndex=1;
+  for (var i = 1; i <= pageStr.length; i++) {
+    if (pageStr.charAt(i)=='^') {
+      switch (stringIndex) {
+        case 1:
+          string1= pageStr.slice(startingIndex, i-1);
+          startingIndex=i+1;
+          stringIndex++;
+          break;
+        case 2:
+          string2= pageStr.slice(startingIndex, i-1);
+          startingIndex=i+1;
+          stringIndex++;
+          break;
+        case 3:
+        string3= pageStr.slice(startingIndex, i-1);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
+        default:
+      }
+    }else if (i==pageStr.length) {
+      switch (stringIndex) {
+        case 1:
+          string1= pageStr.slice(startingIndex, i-1);
+          startingIndex=i+1;
+          stringIndex++;
+          break;
+        case 2:
+          string2= pageStr.slice(startingIndex, i-1);
+          startingIndex=i+1;
+          stringIndex++;
+          break;
+        case 3:
+        string3= pageStr.slice(startingIndex, i-1);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
+        default:
+      }
+    }
+  }
+  ctx.fillText(string1, textAreax,textAreaY1);
+  ctx.fillText(string2, textAreax,textAreaY2);
+  ctx.fillText(string3, textAreax,textAreaY3);
 
 }
 
@@ -218,8 +264,9 @@ function draw() {
   //check if player is in dialogue and draw text
   if (inDialogue) {
     drawText(shownString);
+    console.log(shownString);
+    console.log(hiddenString);
   }
-  frameCount++;
 }
 
 // DONE
@@ -309,14 +356,28 @@ function update() {
     }
 
     if (inDialogue) {
-      if(true){//condition for this is if the character at the top of the hidden string is not the new page character
-        if(!fasterText){
-          //move one letter from hiddenString to shownString
-        }else {
-          //move one letter from hiddenString to shownString but faster
+      if(hiddenString.charAt(0)!=='~'){//condition for this is if the character at the top of the hidden string is not the new page character
+        if(fasterText){
+          if (stringFrameIndex==1) {
+            shownString = shownString.concat(hiddenString.charAt(0));
+            hiddenString = hiddenString.slice(1);
+            stringFrameIndex=0;
+          }
         }
+        else {
+          if(stringFrameIndex==2){
+            shownString =shownString.concat(hiddenString.charAt(0));
+            hiddenString = hiddenString.slice(1);
+            stringFrameIndex=0;
+          }
+        }
+      }  
+      if (stringFrameIndex%2==0) {
+        stringFrameIndex=0;
       }
-    }else if(rightPressed){
+      stringFrameIndex++;
+    }
+    else if(rightPressed){
       playerDirection='e';
       if (isPathTile(playerRow,playerCol+1)) {
         playerCol+=1;
@@ -404,16 +465,15 @@ function formatText(string){
   for(var i=1; i<=string.length; i++){
     let builder = "";
     if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*47)){
-      if((lines%4)==0){
-        builder = string.slice(startingIndex,i)+"~";
-        console.log(builder);
+      if((lines%3)==0){
+        builder = string.slice(startingIndex,i)+"^~";
         startingIndex= i;
         if(string.charAt(startingIndex)==" "){
           startingIndex++;
         }
         lines++;
         pages++;
-      }else if (ctx.measureText(string.substring(startingIndex,i)).width>((canvas.width/64)*50)) {
+      }else{
         builder = string.slice(startingIndex,i)+"^";
         startingIndex= i;
         if(string.charAt(startingIndex)==" "){
@@ -421,12 +481,11 @@ function formatText(string){
         }
         lines++;
       }
-    }else if(i ==string.length){
+    }else if(i==string.length){
       builder = string.slice(startingIndex, i)+"~";
     }
     hiddenString = hiddenString.concat(builder);
   }
-  console.log(string.length);
   console.log(hiddenString);
   console.log(pages);
   return pages;
@@ -435,14 +494,18 @@ function formatText(string){
 function advanceText() {
   //if hiddenString char at 0 is equal to newpage char then set shownstring to empty and increment currentPage
 
-  if (hiddenString=="") {
+  if ((hiddenString.charAt(0))=='~'&&(currentPage==pageCount)) {
     shownString="";
+    hiddenString="";
     currentPage=1;
     pageCount=1;
     inDialogue=false;
-
   }
-
+  else if ((hiddenString.charAt(0))=='~') {
+    shownString="";
+    hiddenString=hiddenString.slice(1);
+    currentPage++;
+  }
   return true;
 }
 
