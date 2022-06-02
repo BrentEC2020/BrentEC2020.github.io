@@ -315,7 +315,6 @@ function transitionRoom(fromDoor) {
   transitionRoom(currentRoom.doors.find( (ite) => ite.row == playerRow && ite.col == playerCol))
 }
 
-
 // WILL IT EVER BE DONE
 //updates game variables, runs every frame
 function update() {
