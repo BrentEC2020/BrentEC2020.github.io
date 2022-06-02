@@ -66,9 +66,13 @@ window.addEventListener('resize', sizeCanvas);
 
 var current_image = new Image();
 current_image.src = 'images/LAB.png';
+var second_image = new Image();
+second_image.src = 'images/environment.png';
 
 text_box = new Image();
+text_box2 = new Image();
 text_box.src = 'images/text_box.png';
+text_box2.src = 'images/text_box2.png';
 
 
 
@@ -111,7 +115,9 @@ function Room(image, items, doors, map){
 }
 
 var room1 = new Room();
+var room2 = new Room();
 room1.image = current_image;
+room2.image = second_image;
 //1 is a boundary, 2 is walkable interactions, 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
@@ -124,7 +130,19 @@ room1.map = [
   [0,0,0,0,0,0,0,0]
 ]
 
+room2.map = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,5,1],
+  [0,1,0,0,1,0,0,0],
+  [0,1,3,0,2,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
+
 currentRoom = room1;
+
 //item object template
 function Item(image, text, interacted, row, col, walkable) {
   this.image = image;
@@ -153,8 +171,6 @@ function init() {
   var playerRow = 3;
   console.log('initialized');
 }
-
-
 
 // Loops every interval
 function loop() {
@@ -206,7 +222,6 @@ function draw() {
   frameCount++;
 }
 
-
 // DONE
 // simple WASD listeners
 document.addEventListener("keydown", function(e){
@@ -248,6 +263,10 @@ document.addEventListener("keyup", function(e){
     break;
   }
 }, false);
+
+function transitionRoom(fromDoor) {
+  transitionRoom(currentRoom.doors.find( (ite) => ite.row == playerRow && ite.col == playerCol))
+}
 
 
 // WILL IT EVER BE DONE
