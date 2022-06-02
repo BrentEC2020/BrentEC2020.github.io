@@ -37,7 +37,7 @@ function sizeCanvas(){
   textAreaY3 = (canvas.height/64)*50;
   textAreaY4 = (canvas.height/64)*54;
 
-  let fontsize = Math.trunc((canvas.height/64)*3);//quick maths
+  let fontsize = Math.trunc((canvas.height/64)*2.5);//quick maths
   ctx.font = fontsize+"px pixelFont"; // set font
   ctx.textBaseline = "top"; //set
 }
@@ -51,7 +51,8 @@ window.addEventListener('load',function(){
   //set the font
   pixelFont.load().then(function(font) {
     document.fonts.add(font);
-    fontsize = Math.trunc((canvas.height/64)*3);
+//annalivia test here 
+    let fontsize = Math.trunc((canvas.height/64)*2.5);
     ctx.font = fontsize+"px pixelFont"; // set font
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
@@ -166,7 +167,7 @@ function loop() {
 function drawText(pageStr){
   ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
   //here were gonna seperate the string which already has /n in for the lines, this only takes the string for one "page" on the text box
-  ctx.fillText("help\nhelp", textAreax,textAreaY1);
+  ctx.fillText("this is a nice big long string so ", textAreax,textAreaY1);
   ctx.fillText("help", textAreax,textAreaY2);
   ctx.fillText("help", textAreax,textAreaY3);
   ctx.fillText("help", textAreax,textAreaY4);
@@ -181,8 +182,8 @@ function draw() {
   ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);//draw current room background
   ctx.fillStyle = "red";
   //this code shows test map
-  for(i=0;i<levelRows;i++){
-    for(j=0;j<levelCols;j++){
+  for(var i=0;i<levelRows;i++){
+    for(var j=0;j<levelCols;j++){
       if(currentRoom.map[i][j]==3){
         ctx.fillStyle = "red";
         ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
@@ -261,7 +262,6 @@ function update() {
   else{
     let fasterText = false;
     if(spacebarPressed){
-      formatText("Have you ever typed a few dashes in between paragraphs (as a placeholder or whatever), hit enter, and somehow wound up with a line all the way across the page that you can't get rid of, no matter how many times you hit the Delete key?");
 
       if(!inDialogue){
         //check if the player is standing on interactable tile
@@ -270,7 +270,7 @@ function update() {
         }
 
         //check if the player is facing an interactable (non walkable) tile
-        else if (( playerDirection == 'e' )&&(currentRoom.map[playerRow][playerCol+1]==3)) {
+        else if ( (playerDirection == 'e') && (currentRoom.map[playerRow][playerCol+1] == 3) ) {
           //call the interact function on the item in the proper position
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol+1)));
         } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)){
@@ -379,27 +379,37 @@ function interact(item) {
 }
 //takes a string, adds newlines and carriage returns where lines and pages should end so that they fit in the text box
 function formatText(string){
-  let lines=1;
-  let pages=1;
-  let startingIndex=0;
-  for(let i=0; i< string.length; i++){
+  var lines=1;
+  var pages=1;
+  var startingIndex=0;
+  for(var i=1; i<=string.length; i++){
     let builder = "";
-    if(ctx.measureText(string.substring(startingIndex,i))>=((canvas.width/64)*47)){
+    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*47)){
       if((lines%4)==0){
-        builder = string.slice(startingIndex,i)+"\r";
-        startingIndex=i+1;
+        builder = string.slice(startingIndex,i)+"~";
+        console.log(builder);
+        startingIndex= i;
+        if(string.charAt(startingIndex)==" "){
+          startingIndex++;
+        }
         lines++;
         pages++;
+      }else if (ctx.measureText(string.substring(startingIndex,i)).width>((canvas.width/64)*50)) {
+        builder = string.slice(startingIndex,i)+"^";
+        startingIndex= i;
+        if(string.charAt(startingIndex)==" "){
+          startingIndex++;
+        }
+        lines++;
       }
-    }else if (ctx.measureText(string.substring(startingIndex,i))>=((canvas.width/64)*51)) {
-      builder = string.slice(startingIndex,i)+"\n";
-      startingIndex=i+1;
-      lines++;
-      pages++;
+    }else if(i ==string.length){
+      builder = string.slice(startingIndex, i)+"~";
     }
-    hiddenString.concat(builder);
+    hiddenString = hiddenString.concat(builder);
   }
+  console.log(string.length);
   console.log(hiddenString);
+  console.log(pages);
   return pages;
 }
 // NOT DONE
@@ -413,6 +423,7 @@ function advanceText() {
     inDialogue=false;
 
   }
+
   return true;
 }
 
