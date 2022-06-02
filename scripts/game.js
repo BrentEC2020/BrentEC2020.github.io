@@ -1,7 +1,7 @@
 // Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
-var pixelFont = new FontFace('pixelFont', 'url(css/04B_03__.woff2)');
+var pixelFont = new FontFace('pixelFont', 'url(css/quan.ttf)');
 var currentRoom; //keeps track of which room we are in
 
 // DONE (?)
@@ -15,34 +15,32 @@ function sizeCanvas(){
   let headerHeight = header.outerHeight(true); //height of our header
   let footerHeight = footer.outerHeight(true); //height of our header
   if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
-    remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
+    let remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
     canvas.width = inHeight-headerHeight-footerHeight-remainder;//and then set the width using math
     canvas.height = canvas.width; //do the same here because its a square
   }
   else { //if the witcth is less than or equal to height
-    remainder = (inWidth)%64;
+    let remainder = (inWidth)%64;
     canvas.height = inWidth-remainder; // do the same thing essentially
     canvas.width = canvas.height;
   }
   //recalculate all these variables ;-;
   tileSize = canvas.width/8;
-  playerSize = tileSize;
+  playerSize = tileSize/2;
   playerYPos = playerRow*tileSize;
   playerXPos = playerCol*tileSize;
   moveSpeed = canvas.height/64;
 
-  textAreax = (canvas.height/64)*7;
-  textAreaY1 = (canvas.height/64)*42;
-  textAreaY2 = (canvas.height/64)*46;
-  textAreaY3 = (canvas.height/64)*50;
-  textAreaY4 = (canvas.height/64)*54;
+  textAreax = (canvas.height/64)*3;
+  textAreaY1 = (canvas.height/64)*50;
+  textAreaY2 = Math.trunc((canvas.height/64)*(50+(11/3)));
+  textAreaY3 = Math.trunc((canvas.height/64)*(50+(22/3)));
 
-  let fontsize = Math.trunc((canvas.height/64)*2.5);//quick maths
+  let fontsize = Math.trunc((canvas.height/64)*2.8);//quick maths
   ctx.font = fontsize+"px pixelFont"; // set font
   ctx.textBaseline = "top"; //set
 }
 
-sizeCanvas();
 
 // DONE
 //when every dom element on the page loads
@@ -51,12 +49,13 @@ window.addEventListener('load',function(){
   //set the font
   pixelFont.load().then(function(font) {
     document.fonts.add(font);
-//annalivia test here
+    //annalivia test here
     let fontsize = Math.trunc((canvas.height/64)*1.8);
     ctx.font = fontsize+"px pixelFont"; // set font
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
   });
+  sizeCanvas();
   //initialize
   init();
 });
@@ -66,18 +65,20 @@ window.addEventListener('resize', sizeCanvas);
 
 var current_image = new Image();
 current_image.src = 'images/LAB.png';
+var second_image = new Image();
+second_image.src = 'images/environment.png';
 
 text_box = new Image();
+text_box2 = new Image();
 text_box.src = 'images/text_box.png';
+text_box2.src = 'images/text_box2.png';
 
 
 
 // YIKES
-var playerSize = canvas.width/16;//playerSize in pixels
 
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
-var tileSize= canvas.width/8; // tile size, in pixels
 var playerCol=0;// player starting column
 var playerRow=5; // player starting row
 var spacebarPressed=false; // are we pressing spacebar?
@@ -86,20 +87,14 @@ var rightPressed=false;// are we pressing RIGHT arrow key?
 var upPressed=false; // are we pressing UP arrow key?
 var downPressed=false; // are we pressing DOWN arrow key?
 var playerDirection = 'w';//what cardinal direction is the player facing
-var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
-var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
-var moveSpeed = canvas.height/64;
-var inDialogue = true; //keeps track of if dialogue is taking place
-var textAreax = (canvas.height/64)*7;
-var textAreaY1 = (canvas.height/64)*42;
-var textAreaY2 = (canvas.height/64)*46;
-var textAreaY3 = (canvas.height/64)*50;
-var textAreaY4 = (canvas.height/64)*54;
+var inDialogue = false; //keeps track of if dialogue is taking place
+
 var shownString = "";
 var hiddenString = "";
 var pageCount = 1;
 var currentPage = 1;
-var frameCount = 0;
+var stringFrameIndex = 0;
+var interactionCooldownFrames = 20;
 
 
 //room object template
@@ -111,7 +106,9 @@ function Room(image, items, doors, map){
 }
 
 var room1 = new Room();
+var room2 = new Room();
 room1.image = current_image;
+room2.image = second_image;
 //1 is a boundary, 2 is walkable interactions, 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
@@ -124,7 +121,19 @@ room1.map = [
   [0,0,0,0,0,0,0,0]
 ]
 
+room2.map = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,5,1],
+  [0,1,0,0,1,0,0,0],
+  [0,1,3,0,2,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
+
 currentRoom = room1;
+
 //item object template
 function Item(image, text, interacted, row, col, walkable) {
   this.image = image;
@@ -154,8 +163,6 @@ function init() {
   console.log('initialized');
 }
 
-
-
 // Loops every interval
 function loop() {
   draw();
@@ -166,11 +173,51 @@ function loop() {
 //draws text box and text
 function drawText(pageStr){
   ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
-  //here were gonna seperate the string which already has /n in for the lines, this only takes the string for one "page" on the text box
-  ctx.fillText("this is a nice big long string so ", textAreax,textAreaY1);
-  ctx.fillText("help", textAreax,textAreaY2);
-  ctx.fillText("help", textAreax,textAreaY3);
-  ctx.fillText("help", textAreax,textAreaY4);
+  //here were gonna seperate the string which already has ^ in for the lines, this only takes the string for one "page" on the text box
+  var string1="";
+  var string2="";
+  var string3="";
+  var string4="";
+  var startingIndex=0;
+  var stringIndex=1;
+  for (var i = 1; i <= pageStr.length; i++) {
+    if (pageStr.charAt(i)=='^') {
+      switch (stringIndex) {
+        case 1:
+          string1= pageStr.slice(startingIndex, i);
+          startingIndex=i+1;
+          stringIndex++;
+          break;
+        case 2:
+          string2= pageStr.slice(startingIndex, i);
+          startingIndex=i+1;
+          stringIndex++;
+          break;
+        case 3:
+        string3= pageStr.slice(startingIndex, i);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
+        default:
+      }
+    }else if (i==pageStr.length) {
+      switch (stringIndex) {
+        case 1:
+          string1= pageStr.slice(startingIndex, i-1);
+          break;
+        case 2:
+          string2= pageStr.slice(startingIndex, i-1);
+          break;
+        case 3:
+        string3= pageStr.slice(startingIndex, i-1);
+        break;
+        default:
+      }
+    }
+  }
+  ctx.fillText(string1, textAreax,textAreaY1);
+  ctx.fillText(string2, textAreax,textAreaY2);
+  ctx.fillText(string3, textAreax,textAreaY3);
 
 }
 
@@ -203,9 +250,7 @@ function draw() {
   if (inDialogue) {
     drawText(shownString);
   }
-  frameCount++;
 }
-
 
 // DONE
 // simple WASD listeners
@@ -249,6 +294,9 @@ document.addEventListener("keyup", function(e){
   }
 }, false);
 
+function transitionRoom(fromDoor) {
+  transitionRoom(currentRoom.doors.find( (ite) => ite.row == playerRow && ite.col == playerCol))
+}
 
 // WILL IT EVER BE DONE
 //updates game variables, runs every frame
@@ -263,7 +311,7 @@ function update() {
     let fasterText = false;
     if(spacebarPressed){
 
-      if(!inDialogue){
+      if(!inDialogue&& interactionCooldownFrames==0){
         //check if the player is standing on interactable tile
         if(currentRoom.map[playerRow][playerCol]==2){
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==playerCol));
@@ -290,14 +338,28 @@ function update() {
     }
 
     if (inDialogue) {
-      if(true){//condition for this is if the character at the top of the hidden string is not the new page character
-        if(!fasterText){
-          //move one letter from hiddenString to shownString
-        }else {
-          //move one letter from hiddenString to shownString but faster
+      if(hiddenString.charAt(0)!=='~'){//condition for this is if the character at the top of the hidden string is not the new page character
+        if(fasterText){
+          if (stringFrameIndex==1) {
+            shownString = shownString.concat(hiddenString.charAt(0));
+            hiddenString = hiddenString.slice(1);
+            stringFrameIndex=0;
+          }
+        }
+        else {
+          if(stringFrameIndex==2){
+            shownString =shownString.concat(hiddenString.charAt(0));
+            hiddenString = hiddenString.slice(1);
+            stringFrameIndex=0;
+          }
         }
       }
-    }else if(rightPressed){
+      if (stringFrameIndex%2==0) {
+        stringFrameIndex=0;
+      }
+      stringFrameIndex++;
+    }
+    else if(rightPressed){
       playerDirection='e';
       if (isPathTile(playerRow,playerCol+1)) {
         playerCol+=1;
@@ -332,6 +394,9 @@ function update() {
     else if (currentRoom.map[playerRow][playerCol]==5) {
       //transition room
     }
+  }
+  if (interactionCooldownFrames>0) {
+    interactionCooldownFrames--;
   }
 }
 
@@ -384,17 +449,16 @@ function formatText(string){
   var startingIndex=0;
   for(var i=1; i<=string.length; i++){
     let builder = "";
-    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*47)){
-      if((lines%4)==0){
-        builder = string.slice(startingIndex,i)+"~";
-        console.log(builder);
+    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*55)){
+      if((lines%3)==0){
+        builder = string.slice(startingIndex,i)+"^~";
         startingIndex= i;
         if(string.charAt(startingIndex)==" "){
           startingIndex++;
         }
         lines++;
         pages++;
-      }else if (ctx.measureText(string.substring(startingIndex,i)).width>((canvas.width/64)*50)) {
+      }else{
         builder = string.slice(startingIndex,i)+"^";
         startingIndex= i;
         if(string.charAt(startingIndex)==" "){
@@ -402,28 +466,30 @@ function formatText(string){
         }
         lines++;
       }
-    }else if(i ==string.length){
+    }else if(i==string.length){
       builder = string.slice(startingIndex, i)+"~";
     }
     hiddenString = hiddenString.concat(builder);
   }
-  console.log(string.length);
-  console.log(hiddenString);
-  console.log(pages);
   return pages;
 }
 // NOT DONE
 function advanceText() {
   //if hiddenString char at 0 is equal to newpage char then set shownstring to empty and increment currentPage
 
-  if (hiddenString=="") {
+  if ((hiddenString.charAt(0))=='~'&&(currentPage==pageCount)) {
     shownString="";
+    hiddenString="";
     currentPage=1;
     pageCount=1;
     inDialogue=false;
-
+    interactionCooldownFrames=15;
   }
-
+  else if ((hiddenString.charAt(0))=='~') {
+    shownString="";
+    hiddenString=hiddenString.slice(1);
+    currentPage++;
+  }
   return true;
 }
 
