@@ -107,8 +107,34 @@ ul {
   font-size: 25px;
   text-indent: 10px;
   color: olive;
+  border: 5px;
+  border-style: solid;
+  border-color: DarkGreen;
+  display:inline-block;
+  background-color: white;
 }
-
+.orgs2 {
+  font-family: pixelFont;
+  font-size: 25px;
+  text-indent: 10px;
+  color: olive;
+  border: 5px;
+  border-style: solid;
+  border-color: SaddleBrown;
+  display:inline-block;
+  background-color: white;
+}
+.orgs3 {
+  font-family: pixelFont;
+  font-size: 25px;
+  text-indent: 10px;
+  color: olive;
+  border: 5px;
+  border-style: solid;
+  border-color: DarkSlateGrey;
+  display:inline-block;
+  background-color: white;
+}
 li {
   font-weight: bold;
 }
@@ -129,7 +155,34 @@ li {
   width: 350px;
 }
 
-
+.things {
+  font-weight: bold;
+  font-family: pixelFont;
+  font-size: 22px;
+  color: DarkGreen;
+}
+.links {
+  font-size: 18px;
+  color: white;
+  border: 7px;
+  border-style: solid;
+  border-color: DarkGreen;
+  background-color: black;
+}
+div {
+  font-family: consolas;
+  border: 5px;
+  border-style: solid;
+  border-radius: 25px;
+}
+.climatelogo{
+  width: 300px;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+}
 /* .centerp {
 >>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3
   text-align: center;
