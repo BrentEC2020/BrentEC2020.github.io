@@ -32,12 +32,12 @@ function sizeCanvas(){
   moveSpeed = canvas.height/64;
 
   textAreax = (canvas.height/64)*7;
-  textAreaY1 = (canvas.height/64)*42;
-  textAreaY2 = (canvas.height/64)*46;
-  textAreaY3 = (canvas.height/64)*50;
-  textAreaY4 = (canvas.height/64)*54;
+  textAreaY1 = (canvas.height/64)*46;
+  textAreaY2 = (canvas.height/64)*50;
+  textAreaY3 = (canvas.height/64)*54;
+  textAreaY4 = (canvas.height/64)*58;
 
-  let fontsize = Math.trunc((canvas.height/64)*2.5);//quick maths
+  let fontsize = Math.trunc((canvas.height/64)*2.8);//quick maths
   ctx.font = fontsize+"px pixelFont"; // set font
   ctx.textBaseline = "top"; //set
 }
@@ -51,8 +51,8 @@ window.addEventListener('load',function(){
   //set the font
   pixelFont.load().then(function(font) {
     document.fonts.add(font);
-//annalivia test here 
-    let fontsize = Math.trunc((canvas.height/64)*2.5);
+//annalivia test here
+    let fontsize = Math.trunc((canvas.height/64)*2.8);
     ctx.font = fontsize+"px pixelFont"; // set font
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
@@ -91,10 +91,10 @@ var playerXPos=playerCol*tileSize;  // converting X player position from tiles t
 var moveSpeed = canvas.height/64;
 var inDialogue = true; //keeps track of if dialogue is taking place
 var textAreax = (canvas.height/64)*7;
-var textAreaY1 = (canvas.height/64)*42;
-var textAreaY2 = (canvas.height/64)*46;
-var textAreaY3 = (canvas.height/64)*50;
-var textAreaY4 = (canvas.height/64)*54;
+var textAreaY1 = (canvas.height/64)*46;
+var textAreaY2 = (canvas.height/64)*50;
+var textAreaY3 = (canvas.height/64)*55;
+var textAreaY4 = (canvas.height/64)*58;
 var shownString = "";
 var hiddenString = "";
 var pageCount = 1;
