@@ -104,6 +104,7 @@ var hiddenString = "";
 var pageCount = 1;
 var currentPage = 1;
 var stringFrameIndex = 0;
+var interactionCooldownFrames = 20;
 
 
 //room object template
@@ -264,8 +265,6 @@ function draw() {
   //check if player is in dialogue and draw text
   if (inDialogue) {
     drawText(shownString);
-    console.log(shownString);
-    console.log(hiddenString);
   }
 }
 
@@ -328,7 +327,7 @@ function update() {
     let fasterText = false;
     if(spacebarPressed){
 
-      if(!inDialogue){
+      if(!inDialogue&& interactionCooldownFrames==0){
         //check if the player is standing on interactable tile
         if(currentRoom.map[playerRow][playerCol]==2){
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==playerCol));
@@ -370,7 +369,7 @@ function update() {
             stringFrameIndex=0;
           }
         }
-      }  
+      }
       if (stringFrameIndex%2==0) {
         stringFrameIndex=0;
       }
@@ -411,6 +410,9 @@ function update() {
     else if (currentRoom.map[playerRow][playerCol]==5) {
       //transition room
     }
+  }
+  if (interactionCooldownFrames>0) {
+    interactionCooldownFrames--;
   }
 }
 
@@ -485,8 +487,6 @@ function formatText(string){
     }
     hiddenString = hiddenString.concat(builder);
   }
-  console.log(hiddenString);
-  console.log(pages);
   return pages;
 }
 // NOT DONE
@@ -499,6 +499,7 @@ function advanceText() {
     currentPage=1;
     pageCount=1;
     inDialogue=false;
+    interactionCooldownFrames=15;
   }
   else if ((hiddenString.charAt(0))=='~') {
     shownString="";
