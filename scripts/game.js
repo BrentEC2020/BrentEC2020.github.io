@@ -64,7 +64,7 @@ window.addEventListener('resize', sizeCanvas);
 
 
 var current_image = new Image();
-current_image.src = 'images/LAB.png';
+current_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
 second_image.src = 'images/environment.png';
 
