@@ -1,7 +1,7 @@
 // Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
-var pixelFont = new FontFace('pixelFont', 'url(css/04B_03__.woff2)');
+var pixelFont = new FontFace('pixelFont', 'url(css/quan.ttf)');
 var currentRoom; //keeps track of which room we are in
 
 // DONE (?)
