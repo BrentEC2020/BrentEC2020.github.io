@@ -179,6 +179,14 @@ li {
     display: block;
   }
 }
+.links2{
+  font-size: 10px;
+  color: white;
+  border: 5px;
+  border-style: solid;
+  border-color: DarkGreen;
+  background-color: black;
+}
 /* .centerp {
 >>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3
   text-align: center;
