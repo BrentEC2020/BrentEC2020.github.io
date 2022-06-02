@@ -51,8 +51,8 @@ window.addEventListener('load',function(){
   //set the font
   pixelFont.load().then(function(font) {
     document.fonts.add(font);
-//annalivia test here 
-    let fontsize = Math.trunc((canvas.height/64)*2.5);
+//annalivia test here
+    let fontsize = Math.trunc((canvas.height/64)*1.8);
     ctx.font = fontsize+"px pixelFont"; // set font
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
