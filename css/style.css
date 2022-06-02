@@ -187,6 +187,19 @@ li {
   border-color: DarkSeaGreen;
   background-color: white;
 }
+.list1 {
+  font-family: pixelFont;
+  color: SaddleBrown;
+}
+.list2 {
+  font-family: pixelFont;
+  color: DarkSlateGrey;
+}
+.list3 {
+  font-family: pixelFont;
+  color: DarkGreen;
+}
+
 /* .centerp {
 >>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3
   text-align: center;
