@@ -170,6 +170,15 @@ li {
   margin-right: auto;
   margin-bottom: 50px;
 }
+.flexcontainer {
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 320px) {
+  .flexcontainer {
+    display: block;
+  }
+}
 /* .centerp {
 >>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3
   text-align: center;
