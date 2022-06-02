@@ -15,34 +15,32 @@ function sizeCanvas(){
   let headerHeight = header.outerHeight(true); //height of our header
   let footerHeight = footer.outerHeight(true); //height of our header
   if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
-    remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
+    let remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
     canvas.width = inHeight-headerHeight-footerHeight-remainder;//and then set the width using math
     canvas.height = canvas.width; //do the same here because its a square
   }
   else { //if the witcth is less than or equal to height
-    remainder = (inWidth)%64;
+    let remainder = (inWidth)%64;
     canvas.height = inWidth-remainder; // do the same thing essentially
     canvas.width = canvas.height;
   }
   //recalculate all these variables ;-;
   tileSize = canvas.width/8;
-  playerSize = tileSize;
+  playerSize = tileSize/2;
   playerYPos = playerRow*tileSize;
   playerXPos = playerCol*tileSize;
   moveSpeed = canvas.height/64;
 
-  textAreax = (canvas.height/64)*7;
-  textAreaY1 = (canvas.height/64)*46;
-  textAreaY2 = (canvas.height/64)*50;
-  textAreaY3 = (canvas.height/64)*54;
-  textAreaY4 = (canvas.height/64)*58;
+  textAreax = (canvas.height/64)*3;
+  textAreaY1 = (canvas.height/64)*50;
+  textAreaY2 = Math.trunc((canvas.height/64)*(50+(11/3)));
+  textAreaY3 = Math.trunc((canvas.height/64)*(50+(22/3)));
 
   let fontsize = Math.trunc((canvas.height/64)*2.8);//quick maths
   ctx.font = fontsize+"px pixelFont"; // set font
   ctx.textBaseline = "top"; //set
 }
 
-sizeCanvas();
 
 // DONE
 //when every dom element on the page loads
@@ -57,6 +55,7 @@ window.addEventListener('load',function(){
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
   });
+  sizeCanvas();
   //initialize
   init();
 });
@@ -77,11 +76,9 @@ text_box2.src = 'images/text_box2.png';
 
 
 // YIKES
-var playerSize = canvas.width/16;//playerSize in pixels
 
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
-var tileSize= canvas.width/8; // tile size, in pixels
 var playerCol=0;// player starting column
 var playerRow=5; // player starting row
 var spacebarPressed=false; // are we pressing spacebar?
@@ -90,15 +87,8 @@ var rightPressed=false;// are we pressing RIGHT arrow key?
 var upPressed=false; // are we pressing UP arrow key?
 var downPressed=false; // are we pressing DOWN arrow key?
 var playerDirection = 'w';//what cardinal direction is the player facing
-var playerYPos=playerRow*tileSize;   // converting Y player position from tiles to pixels
-var playerXPos=playerCol*tileSize;  // converting X player position from tiles to pixels
-var moveSpeed = canvas.height/64;
 var inDialogue = false; //keeps track of if dialogue is taking place
-var textAreax = (canvas.height/64)*7;
-var textAreaY1 = (canvas.height/64)*49;
-var textAreaY2 = (canvas.height/64)*52;
-var textAreaY3 = (canvas.height/64)*55;
-var textAreaY4 = (canvas.height/64)*58;
+
 var shownString = "";
 var hiddenString = "";
 var pageCount = 1;
@@ -194,17 +184,17 @@ function drawText(pageStr){
     if (pageStr.charAt(i)=='^') {
       switch (stringIndex) {
         case 1:
-          string1= pageStr.slice(startingIndex, i-1);
+          string1= pageStr.slice(startingIndex, i);
           startingIndex=i+1;
           stringIndex++;
           break;
         case 2:
-          string2= pageStr.slice(startingIndex, i-1);
+          string2= pageStr.slice(startingIndex, i);
           startingIndex=i+1;
           stringIndex++;
           break;
         case 3:
-        string3= pageStr.slice(startingIndex, i-1);
+        string3= pageStr.slice(startingIndex, i);
         startingIndex=i+1;
         stringIndex++;
         break;
@@ -214,18 +204,12 @@ function drawText(pageStr){
       switch (stringIndex) {
         case 1:
           string1= pageStr.slice(startingIndex, i-1);
-          startingIndex=i+1;
-          stringIndex++;
           break;
         case 2:
           string2= pageStr.slice(startingIndex, i-1);
-          startingIndex=i+1;
-          stringIndex++;
           break;
         case 3:
         string3= pageStr.slice(startingIndex, i-1);
-        startingIndex=i+1;
-        stringIndex++;
         break;
         default:
       }
@@ -465,7 +449,7 @@ function formatText(string){
   var startingIndex=0;
   for(var i=1; i<=string.length; i++){
     let builder = "";
-    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*47)){
+    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*55)){
       if((lines%3)==0){
         builder = string.slice(startingIndex,i)+"^~";
         startingIndex= i;
