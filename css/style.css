@@ -1,6 +1,6 @@
 @font-face {
   font-family: pixelFont;
-  src: url(04B_03__.woff2);
+  src: url(quan.ttf);
 }
 
 h1 {
@@ -139,14 +139,6 @@ li {
   font-weight: bold;
 }
 
-#preloadfont {
-  font-family: pixelFont;
-  opacity:0;
-  height:0;
-  width:0;
-  display:inline-block;
-}
-
 .memberpics {
   display: block;
   margin-left: auto;
@@ -169,12 +161,7 @@ li {
   border-color: DarkGreen;
   background-color: black;
 }
-div {
-  font-family: consolas;
-  border: 5px;
-  border-style: solid;
-  border-radius: 25px;
-}
+
 .climatelogo{
   width: 300px;
   height: auto;
