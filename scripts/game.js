@@ -36,7 +36,7 @@ function sizeCanvas(){
   textAreaY2 = Math.trunc((canvas.height/64)*(50+(11/3)));
   textAreaY3 = Math.trunc((canvas.height/64)*(50+(22/3)));
 
-  let fontsize = Math.trunc((canvas.height/64)*2.8);//quick maths
+  let fontsize = Math.trunc((canvas.height/64)*1.8);//quick maths
   ctx.font = fontsize+"px pixelFont"; // set font
   ctx.textBaseline = "top"; //set
 }
@@ -169,7 +169,7 @@ function loop() {
   update();
 }
 
-// NOT DONE
+//  DONE
 //draws text box and text
 function drawText(pageStr){
   ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
@@ -184,15 +184,15 @@ function drawText(pageStr){
     if (pageStr.charAt(i)=='^') {
       switch (stringIndex) {
         case 1:
-          string1= pageStr.slice(startingIndex, i);
-          startingIndex=i+1;
-          stringIndex++;
-          break;
+        string1= pageStr.slice(startingIndex, i);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
         case 2:
-          string2= pageStr.slice(startingIndex, i);
-          startingIndex=i+1;
-          stringIndex++;
-          break;
+        string2= pageStr.slice(startingIndex, i);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
         case 3:
         string3= pageStr.slice(startingIndex, i);
         startingIndex=i+1;
@@ -203,11 +203,11 @@ function drawText(pageStr){
     }else if (i==pageStr.length) {
       switch (stringIndex) {
         case 1:
-          string1= pageStr.slice(startingIndex, i-1);
-          break;
+        string1= pageStr.slice(startingIndex, i-1);
+        break;
         case 2:
-          string2= pageStr.slice(startingIndex, i-1);
-          break;
+        string2= pageStr.slice(startingIndex, i-1);
+        break;
         case 3:
         string3= pageStr.slice(startingIndex, i-1);
         break;
@@ -244,7 +244,7 @@ function draw() {
   ctx.fillStyle = "#00ff00";
   ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
   //player direction
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "black";
   ctx.fillText(playerDirection,playerXPos+tileSize*.25,playerYPos+tileSize*.25);
   //check if player is in dialogue and draw text
   if (inDialogue) {
@@ -311,7 +311,7 @@ function update() {
     let fasterText = false;
     if(spacebarPressed){
 
-      if(!inDialogue&& interactionCooldownFrames==0){
+      if(!inDialogue&& interactionCooldownFrames==0){//if the player is not in dialogue and the interaction cooldown window has passed
         //check if the player is standing on interactable tile
         if(currentRoom.map[playerRow][playerCol]==2){
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==playerCol));
@@ -337,28 +337,28 @@ function update() {
       }
     }
 
-    if (inDialogue) {
+    if (inDialogue) {//move character from shownString to hiddenString
       if(hiddenString.charAt(0)!=='~'){//condition for this is if the character at the top of the hidden string is not the new page character
-        if(fasterText){
-          if (stringFrameIndex==1) {
+        if(fasterText){//if the player wants the text fast
+          if (stringFrameIndex==1) {//move one character to the shownString every other frame
             shownString = shownString.concat(hiddenString.charAt(0));
             hiddenString = hiddenString.slice(1);
             stringFrameIndex=0;
           }
         }
-        else {
-          if(stringFrameIndex==2){
-            shownString =shownString.concat(hiddenString.charAt(0));
-            hiddenString = hiddenString.slice(1);
-            stringFrameIndex=0;
-          }
+        else {//move one character to the shownString every third frame
+          shownString =shownString.concat(hiddenString.charAt(0));
+          hiddenString = hiddenString.slice(1);
+          stringFrameIndex=0;
         }
       }
-      if (stringFrameIndex%2==0) {
+      if (stringFrameIndex%2==0) {//catch runaway index
         stringFrameIndex=0;
       }
       stringFrameIndex++;
     }
+
+
     else if(rightPressed){
       playerDirection='e';
       if (isPathTile(playerRow,playerCol+1)) {
@@ -394,11 +394,13 @@ function update() {
     else if (currentRoom.map[playerRow][playerCol]==5) {
       //transition room
     }
-  }
-  if (interactionCooldownFrames>0) {
-    interactionCooldownFrames--;
+    if (interactionCooldownFrames>0) {
+      interactionCooldownFrames--;
+    }
   }
 }
+
+
 
 //DONE
 //Check if the designated tile is walkable
@@ -432,22 +434,23 @@ function movePlayer(){
 }
 
 
-// NOT DONE
+// DONE
 //interacts with the specified item
 function interact(item) {
   inDialogue=true;
   currentPage = 1;
   pageCount = formatText(item.text);
-  console.log(item.text);
 
   //if we only want the thing to be interactable once, update the space to 0 or 1
 }
+
+//DONE
 //takes a string, adds newlines and carriage returns where lines and pages should end so that they fit in the text box
 function formatText(string){
   var lines=1;
   var pages=1;
   var startingIndex=0;
-  for(var i=1; i<=string.length; i++){
+  for(var i=1; i<=string.length; i++){//reads through the string character by character, measuring if the string will fit in our text box
     let builder = "";
     if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*55)){
       if((lines%3)==0){
@@ -467,17 +470,18 @@ function formatText(string){
         lines++;
       }
     }else if(i==string.length){
-      builder = string.slice(startingIndex, i)+"~";
+      builder = string.slice(startingIndex, i)+"^~";
     }
     hiddenString = hiddenString.concat(builder);
   }
   return pages;
 }
-// NOT DONE
+// DONE
+//if there is no more text to show it clears the strings and closes the textbox, otherwise it moves to the next page
 function advanceText() {
   //if hiddenString char at 0 is equal to newpage char then set shownstring to empty and increment currentPage
 
-  if ((hiddenString.charAt(0))=='~'&&(currentPage==pageCount)) {
+  if ((hiddenString.charAt(0))=='~'&&(currentPage==pageCount)) {// ic there is no more to print, clear and close
     shownString="";
     hiddenString="";
     currentPage=1;
@@ -485,12 +489,12 @@ function advanceText() {
     inDialogue=false;
     interactionCooldownFrames=15;
   }
-  else if ((hiddenString.charAt(0))=='~') {
+  else if ((hiddenString.charAt(0))=='~') {//otherwise go to the next page
     shownString="";
     hiddenString=hiddenString.slice(1);
     currentPage++;
   }
-  return true;
+  return true;//always returns true so that we knoe if this function is called even if it does nothing the player wants the text to be faster
 }
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
