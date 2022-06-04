@@ -86,6 +86,7 @@ var leftPressed=false; // are we pressing LEFT arrow key?
 var rightPressed=false;// are we pressing RIGHT arrow key?
 var upPressed=false; // are we pressing UP arrow key?
 var downPressed=false; // are we pressing DOWN arrow key?
+var ePressed=false; // are we pressing e? Adding a temporary key for user input.
 var playerDirection = 'w';//what cardinal direction is the player facing
 var inDialogue = false; //keeps track of if dialogue is taking place
 
@@ -271,6 +272,9 @@ document.addEventListener("keydown", function(e){
     case 83:
     downPressed=true;
     break;
+	case 69:
+	ePressed=true;
+	break;
   }
 }, false);
 // DONE
@@ -291,6 +295,9 @@ document.addEventListener("keyup", function(e){
     case 83:
     downPressed=false;
     break;
+	case 69:
+	ePressed=false;
+	break;
   }
 }, false);
 
@@ -495,6 +502,13 @@ function advanceText() {
     currentPage++;
   }
   return true;//always returns true so that we knoe if this function is called even if it does nothing the player wants the text to be faster
+}
+
+function userInput() {
+	if (ePressed == true) {
+		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
+		document.write(userMessage + "...That is a great idea!");
+	}
 }
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
