@@ -157,10 +157,11 @@ redSquare.row=3;
 redSquare.col=2;
 currentRoom.items=[redSquare,blackSquare]
 
-// Initializes full program
+// Initializes start screen
 function init() {
-  var playerCol = 1;
-  var playerRow = 3;
+  var startScreen1 = new Image();
+  startScreen1.src = 'images/start_screen_1.png'
+  ctx.drawImage(startScreen1,0,0,canvas.width,canvas.height);
   console.log('initialized');
 }
 
