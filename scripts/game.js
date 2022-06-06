@@ -212,13 +212,13 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "What's happening on TV right now? *dshfkjsdhfkahsldkfuhaskljdhfkjahsdkfjhlaskjdhf";
+blackSquare.text = "What's happening on TV right now? *this is a big string to seee how this is happening i dont think this function is working propperley yet";
 blackSquare.row =2;
 blackSquare.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "I can't believe I'm going to be the first person on earth to    travel into the future!";
+redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 currentRoom.items=[redSquare,blackSquare]
@@ -632,23 +632,23 @@ function formatText(string){
       lines = 1
       pages++;
     }
-    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*55)){
+    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*56)){
       if((lines%3)==0){
-        builder = string.slice(startingIndex,i)+"^~";
-        startingIndex= i;
-        while(string.charAt(startingIndex-1)!==" "){
-          startingIndex--;
+        while(string.charAt(i-1)!==" "){
           i--;
         }
+        builder = string.slice(startingIndex,i)+"^~";
+        startingIndex= i;
+
         lines=1;
         pages++;
       }else{
-        builder = string.slice(startingIndex,i)+"^";
-        startingIndex= i;
-        while(string.charAt(startingIndex-1)!==" "){
-          startingIndex--;
+        while(string.charAt(i-1)!==" "){
           i--;
         }
+        builder = string.slice(startingIndex,i)+"^";
+        startingIndex= i;
+
       }
       lines++;
     }else if(i==string.length){
