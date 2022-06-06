@@ -51,6 +51,8 @@ var stringFrameIndex = 0;
 var interactionCooldownFrames = 20;
 var frameIndex = 1;
 
+var audioPlay =false;
+
 
 //room object template
 function Room(image, items, doors, map){
@@ -605,7 +607,9 @@ window.addEventListener('load',function(){
   });
   sizeCanvas();
   //initialize
+
 });
+
 
 //when the user resizes the page resize the canvas
 window.addEventListener('resize', sizeCanvas);
@@ -630,7 +634,21 @@ document.addEventListener("keydown", function(e){
     break;
 	case 69:
 	ePressed=true;
+  break;
+  case 80:
+  audioPlay = !audioPlay;
+  const audio = document.querySelector("audio");
+   if(audioPlay)
+   {
+     audio.play();
+     audio.volume = 0.2;
+
+   }
+   if (!audioPlay) {
+     audio.pause();
+   }
 	break;
+
   }
 }, false);
 // DONE
