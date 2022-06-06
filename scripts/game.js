@@ -69,10 +69,10 @@ var second_image = new Image();
 second_image.src = 'images/environment.png';
 
 text_box = new Image();
-text_box2 = new Image();
 text_box.src = 'images/text_box.png';
-text_box2.src = 'images/text_box2.png';
 
+var interactable_object = new Image();
+interactable_object.src = 'images/interactable_object.png';
 
 
 // YIKES
@@ -97,6 +97,7 @@ var currentPage = 1;
 var stringFrameIndex = 0;
 var interactionCooldownFrames = 20;
 
+
 //room object template
 function Room(image, items, doors, map){
   this.image = image;
@@ -114,10 +115,10 @@ room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,1,0,0,0],
-  [0,0,3,0,2,0,0,0],
-  [0,0,0,0,0,0,0,1],
-  [0,0,1,1,1,1,0,1],
-  [0,0,1,1,1,1,0,1],
+  [0,1,3,0,2,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
 
@@ -131,7 +132,26 @@ room2.map = [
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
-
+// room3.map = [
+//     [1,1,1,1,1,1,1,1],
+//     [1,1,1,1,1,1,5,1],
+//     [0,1,0,0,1,0,0,0],
+//     [0,1,3,0,2,0,0,0],
+//     [0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0]
+// ]
+// room4.map = [
+//       [1,1,1,1,1,1,1,1],
+//       [1,1,1,1,1,1,5,1],
+//       [0,1,0,0,1,0,0,0],
+//       [0,1,3,0,2,0,0,0],
+//       [0,0,0,0,0,0,0,0],
+//       [0,0,0,0,0,0,0,0],
+//       [0,0,0,0,0,0,0,0],
+//       [0,0,0,0,0,0,0,0]
+//     ]
 currentRoom = room1;
 
 //item object template
@@ -145,13 +165,13 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "this is a nice big long string so you can do all your fun operations on it bla bla bla hey bla bla bla hey bla bla bla hey bla bla bla hey look bla bla bla wow you made it to the very very end of the string!";
+blackSquare.text = "What's happening on TV right now?";
 blackSquare.row =3;
 blackSquare.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "red";
+redSquare.text= "I can't believe I'm going to be the first person on earth to    travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 currentRoom.items=[redSquare,blackSquare]
@@ -159,7 +179,7 @@ currentRoom.items=[redSquare,blackSquare]
 // Initializes start screen
 function init() {
   var startScreen1 = new Image();
-  startScreen1.src = 'images/start_screen_1.png'
+  startScreen1.src = 'images/startscreen.png'
   ctx.drawImage(startScreen1,0,0,canvas.width,canvas.height);
   console.log('initialized');
 }
@@ -228,16 +248,15 @@ function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
   ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);//draw current room background
-  ctx.fillStyle = "red";
   //this code shows test map
   for(var i=0;i<levelRows;i++){
     for(var j=0;j<levelCols;j++){
       if(currentRoom.map[i][j]==3){
-        ctx.fillStyle = "red";
-        ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
+        //draw the sprite here
+        ctx.drawImage(interactable_object, j*tileSize,i*tileSize,tileSize,tileSize);
       } else if (currentRoom.map[i][j]==2) {
-        ctx.fillStyle = "black";
-        ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
+        //draw the sprite here too
+        ctx.drawImage(interactable_object, j*tileSize,i*tileSize,tileSize,tileSize);
       }
     }
   }
@@ -504,13 +523,12 @@ function advanceText() {
   return true;//always returns true so that we knoe if this function is called even if it does nothing the player wants the text to be faster
 }
 
-+function userInput() {
+function userInput() {
 	if (ePressed == true) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.write(userMessage + "...That is a great idea!");
 	}
 }
-//init();
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
 window.setInterval(loop, 1000/30);
