@@ -505,12 +505,13 @@ function advanceText() {
   return true;//always returns true so that we knoe if this function is called even if it does nothing the player wants the text to be faster
 }
 
-function userInput() {
++function userInput() {
 	if (ePressed == true) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.write(userMessage + "...That is a great idea!");
 	}
 }
+//init();
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
 window.setInterval(loop, 1000/30);
