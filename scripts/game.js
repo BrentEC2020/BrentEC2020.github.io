@@ -4,64 +4,7 @@ var ctx = canvas.getContext("2d");
 var pixelFont = new FontFace('pixelFont', 'url(css/quan.ttf)');
 var currentRoom; //keeps track of which room we are in
 
-// DONE (?)
-//sizes the canvas based on window size
-//i would just collapse this if i were you bc oh god why
-function sizeCanvas(){
-  let header = $("#header"); //use jQuery to get header
-  let footer = $("#footer"); //use jQuery to get footer
-  let inHeight = innerHeight;//innerHeight of the window
-  let inWidth = innerWidth; //innerWidth of the window
-  let headerHeight = header.outerHeight(true); //height of our header
-  let footerHeight = footer.outerHeight(true); //height of our header
-  if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
-    let remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
-    canvas.width = inHeight-headerHeight-footerHeight-remainder;//and then set the width using math
-    canvas.height = canvas.width; //do the same here because its a square
-  }
-  else { //if the witcth is less than or equal to height
-    let remainder = (inWidth)%64;
-    canvas.height = inWidth-remainder; // do the same thing essentially
-    canvas.width = canvas.height;
-  }
-  //recalculate all these variables ;-;
-  tileSize = canvas.width/8;
-  playerSize = tileSize/2;
-  playerYPos = playerRow*tileSize;
-  playerXPos = playerCol*tileSize;
-  moveSpeed = canvas.height/64;
-
-  textAreax = (canvas.height/64)*3;
-  textAreaY1 = (canvas.height/64)*50;
-  textAreaY2 = Math.trunc((canvas.height/64)*(50+(11/3)));
-  textAreaY3 = Math.trunc((canvas.height/64)*(50+(22/3)));
-
-  let fontsize = Math.trunc((canvas.height/64)*1.8);//quick maths
-  ctx.font = fontsize+"px pixelFont"; // set font
-  ctx.textBaseline = "top"; //set
-}
-
-sizeCanvas();
-// DONE
-//when every dom element on the page loads
-window.addEventListener('load',function(){
-  console.log('loaded');
-  //set the font
-  pixelFont.load().then(function(font) {
-    document.fonts.add(font);
-    //annalivia test here
-    let fontsize = Math.trunc((canvas.height/64)*1.8);
-    ctx.font = fontsize+"px pixelFont"; // set font
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-  });
-  sizeCanvas();
-  //initialize
-});
-//when the user resizes the page resize the canvas
-window.addEventListener('resize', sizeCanvas);
-
-
+//game data wholy moly
 var first_image = new Image();
 first_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
@@ -70,10 +13,6 @@ var third_image = new Image();
 third_image.src = 'images/environments/town2.png';
 var fourth_image = new Image();
 fourth_image.src = 'images/environments/house.png';
-
-text_box = new Image();
-text_box.src = 'images/text_box.png';
-//second_image.src = 'images/environment.png';
 
 text_box = new Image();
 text_box.src = 'images/text_box.png';
@@ -121,6 +60,13 @@ function Room(image, items, doors, map){
   this.map = map;
 }
 
+//item object template
+function Item(text,  row, col, ) {
+  this.text = text;
+  this.row = row;
+  this.col = col;
+}
+
 var room1 = new Room();
 var room2 = new Room();
 var room3 = new Room();
@@ -141,6 +87,19 @@ room1.map = [
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+//this is a test
+var tvRoom1 = new Item();
+tvRoom1.text = "What's happening on TV right now? *this is a big string to seee how this is happening i dont think this function is working propperley yet";
+tvRoom1.row =2;
+tvRoom1.col =4;
+
+//this is a test too
+var redSquare = new Item();
+redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
+redSquare.row=3;
+redSquare.col=2;
+
+room1.items=[redSquare,tvRoom1]
 
 // for room2, 6 is backward doors, 7 is forward doors
 room2.map = [
@@ -180,24 +139,8 @@ room4.map = [
 
 currentRoom = room1;
 
-//item object template
-function Item(text,  row, col, ) {
-  this.text = text;
-  this.row = row;
-  this.col = col;
-}
-//this is a test
-var blackSquare = new Item();
-blackSquare.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp. celebrates 50 years since establishment! The company aims to replace all man-made products using their patented plastic technology!'*Hm...interesting...";
-blackSquare.row =2;
-blackSquare.col =4;
 
-//this is a test too
-var redSquare = new Item();
-redSquare.text= "I can't believe I'm the first person on earth to travel into the future!";
-redSquare.row=3;
-redSquare.col=2;
-room1.items=[redSquare,blackSquare]
+
 
 // Initializes start screen
 function init() {
@@ -211,58 +154,6 @@ function init() {
 function loop() {
   draw();
   update();
-}
-
-//  DONE
-//draws text box and text
-function drawText(pageStr){
-  ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
-  //here were gonna seperate the string which already has ^ in for the lines, this only takes the string for one "page" on the text box
-  var string1="";
-  var string2="";
-  var string3="";
-  var string4="";
-  var startingIndex=0;
-  var stringIndex=1;
-  for (var i = 1; i <= pageStr.length; i++) {
-    if (pageStr.charAt(i)=='^') {
-      switch (stringIndex) {
-        case 1:
-        string1= pageStr.slice(startingIndex, i);
-        startingIndex=i+1;
-        stringIndex++;
-        break;
-        case 2:
-        string2= pageStr.slice(startingIndex, i);
-        startingIndex=i+1;
-        stringIndex++;
-        break;
-        case 3:
-        string3= pageStr.slice(startingIndex, i);
-        startingIndex=i+1;
-        stringIndex++;
-        break;
-        default:
-      }
-    }else if (i==pageStr.length) {
-      switch (stringIndex) {
-        case 1:
-        string1= pageStr.slice(startingIndex, i-1);
-        break;
-        case 2:
-        string2= pageStr.slice(startingIndex, i-1);
-        break;
-        case 3:
-        string3= pageStr.slice(startingIndex, i-1);
-        break;
-        default:
-      }
-    }
-  }
-  ctx.fillText(string1, textAreax,textAreaY1);
-  ctx.fillText(string2, textAreax,textAreaY2);
-  ctx.fillText(string3, textAreax,textAreaY3);
-
 }
 
 // WILL IT EVER BE DONE
@@ -326,55 +217,112 @@ function draw() {
     frameIndex=1;
   }
 }
-
-// DONE
-// simple WASD listeners
-document.addEventListener("keydown", function(e){
-  switch(e.keyCode){
-    case 32:
-    spacebarPressed=true;
-    break;
-    case 65:
-    leftPressed=true;
-    break;
-    case 87:
-    upPressed=true;
-    break;
-    case 68:
-    rightPressed=true;
-    break;
-    case 83:
-    downPressed=true;
-    break;
-	case 69:
-	ePressed=true;
-	break;
+//  DONE
+//draws text box and text
+function drawText(pageStr){
+  ctx.drawImage(text_box, 0, 0, canvas.width,canvas.height);
+  //here were gonna seperate the string which already has ^ in for the lines, this only takes the string for one "page" on the text box
+  var string1="";
+  var string2="";
+  var string3="";
+  var string4="";
+  var startingIndex=0;
+  var stringIndex=1;
+  for (var i = 1; i <= pageStr.length; i++) {
+    if (pageStr.charAt(i)=='^') {
+      switch (stringIndex) {
+        case 1:
+        string1= pageStr.slice(startingIndex, i);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
+        case 2:
+        string2= pageStr.slice(startingIndex, i);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
+        case 3:
+        string3= pageStr.slice(startingIndex, i);
+        startingIndex=i+1;
+        stringIndex++;
+        break;
+        default:
+      }
+    }else if (i==pageStr.length) {
+      switch (stringIndex) {
+        case 1:
+        string1= pageStr.slice(startingIndex, i-1);
+        break;
+        case 2:
+        string2= pageStr.slice(startingIndex, i-1);
+        break;
+        case 3:
+        string3= pageStr.slice(startingIndex, i-1);
+        break;
+        default:
+      }
+    }
   }
-}, false);
-// DONE
-document.addEventListener("keyup", function(e){
-  switch(e.keyCode){
-    case 32:
-    spacebarPressed=false;
-    break;
-    case 65:
-    leftPressed=false;
-    break;
-    case 87:
-    upPressed=false;
-    break;
-    case 68:
-    rightPressed=false;
-    break;
-    case 83:
-    downPressed=false;
-    break;
-	case 69:
-	ePressed=false;
-	break;
-  }
-}, false);
+  ctx.fillText(string1, textAreax,textAreaY1);
+  ctx.fillText(string2, textAreax,textAreaY2);
+  ctx.fillText(string3, textAreax,textAreaY3);
 
+}
+
+function forwardTownOne() {
+  playerCol = 1;
+  playerRow = 1;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom = room2;
+
+  playerDirection = 's';
+}
+
+function forwardTownTwo() {
+  playerCol = 1;
+  playerRow = 5;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom = room3;
+  playerDirection = 'e';
+}
+
+function forwardHouse() {
+  playerCol = 7;
+  playerRow = 2;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom = room4;
+  playerDirection = 's';
+}
+
+function backwardTownTwo() {
+  playerCol = 5;
+  playerRow = 5;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom=room3
+  playerDirection = 's';
+}
+
+function backwardTownOne() {
+  playerCol = 6;
+  playerRow = 4;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom=room2;
+  playerDirection = 'w';
+}
+
+function backwardLab() {
+  playerCol = 6;
+  playerRow = 2;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom=room1;
+  playerDirection = 's';
+}
 // WILL IT EVER BE DONE
 //updates game variables, runs every frame
 function update() {
@@ -493,60 +441,7 @@ function update() {
   }
 }
 
-function forwardTownOne() {
-  playerCol = 1;
-  playerRow = 1;
-  playerXPos = playerCol*tileSize;
-  playerYPos =playerRow*tileSize;
-  currentRoom = room2;
 
-  playerDirection = 's';
-}
-
-function forwardTownTwo() {
-  playerCol = 1;
-  playerRow = 5;
-  playerXPos = playerCol*tileSize;
-  playerYPos =playerRow*tileSize;
-  currentRoom = room3;
-  playerDirection = 'e';
-}
-
-function forwardHouse() {
-  playerCol = 7;
-  playerRow = 2;
-  playerXPos = playerCol*tileSize;
-  playerYPos =playerRow*tileSize;
-  currentRoom = room4;
-  playerDirection = 's';
-}
-
-function backwardTownTwo() {
-  playerCol = 5;
-  playerRow = 5;
-  playerXPos = playerCol*tileSize;
-  playerYPos =playerRow*tileSize;
-  currentRoom=room3
-  playerDirection = 's';
-}
-
-function backwardTownOne() {
-  playerCol = 6;
-  playerRow = 4;
-  playerXPos = playerCol*tileSize;
-  playerYPos =playerRow*tileSize;
-  currentRoom=room2;
-  playerDirection = 'w';
-}
-
-function backwardLab() {
-  playerCol = 6;
-  playerRow = 2;
-  playerXPos = playerCol*tileSize;
-  playerYPos =playerRow*tileSize;
-  currentRoom=room1;
-  playerDirection = 's';
-}
 //DONE
 //Check if the designated tile is walkable
 function isPathTile(row, col) {
@@ -656,6 +551,111 @@ function userInput() {
 		document.write(userMessage + "...That is a great idea!");
 	}
 }
+
+// DONE (?)
+//sizes the canvas based on window size
+//i would just collapse this if i were you bc oh god why
+function sizeCanvas(){
+  let header = $("#header"); //use jQuery to get header
+  let footer = $("#footer"); //use jQuery to get footer
+  let inHeight = innerHeight;//innerHeight of the window
+  let inWidth = innerWidth; //innerWidth of the window
+  let headerHeight = header.outerHeight(true); //height of our header
+  let footerHeight = footer.outerHeight(true); //height of our header
+  if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
+    let remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
+    canvas.width = inHeight-headerHeight-footerHeight-remainder;//and then set the width using math
+    canvas.height = canvas.width; //do the same here because its a square
+  }
+  else { //if the witcth is less than or equal to height
+    let remainder = (inWidth)%64;
+    canvas.height = inWidth-remainder; // do the same thing essentially
+    canvas.width = canvas.height;
+  }
+  //recalculate all these variables ;-;
+  tileSize = canvas.width/8;
+  playerSize = tileSize/2;
+  playerYPos = playerRow*tileSize;
+  playerXPos = playerCol*tileSize;
+  moveSpeed = canvas.height/64;
+
+  textAreax = (canvas.height/64)*3;
+  textAreaY1 = (canvas.height/64)*50;
+  textAreaY2 = Math.trunc((canvas.height/64)*(50+(11/3)));
+  textAreaY3 = Math.trunc((canvas.height/64)*(50+(22/3)));
+
+  let fontsize = Math.trunc((canvas.height/64)*1.8);//quick maths
+  ctx.font = fontsize+"px pixelFont"; // set font
+  ctx.textBaseline = "top"; //set
+}
+
+sizeCanvas();
+// DONE
+//when every dom element on the page loads
+window.addEventListener('load',function(){
+  console.log('loaded');
+  //set the font
+  pixelFont.load().then(function(font) {
+    document.fonts.add(font);
+    //annalivia test here
+    let fontsize = Math.trunc((canvas.height/64)*1.8);
+    ctx.font = fontsize+"px pixelFont"; // set font
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+  });
+  sizeCanvas();
+  //initialize
+});
+
+//when the user resizes the page resize the canvas
+window.addEventListener('resize', sizeCanvas);
+// DONE
+// simple WASD listeners
+document.addEventListener("keydown", function(e){
+  switch(e.keyCode){
+    case 32:
+    spacebarPressed=true;
+    break;
+    case 65:
+    leftPressed=true;
+    break;
+    case 87:
+    upPressed=true;
+    break;
+    case 68:
+    rightPressed=true;
+    break;
+    case 83:
+    downPressed=true;
+    break;
+	case 69:
+	ePressed=true;
+	break;
+  }
+}, false);
+// DONE
+document.addEventListener("keyup", function(e){
+  switch(e.keyCode){
+    case 32:
+    spacebarPressed=false;
+    break;
+    case 65:
+    leftPressed=false;
+    break;
+    case 87:
+    upPressed=false;
+    break;
+    case 68:
+    rightPressed=false;
+    break;
+    case 83:
+    downPressed=false;
+    break;
+	case 69:
+	ePressed=false;
+	break;
+  }
+}, false);
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
 window.setInterval(loop, 1000/30);
