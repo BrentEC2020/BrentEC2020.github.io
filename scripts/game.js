@@ -41,7 +41,7 @@ function sizeCanvas(){
   ctx.textBaseline = "top"; //set
 }
 
-
+sizeCanvas();
 // DONE
 //when every dom element on the page loads
 window.addEventListener('load',function(){
@@ -57,7 +57,6 @@ window.addEventListener('load',function(){
   });
   sizeCanvas();
   //initialize
-  init();
 });
 //when the user resizes the page resize the canvas
 window.addEventListener('resize', sizeCanvas);
@@ -66,6 +65,7 @@ window.addEventListener('resize', sizeCanvas);
 var current_image = new Image();
 current_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
+<<<<<<< HEAD
 second_image.src = 'images/environments/town1.png';
 var third_image = new Image();
 third_image.src = 'images/environments/town2.png';
@@ -74,7 +74,24 @@ fourth_image.src = 'images/environments/house.png';
 
 text_box = new Image();
 text_box.src = 'images/text_box.png';
+=======
+//second_image.src = 'images/environment.png';
 
+text_box = new Image();
+text_box.src = 'images/text_box.png';
+
+var interactable_object = new Image();
+interactable_object.src = 'images/interactable_objectmovingPADDED8frames.png';
+>>>>>>> 636d6dedf3ef164f98219cb41237aa01a7737cb5
+
+var yuu_walk_up = new Image();
+yuu_walk_up.src='images/yuu_backwalk.png'
+var yuu_walk_down = new Image();
+yuu_walk_down.src='images/yuu_frontwalk.png'
+var yuu_walk_left = new Image();
+yuu_walk_left.src ='images/yuu_leftwalk.png'
+var yuu_walk_right = new Image();
+yuu_walk_right.src='images/yuu_rightwalk.png'
 // YIKES
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
@@ -95,6 +112,8 @@ var pageCount = 1;
 var currentPage = 1;
 var stringFrameIndex = 0;
 var interactionCooldownFrames = 20;
+var frameIndex = 1;
+
 
 //room object template
 function Room(image, items, doors, map){
@@ -117,11 +136,11 @@ room4.image = fourth_image;
 room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
-  [0,1,0,0,1,0,0,0],
-  [0,0,3,0,2,0,0,0],
-  [0,0,0,0,0,0,0,1],
-  [0,0,1,1,1,1,0,1],
-  [0,0,1,1,1,1,0,1],
+  [0,1,0,0,3,0,0,0],
+  [0,1,3,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
 
@@ -160,7 +179,26 @@ room4.map = [
   [0,0,0,0,0,0,1,1],
   [0,0,0,0,0,0,0,0]
 ]
-
+// room3.map = [
+//     [1,1,1,1,1,1,1,1],
+//     [1,1,1,1,1,1,5,1],
+//     [0,1,0,0,1,0,0,0],
+//     [0,1,3,0,2,0,0,0],
+//     [0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0]
+// ]
+// room4.map = [
+//       [1,1,1,1,1,1,1,1],
+//       [1,1,1,1,1,1,5,1],
+//       [0,1,0,0,1,0,0,0],
+//       [0,1,3,0,2,0,0,0],
+//       [0,0,0,0,0,0,0,0],
+//       [0,0,0,0,0,0,0,0],
+//       [0,0,0,0,0,0,0,0],
+//       [0,0,0,0,0,0,0,0]
+//     ]
 currentRoom = room1;
 
 //item object template
@@ -174,13 +212,13 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "this is a nice big long string so you can do all your fun operations on it bla bla bla hey bla bla bla hey bla bla bla hey bla bla bla hey look bla bla bla wow you made it to the very very end of the string!";
-blackSquare.row =3;
+blackSquare.text = "What's happening on TV right now? *dshfkjsdhfkahsldkfuhaskljdhfkjahsdkfjhlaskjdhf";
+blackSquare.row =2;
 blackSquare.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "red";
+redSquare.text= "I can't believe I'm going to be the first person on earth to    travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 currentRoom.items=[redSquare,blackSquare]
@@ -188,7 +226,7 @@ currentRoom.items=[redSquare,blackSquare]
 // Initializes start screen
 function init() {
   var startScreen1 = new Image();
-  startScreen1.src = 'images/start_screen_1.png'
+  startScreen1.src = 'images/startscreen.png'
   ctx.drawImage(startScreen1,0,0,canvas.width,canvas.height);
   console.log('initialized');
 }
@@ -257,28 +295,59 @@ function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
   ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);//draw current room background
-  ctx.fillStyle = "red";
-  //this code shows test map
+  //this code shows the interactable objects
+
   for(var i=0;i<levelRows;i++){
     for(var j=0;j<levelCols;j++){
-      if(currentRoom.map[i][j]==3){
-        ctx.fillStyle = "red";
-        ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
-      } else if (currentRoom.map[i][j]==2) {
-        ctx.fillStyle = "black";
-        ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
+      if(currentRoom.map[i][j]==3||currentRoom.map[i][j]==2){
+        //draw the sprite here
+        var sx = (frameIndex-1)*63;
+        ctx.drawImage(interactable_object, sx, 0, 63, 63, j*tileSize, i*tileSize, tileSize, tileSize);
       }
     }
   }
+
+  if (playerDirection=='n') {//
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_up,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
+  else if (playerDirection=='s') {
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_down,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
+  else if (playerDirection=='e') {
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_right,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
+  else if (playerDirection=='w') {
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_left,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
   // player = green box
   ctx.fillStyle = "#00ff00";
-  ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
+//  ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
   //player direction
   ctx.fillStyle = "black";
   ctx.fillText(playerDirection,playerXPos+tileSize*.25,playerYPos+tileSize*.25);
   //check if player is in dialogue and draw text
   if (inDialogue) {
     drawText(shownString);
+  }
+  frameIndex ++;
+  if (frameIndex==9) {
+    frameIndex=1;
   }
 }
 
@@ -557,23 +626,31 @@ function formatText(string){
   var startingIndex=0;
   for(var i=1; i<=string.length; i++){//reads through the string character by character, measuring if the string will fit in our text box
     let builder = "";
+    if(string.charAt(i)=='*'){
+      builder = string.slice(startingIndex,i)+"^~";
+      startingIndex=i+1;
+      lines = 1
+      pages++;
+    }
     if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*55)){
       if((lines%3)==0){
         builder = string.slice(startingIndex,i)+"^~";
         startingIndex= i;
-        if(string.charAt(startingIndex)==" "){
-          startingIndex++;
+        while(string.charAt(startingIndex-1)!==" "){
+          startingIndex--;
+          i--;
         }
-        lines++;
+        lines=1;
         pages++;
       }else{
         builder = string.slice(startingIndex,i)+"^";
         startingIndex= i;
-        if(string.charAt(startingIndex)==" "){
-          startingIndex++;
+        while(string.charAt(startingIndex-1)!==" "){
+          startingIndex--;
+          i--;
         }
-        lines++;
       }
+      lines++;
     }else if(i==string.length){
       builder = string.slice(startingIndex, i)+"^~";
     }
