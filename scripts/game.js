@@ -97,7 +97,6 @@ var currentPage = 1;
 var stringFrameIndex = 0;
 var interactionCooldownFrames = 20;
 
-
 //room object template
 function Room(image, items, doors, map){
   this.image = image;
@@ -115,10 +114,10 @@ room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,1,0,0,0],
-  [0,1,3,0,2,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [0,0,3,0,2,0,0,0],
+  [0,0,0,0,0,0,0,1],
+  [0,0,1,1,1,1,0,1],
+  [0,0,1,1,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
 
