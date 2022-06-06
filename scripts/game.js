@@ -66,17 +66,12 @@ window.addEventListener('resize', sizeCanvas);
 var current_image = new Image();
 current_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
-second_image.src = 'images/environment.png';
+second_image.src = 'images/environments/town1.png';
 
 text_box = new Image();
-text_box2 = new Image();
 text_box.src = 'images/text_box.png';
-text_box2.src = 'images/text_box2.png';
-
-
 
 // YIKES
-
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
 var playerCol=0;// player starting column
@@ -122,11 +117,33 @@ room1.map = [
 ]
 
 room2.map = [
-  [1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,5,1],
-  [0,1,0,0,1,0,0,0],
-  [0,1,3,0,2,0,0,0],
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,3,1,1,1],
   [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,5],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
+
+room3.map = [
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,3,1,1,1],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,5],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
+
+room4.map = [
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,3,1,1,1],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,5],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
@@ -301,10 +318,6 @@ document.addEventListener("keyup", function(e){
   }
 }, false);
 
-function transitionRoom(fromDoor) {
-  transitionRoom(currentRoom.doors.find( (ite) => ite.row == playerRow && ite.col == playerCol))
-}
-
 // WILL IT EVER BE DONE
 //updates game variables, runs every frame
 function update() {
@@ -400,12 +413,28 @@ function update() {
     }
     else if (currentRoom.map[playerRow][playerCol]==5) {
       //transition room
+
+      changeRoom();
+
     }
     if (interactionCooldownFrames>0) {
       interactionCooldownFrames--;
     }
+    console.log(playerCol);
+    console.log(playerRow);
   }
 }
+
+function changeRoom() {
+  playerCol = 1;
+  playerRow = 0;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  current_image.src = 'images/environments/town1.png';
+  currentRoom.map = room2.map;
+  playerDirection = 's';
+}
+
 
 
 
@@ -504,13 +533,12 @@ function advanceText() {
   return true;//always returns true so that we knoe if this function is called even if it does nothing the player wants the text to be faster
 }
 
-+function userInput() {
+function userInput() {
 	if (ePressed == true) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.write(userMessage + "...That is a great idea!");
 	}
 }
-//init();
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
 window.setInterval(loop, 1000/30);
