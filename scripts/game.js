@@ -97,7 +97,6 @@ var currentPage = 1;
 var stringFrameIndex = 0;
 var interactionCooldownFrames = 20;
 
-
 //room object template
 function Room(image, items, doors, map){
   this.image = image;
@@ -115,10 +114,10 @@ room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,1,0,0,0],
-  [0,1,3,0,2,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [0,0,3,0,2,0,0,0],
+  [0,0,0,0,0,0,0,1],
+  [0,0,1,1,1,1,0,1],
+  [0,0,1,1,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
 
@@ -506,12 +505,13 @@ function advanceText() {
   return true;//always returns true so that we knoe if this function is called even if it does nothing the player wants the text to be faster
 }
 
-function userInput() {
++function userInput() {
 	if (ePressed == true) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.write(userMessage + "...That is a great idea!");
 	}
 }
+//init();
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
 window.setInterval(loop, 1000/30);
