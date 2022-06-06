@@ -67,6 +67,10 @@ var current_image = new Image();
 current_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
 second_image.src = 'images/environments/town1.png';
+var third_image = new Image();
+third_image.src = 'images/environments/town2.png';
+var fourth_image = new Image();
+fourth_image.src = 'images/environments/house.png';
 
 text_box = new Image();
 text_box.src = 'images/text_box.png';
@@ -102,8 +106,13 @@ function Room(image, items, doors, map){
 
 var room1 = new Room();
 var room2 = new Room();
+var room3 = new Room();
+var room4 = new Room();
 room1.image = current_image;
 room2.image = second_image;
+room3.image = third_image;
+room4.image = fourth_image;
+
 //1 is a boundary, 2 is walkable interactions, 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
@@ -116,36 +125,39 @@ room1.map = [
   [0,0,0,0,0,0,0,0]
 ]
 
+// for room2, 6 is backward doors, 7 is forward doors
 room2.map = [
-  [0,0,0,1,1,1,1,1],
+  [6,6,0,1,1,1,1,1],
   [0,0,0,1,1,1,1,1],
   [0,0,0,1,3,1,1,1],
   [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,5],
+  [0,0,0,0,0,0,0,7],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
 
+// for room3, 8 is backward doors, 9 is forward doors
 room3.map = [
   [0,0,0,1,1,1,1,1],
   [0,0,0,1,1,1,1,1],
   [0,0,0,1,3,1,1,1],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,5],
-  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,9,0,0],
+  [8,0,0,0,0,0,0,5],
+  [8,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
 
+// for room4, 10 is backward doors
 room4.map = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,10,10],
+  [1,1,0,0,0,0,0,0],
+  [3,1,0,0,0,0,0,0],
   [0,0,0,1,1,1,1,1],
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,1,3,1,1,1],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,5],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,1,1],
+  [0,0,0,0,0,0,1,1],
   [0,0,0,0,0,0,0,0]
 ]
 
@@ -413,21 +425,32 @@ function update() {
     }
     else if (currentRoom.map[playerRow][playerCol]==5) {
       //transition room
-
-      changeRoom();
-
+      forwardTownOne();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==7){
+      forwardTownTwo();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==9){
+      forwardHouse();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==10){
+      backwardTownTwo();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==8){
+      backwardTownOne();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==6){
+      backwardLab();
     }
     if (interactionCooldownFrames>0) {
       interactionCooldownFrames--;
     }
-    console.log(playerCol);
-    console.log(playerRow);
   }
 }
 
-function changeRoom() {
+function forwardTownOne() {
   playerCol = 1;
-  playerRow = 0;
+  playerRow = 1;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
   current_image.src = 'images/environments/town1.png';
@@ -435,9 +458,55 @@ function changeRoom() {
   playerDirection = 's';
 }
 
+function forwardTownTwo() {
+  playerCol = 1;
+  playerRow = 5;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  current_image.src = 'images/environments/town2.png';
+  currentRoom.map = room3.map;
+  playerDirection = 'e';
+}
 
+function forwardHouse() {
+  playerCol = 7;
+  playerRow = 2;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  current_image.src = 'images/environments/house.png';
+  currentRoom.map = room4.map;
+  playerDirection = 's';
+}
 
+function backwardTownTwo() {
+  playerCol = 5;
+  playerRow = 5;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  current_image.src = 'images/environments/town2.png';
+  currentRoom.map = room3.map;
+  playerDirection = 's';
+}
 
+function backwardTownOne() {
+  playerCol = 6;
+  playerRow = 4;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  current_image.src = 'images/environments/town1.png';
+  currentRoom.map = room2.map;
+  playerDirection = 'w';
+}
+
+function backwardLab() {
+  playerCol = 6;
+  playerRow = 2;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  current_image.src = 'images/environments/LAB.png';
+  currentRoom.map = room1.map;
+  playerDirection = 's';
+}
 //DONE
 //Check if the designated tile is walkable
 function isPathTile(row, col) {
