@@ -172,7 +172,7 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "What's happening on TV right now?";
+blackSquare.text = "What's happening on TV right now? ";
 blackSquare.row =2;
 blackSquare.col =4;
 
@@ -517,6 +517,12 @@ function formatText(string){
   var startingIndex=0;
   for(var i=1; i<=string.length; i++){//reads through the string character by character, measuring if the string will fit in our text box
     let builder = "";
+    if(string.charAt(i)=='*'){
+      builder = string.slice(startingIndex,i)+"^~";
+      startingIndex=i+1;
+      lines = 1
+      pages++;
+    }
     if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*55)){
       if((lines%3)==0){
         builder = string.slice(startingIndex,i)+"^~";
@@ -524,7 +530,7 @@ function formatText(string){
         if(string.charAt(startingIndex)==" "){
           startingIndex++;
         }
-        lines++;
+        lines=1;
         pages++;
       }else{
         builder = string.slice(startingIndex,i)+"^";
@@ -532,8 +538,8 @@ function formatText(string){
         if(string.charAt(startingIndex)==" "){
           startingIndex++;
         }
-        lines++;
       }
+      lines++;
     }else if(i==string.length){
       builder = string.slice(startingIndex, i)+"^~";
     }
