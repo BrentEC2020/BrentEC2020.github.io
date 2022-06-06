@@ -248,7 +248,6 @@ function draw() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
   ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);//draw current room background
-  ctx.fillStyle = "red";
   //this code shows test map
   for(var i=0;i<levelRows;i++){
     for(var j=0;j<levelCols;j++){
