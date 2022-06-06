@@ -165,13 +165,13 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "I can't believe I'm going to be the first person on earth to    travel into the future";
+blackSquare.text = "What's happening on TV right now?";
 blackSquare.row =3;
 blackSquare.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "red";
+redSquare.text= "I can't believe I'm going to be the first person on earth to    travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 currentRoom.items=[redSquare,blackSquare]
