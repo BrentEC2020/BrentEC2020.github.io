@@ -188,13 +188,13 @@ function Item(text,  row, col, ) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "What's happening on TV right now? *this is a big string to seee how this is happening i dont think this function is working propperley yet";
+blackSquare.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp. celebrates 50 years since establishment! The company aims to replace all man-made products using their patented plastic technology!'*Hm...interesting...";
 blackSquare.row =2;
 blackSquare.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
+redSquare.text= "I can't believe I'm the first person on earth to travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 room1.items=[redSquare,blackSquare]
