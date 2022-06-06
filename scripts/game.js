@@ -172,7 +172,7 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "What's happening on TV right now? ";
+blackSquare.text = "What's happening on TV right now? *dshfkjsdhfkahsldkfuhaskljdhfkjahsdkfjhlaskjdhf";
 blackSquare.row =2;
 blackSquare.col =4;
 
@@ -527,16 +527,18 @@ function formatText(string){
       if((lines%3)==0){
         builder = string.slice(startingIndex,i)+"^~";
         startingIndex= i;
-        if(string.charAt(startingIndex)==" "){
-          startingIndex++;
+        while(string.charAt(startingIndex-1)!==" "){
+          startingIndex--;
+          i--;
         }
         lines=1;
         pages++;
       }else{
         builder = string.slice(startingIndex,i)+"^";
         startingIndex= i;
-        if(string.charAt(startingIndex)==" "){
-          startingIndex++;
+        while(string.charAt(startingIndex-1)!==" "){
+          startingIndex--;
+          i--;
         }
       }
       lines++;
