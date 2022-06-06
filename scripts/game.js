@@ -41,7 +41,7 @@ function sizeCanvas(){
   ctx.textBaseline = "top"; //set
 }
 
-
+sizeCanvas();
 // DONE
 //when every dom element on the page loads
 window.addEventListener('load',function(){
@@ -57,7 +57,6 @@ window.addEventListener('load',function(){
   });
   sizeCanvas();
   //initialize
-  init();
 });
 //when the user resizes the page resize the canvas
 window.addEventListener('resize', sizeCanvas);

@@ -144,7 +144,7 @@ li {
   margin-left: auto;
   margin-right: auto;
   height: 450px;
-  width: 350px;
+  width: auto;
 }
 
 .things {
