@@ -235,6 +235,7 @@ function draw() {
     for(var j=0;j<levelCols;j++){
       if(currentRoom.map[i][j]==3){
         ctx.fillStyle = "red";
+        //draw the sprite here
         ctx.fillRect(j*tileSize,i*tileSize,tileSize,tileSize);
       } else if (currentRoom.map[i][j]==2) {
         ctx.fillStyle = "black";
