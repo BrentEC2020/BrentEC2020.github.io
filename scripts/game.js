@@ -165,7 +165,7 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "What's happening on TV right now?";
+blackSquare.text = "'TV: New Earth Corp. celebrate 50 years since establishment! Aim to replace all man-made objects with their patented    plastic technology.''";
 blackSquare.row =3;
 blackSquare.col =4;
 
