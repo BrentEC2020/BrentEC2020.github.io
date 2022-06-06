@@ -62,10 +62,9 @@ window.addEventListener('load',function(){
 window.addEventListener('resize', sizeCanvas);
 
 
-var current_image = new Image();
-current_image.src = 'images/environments/LAB.png';
+var first_image = new Image();
+first_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
-<<<<<<< HEAD
 second_image.src = 'images/environments/town1.png';
 var third_image = new Image();
 third_image.src = 'images/environments/town2.png';
@@ -74,7 +73,6 @@ fourth_image.src = 'images/environments/house.png';
 
 text_box = new Image();
 text_box.src = 'images/text_box.png';
-=======
 //second_image.src = 'images/environment.png';
 
 text_box = new Image();
@@ -82,7 +80,6 @@ text_box.src = 'images/text_box.png';
 
 var interactable_object = new Image();
 interactable_object.src = 'images/interactable_objectmovingPADDED8frames.png';
->>>>>>> 636d6dedf3ef164f98219cb41237aa01a7737cb5
 
 var yuu_walk_up = new Image();
 yuu_walk_up.src='images/yuu_backwalk.png'
@@ -92,6 +89,7 @@ var yuu_walk_left = new Image();
 yuu_walk_left.src ='images/yuu_leftwalk.png'
 var yuu_walk_right = new Image();
 yuu_walk_right.src='images/yuu_rightwalk.png'
+
 // YIKES
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
@@ -127,7 +125,7 @@ var room1 = new Room();
 var room2 = new Room();
 var room3 = new Room();
 var room4 = new Room();
-room1.image = current_image;
+room1.image = first_image;
 room2.image = second_image;
 room3.image = third_image;
 room4.image = fourth_image;
@@ -179,36 +177,14 @@ room4.map = [
   [0,0,0,0,0,0,1,1],
   [0,0,0,0,0,0,0,0]
 ]
-// room3.map = [
-//     [1,1,1,1,1,1,1,1],
-//     [1,1,1,1,1,1,5,1],
-//     [0,1,0,0,1,0,0,0],
-//     [0,1,3,0,2,0,0,0],
-//     [0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0]
-// ]
-// room4.map = [
-//       [1,1,1,1,1,1,1,1],
-//       [1,1,1,1,1,1,5,1],
-//       [0,1,0,0,1,0,0,0],
-//       [0,1,3,0,2,0,0,0],
-//       [0,0,0,0,0,0,0,0],
-//       [0,0,0,0,0,0,0,0],
-//       [0,0,0,0,0,0,0,0],
-//       [0,0,0,0,0,0,0,0]
-//     ]
+
 currentRoom = room1;
 
 //item object template
-function Item(image, text, interacted, row, col, walkable) {
-  this.image = image;
+function Item(text,  row, col, ) {
   this.text = text;
-  this.interacted = interacted;
   this.row = row;
   this.col = col;
-  this.walkable = walkable;
 }
 //this is a test
 var blackSquare = new Item();
@@ -221,7 +197,7 @@ var redSquare = new Item();
 redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
-currentRoom.items=[redSquare,blackSquare]
+room1.items=[redSquare,blackSquare]
 
 // Initializes start screen
 function init() {
@@ -522,8 +498,8 @@ function forwardTownOne() {
   playerRow = 1;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  current_image.src = 'images/environments/town1.png';
-  currentRoom.map = room2.map;
+  currentRoom = room2;
+
   playerDirection = 's';
 }
 
@@ -532,8 +508,7 @@ function forwardTownTwo() {
   playerRow = 5;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  current_image.src = 'images/environments/town2.png';
-  currentRoom.map = room3.map;
+  currentRoom = room3;
   playerDirection = 'e';
 }
 
@@ -542,8 +517,7 @@ function forwardHouse() {
   playerRow = 2;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  current_image.src = 'images/environments/house.png';
-  currentRoom.map = room4.map;
+  currentRoom = room4;
   playerDirection = 's';
 }
 
@@ -552,8 +526,7 @@ function backwardTownTwo() {
   playerRow = 5;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  current_image.src = 'images/environments/town2.png';
-  currentRoom.map = room3.map;
+  currentRoom=room3
   playerDirection = 's';
 }
 
@@ -562,8 +535,7 @@ function backwardTownOne() {
   playerRow = 4;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  current_image.src = 'images/environments/town1.png';
-  currentRoom.map = room2.map;
+  currentRoom=room2;
   playerDirection = 'w';
 }
 
@@ -572,8 +544,7 @@ function backwardLab() {
   playerRow = 2;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  current_image.src = 'images/environments/LAB.png';
-  currentRoom.map = room1.map;
+  currentRoom=room1;
   playerDirection = 's';
 }
 //DONE
