@@ -145,7 +145,7 @@ function Item(image, text, interacted, row, col, walkable) {
 }
 //this is a test
 var blackSquare = new Item();
-blackSquare.text = "this is a nice big long string so you can do all your fun operations on it bla bla bla hey bla bla bla hey bla bla bla hey bla bla bla hey look bla bla bla wow you made it to the very very end of the string!";
+blackSquare.text = "I can't believe I'm going to be the first person on earth to    travel into the future";
 blackSquare.row =3;
 blackSquare.col =4;
 
