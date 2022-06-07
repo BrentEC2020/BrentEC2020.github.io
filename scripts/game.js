@@ -198,7 +198,7 @@ redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel in
 redSquare.row=3;
 redSquare.col=2;
 
-room1.items=[redSquare,tvRoom5]
+room5.items=[redSquare,tvRoom5]
 
 // Initializes start screen
 function init() {
