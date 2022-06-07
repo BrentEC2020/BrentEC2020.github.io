@@ -13,6 +13,8 @@ var third_image = new Image();
 third_image.src = 'images/environments/town2.png';
 var fourth_image = new Image();
 fourth_image.src = 'images/environments/house.png';
+var fifth_image = new Image();
+fifth_image.src = 'images/environments/LAB.png';
 
 text_box = new Image();
 text_box.src = 'images/text_box.png';
@@ -74,10 +76,12 @@ var room1 = new Room();
 var room2 = new Room();
 var room3 = new Room();
 var room4 = new Room();
+var room5 = new Room();
 room1.image = first_image;
 room2.image = second_image;
 room3.image = third_image;
 room4.image = fourth_image;
+room5.image = fifth_image;
 
 //1 is a boundary, 2 is walkable interactions, 3 is nonwalkable interactions and 5 is doors
 room1.map = [
@@ -85,9 +89,9 @@ room1.map = [
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,3,0,0,0],
   [0,1,3,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,1],
+  [0,0,1,0,1,1,0,1],
+  [0,0,1,0,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
 //this is a test
@@ -140,10 +144,17 @@ room4.map = [
   [0,0,0,0,0,0,0,0]
 ]
 
+room5.map = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,5,1],
+  [0,1,0,0,3,0,0,0],
+  [0,1,3,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,3,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
 currentRoom = room1;
-
-
-
 
 // Initializes start screen
 function init() {
@@ -324,7 +335,7 @@ function backwardLab() {
   playerRow = 2;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  currentRoom=room1;
+  currentRoom=room5;
   playerDirection = 's';
 }
 // WILL IT EVER BE DONE
