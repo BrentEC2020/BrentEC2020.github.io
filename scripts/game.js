@@ -115,10 +115,21 @@ room2.map = [
   [0,0,0,1,3,1,1,1],
   [0,0,0,0,0,0,0,7],
   [0,0,0,0,0,0,0,7],
-  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,3,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+var graffitiRoom2 = new Item();
+graffitiRoom2.text="'New Earth = New Evil'*'Plastic ruined us all'";
+graffitiRoom2.row=2;
+graffitiRoom2.col=4;
+
+var randomRoom2 = new Item();
+randomRoom2.text="What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our life easier...";
+randomRoom2.row=5;
+randomRoom2.col=5;
+
+room2.items=[graffitiRoom2,randomRoom2]
 
 // for room3, 8 is backward doors, 9 is forward doors
 room3.map = [
