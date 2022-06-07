@@ -88,21 +88,21 @@ room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,3,0,0,0],
-  [0,1,3,0,0,0,0,0],
-  [0,0,0,0,0,0,0,1],
-  [0,0,1,0,1,1,0,1],
-  [0,0,1,0,1,1,0,1],
+  [0,0,3,0,0,0,0,0],
+  [1,0,0,0,0,0,0,1],
+  [1,0,1,1,1,1,0,1],
+  [1,0,1,1,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
 //this is a test
 var tvRoom1 = new Item();
-tvRoom1.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*...What??....";
+tvRoom1.text = "Yuu: What's happening on TV right now? *'Now on News Today, 25 years since New Earth Corp dominated the world. What is next?'*Yuu:...What??....";
 tvRoom1.row =2;
 tvRoom1.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
+redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!*Yuu: Me, a reporter for Project 1078!! This is going to look so good on my resume.";
 redSquare.row=3;
 redSquare.col=2;
 
@@ -113,48 +113,92 @@ room2.map = [
   [6,6,0,1,1,1,1,1],
   [0,0,0,1,1,1,1,1],
   [0,0,0,1,3,1,1,1],
-  [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,7],
-  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,7],
+  [0,0,0,0,0,3,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+var graffitiRoom2 = new Item();
+graffitiRoom2.text="'New Earth = New Evil'*'Plastic ruined us all'";
+graffitiRoom2.row=2;
+graffitiRoom2.col=4;
+
+var randomRoom2 = new Item();
+randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Yuu: Their plastic technology was supposed to make our lives easier...";
+randomRoom2.row=5;
+randomRoom2.col=5;
+
+room2.items=[graffitiRoom2,randomRoom2]
 
 // for room3, 8 is backward doors, 9 is forward doors
 room3.map = [
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,1,3,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,3,1,1,1,1,1,1],
   [0,0,0,0,0,9,0,0],
-  [8,0,0,0,0,0,0,5],
   [8,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [8,0,0,0,0,0,0,0],
+  [0,0,0,0,0,2,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+var cityRoom3 = new Item();
+cityRoom3.text="Yuu: I just can't believe the world looks like this...*Yuu: There's so much smog and everything is so broken down...*Yuu: I thought the future would look colorful and full of flying cars...*Yuu: New Earth Corp did this?...";
+cityRoom3.row=2;
+cityRoom3.col=1;
+
+var plantRoom3 = new Item();
+plantRoom3.text="Yuu: Even a simple weed struggles to grow in this world.*[Yuu proceed to cough]*Yuu: I can see why...";
+plantRoom3.row=6;
+plantRoom3.col=5;
+
+room3.items=[cityRoom3,plantRoom3]
+
 
 // for room4, 10 is backward doors
 room4.map = [
   [1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,10,10],
-  [1,1,0,0,0,0,0,0],
+  [1,1,1,1,1,1,10,1],
+  [1,1,0,0,1,0,0,0],
   [3,1,0,0,0,0,0,0],
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,0,0,0,1,1],
+  [0,1,0,1,1,1,1,1],
+  [0,1,0,0,0,0,1,1],
   [0,0,0,0,0,0,1,1],
   [0,0,0,0,0,0,0,0]
 ]
+var paperRoom4 = new Item();
+paperRoom4.text="'Date: January 7, 2040'*'Day 6,423 since the End of the World'*'I feel like as each day passes, the air is getting worse. The vet said Tabitha might not make it and the ol'dog isn't even 6 yet.'*'If only New Earth's plan to replace every item on this earth with plastic wasn't approved, life would've been different...'*'Their plastic littered our streets, our oceans, and our air!'*'I wish I could go back in time and do something...maybe protest against those scheming corporations or talk to our reps about environmental concerns...'*'Heck even just usin a glass mug at the coffee shop could've been good, but New Earth didn't want that!'*Somebody save us...'*'-M.Wodes'*...*...*Yuu: All of this desolation just because of plastic production...*Yuu: I think I know what I have to do now.";
+paperRoom4.row=3;
+paperRoom4.col=0;
 
+room4.items=[paperRoom4]
+
+
+// for room5, 4 is the user input option
 room5.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,3,0,0,0],
   [0,1,3,0,0,0,0,0],
   [0,0,0,0,0,0,0,1],
-  [0,0,1,0,1,1,0,1],
+  [0,0,1,0,1,4,0,1],
   [0,0,1,0,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
 currentRoom = room1;
+
+var tvRoom5 = new Item();
+tvRoom5.text = "Yuu: I really should write a report on this rather than watch TV in the future...";
+tvRoom5.row =2;
+tvRoom5.col =4;
+
+//this is a test too
+var redSquare = new Item();
+redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!";
+redSquare.row=3;
+redSquare.col=2;
+
+room5.items=[redSquare,tvRoom5]
 
 // Initializes start screen
 function init() {
@@ -168,7 +212,6 @@ function init() {
 function loop() {
   draw();
   update();
-  userInput();
 }
 
 // WILL IT EVER BE DONE
@@ -181,7 +224,7 @@ function draw() {
 
   for(var i=0;i<levelRows;i++){
     for(var j=0;j<levelCols;j++){
-      if(currentRoom.map[i][j]==3||currentRoom.map[i][j]==2){
+      if((currentRoom.map[i][j]==3||currentRoom.map[i][j]==2)||currentRoom.map[i][j]==4){
         //draw the sprite here
         var sx = (frameIndex-1)*63;
         ctx.drawImage(interactable_object, sx, 0, 63, 63, j*tileSize, i*tileSize, tileSize, tileSize);
@@ -217,12 +260,8 @@ function draw() {
     }
     ctx.drawImage(yuu_walk_left,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
   }
-  // player = green box
-  ctx.fillStyle = "#00ff00";
-//  ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
   //player direction
   ctx.fillStyle = "black";
-  ctx.fillText(playerDirection,playerXPos+tileSize*.25,playerYPos+tileSize*.25);
   //check if player is in dialogue and draw text
   if (inDialogue) {
     drawText(shownString);
@@ -358,17 +397,25 @@ function update() {
         }
 
         //check if the player is facing an interactable (non walkable) tile
-        else if ( (playerDirection == 'e') && (currentRoom.map[playerRow][playerCol+1] == 3) ) {
+        else if ( (playerDirection == 'e') && currentRoom.map[playerRow][playerCol+1] == 3) {
           //call the interact function on the item in the proper position
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol+1)));
-        } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)){
+        } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)) {
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol-1)));
-        } else if (( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==3)) {
+        } else if(( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==3)) {
           interact(currentRoom.items.find( (ite) => ite.row ==(playerRow-1)&&ite.col==playerCol));
-        } else if (( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
+        } else if(( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
           interact(currentRoom.items.find( (ite) => ite.row ==(playerRow+1)&&ite.col==playerCol));
         }
-
+        if ( (playerDirection == 'e') && currentRoom.map[playerRow][playerCol+1] == 4) {
+          userInput();
+        } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==4)) {
+          userInput();
+        } else if(( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==4)) {
+          userInput();
+        } else if(( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==4)) {
+          userInput();
+        }
         //if we only want the thing to be interactable once, update the space to 0 or 1
 
 
@@ -461,7 +508,7 @@ function update() {
 //Check if the designated tile is walkable
 function isPathTile(row, col) {
   if( ( (row>=0)&&(row<levelRows) ) && ( (col>=0)&&(col<levelCols) ) ){
-    if((currentRoom.map[row][col] !== 1)&&(currentRoom.map[row][col] !== 3)){
+    if(((currentRoom.map[row][col] !== 1)&&(currentRoom.map[row][col] !== 3))&&(currentRoom.map[row][col] !== 4)){
       return true;
     }
   }
@@ -561,10 +608,10 @@ function advanceText() {
 }
 
 function userInput() {
-	if (ePressed == true && message == false) {
+	if ((spacebarPressed == true && message == false )&& (currentRoom == room5)) {
+    message = true;
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
-		document.write(userMessage + "...That is a great idea!");
-		message = true;
+		document.getElementById("newspaper").innerHTML = userMessage;
 	}
 }
 

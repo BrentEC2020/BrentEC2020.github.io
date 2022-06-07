@@ -13,18 +13,17 @@ a {
   font-family: pixelFont;
 }
 
- /*bit of css that stylizes the links */
- /* a {
-  color: DarkSlateGrey;
-  text-decoration: none;
-  /*text-transform: uppercase;
-}
-*/
-
  body {
    background-color: gainsboro;
    margin: 0px;
  }
+
+#newspaper {
+  width: 400px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
 
  #header{
    overflow: hidden;
@@ -37,15 +36,6 @@ a {
  .w3-top{
    overflow: initial;
  }
-
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  text-indent: 0px;
-  text-align: center;
-}
 
 canvas {
    border: 0px solid grey;
@@ -113,6 +103,7 @@ ul {
   display:inline-block;
   background-color: white;
 }
+
 .orgs2 {
   font-family: pixelFont;
   font-size: 25px;
@@ -124,6 +115,7 @@ ul {
   display:inline-block;
   background-color: white;
 }
+
 .orgs3 {
   font-family: pixelFont;
   font-size: 25px;
@@ -135,6 +127,7 @@ ul {
   display:inline-block;
   background-color: white;
 }
+
 li {
   font-weight: bold;
 }
@@ -153,6 +146,7 @@ li {
   font-size: 22px;
   color: DarkGreen;
 }
+
 .links {
   font-size: 18px;
   color: white;
@@ -170,15 +164,18 @@ li {
   margin-right: auto;
   margin-bottom: 50px;
 }
+
 .flexcontainer {
   display: flex;
   align-items: center;
 }
+
 @media (max-width: 320px) {
   .flexcontainer {
     display: block;
   }
 }
+
 .links2{
   font-size: 10px;
   color: black;
@@ -187,27 +184,26 @@ li {
   border-color: DarkSeaGreen;
   background-color: white;
 }
+
 .list1 {
   font-family: pixelFont;
   color: SaddleBrown;
 }
+
 .list2 {
   font-family: pixelFont;
   color: DarkSlateGrey;
 }
+
 .list3 {
   font-family: pixelFont;
   color: DarkGreen;
 }
+
 #bulb{
   width: 300px;
 }
+
 #cep{
   width: 300px;
-}
-/* .centerp {
->>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3
-  text-align: center;
-  font-family: pixelFont;
-  font-size: 95%;
 }
