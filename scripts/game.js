@@ -96,13 +96,13 @@ room1.map = [
 ]
 //this is a test
 var tvRoom1 = new Item();
-tvRoom1.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*...What??....";
+tvRoom1.text = "Yuu: What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*Yuu:...What??....";
 tvRoom1.row =2;
 tvRoom1.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
+redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 
@@ -125,7 +125,7 @@ graffitiRoom2.row=2;
 graffitiRoom2.col=4;
 
 var randomRoom2 = new Item();
-randomRoom2.text="What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our life easier...";
+randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our life easier...";
 randomRoom2.row=5;
 randomRoom2.col=5;
 
