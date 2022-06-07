@@ -139,7 +139,7 @@ room3.map = [
   [0,0,0,0,0,9,0,0],
   [8,0,0,0,0,0,0,0],
   [8,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,2,0],
+  [0,0,0,0,0,2,0,0],
   [0,0,0,0,0,0,0,0]
 ]
 var cityRoom3 = new Item();
@@ -152,7 +152,7 @@ room3.items=[cityRoom3,randomRoom2]
 var plantRoom3 = new Item();
 plantRoom3.text="Yuu: Even a simple weed struggles to grow in this world.*[Yuu proceed to cough]*I can see why...";
 plantRoom3.row=6;
-plantRoom3.col=6;
+plantRoom3.col=5;
 
 room3.items=[cityRoom3,plantRoom3]
 
