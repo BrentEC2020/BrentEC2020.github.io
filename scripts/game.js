@@ -40,6 +40,7 @@ var rightPressed=false;// are we pressing RIGHT arrow key?
 var upPressed=false; // are we pressing UP arrow key?
 var downPressed=false; // are we pressing DOWN arrow key?
 var ePressed=false; // are we pressing e? Adding a temporary key for user input.
+var message = false;
 var playerDirection = 'w';//what cardinal direction is the player facing
 var inDialogue = false; //keeps track of if dialogue is taking place
 
@@ -156,6 +157,7 @@ function init() {
 function loop() {
   draw();
   update();
+  userInput();
 }
 
 // WILL IT EVER BE DONE
@@ -548,9 +550,10 @@ function advanceText() {
 }
 
 function userInput() {
-	if (ePressed == true) {
+	if (ePressed == true && message == false) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.write(userMessage + "...That is a great idea!");
+		message = true;
 	}
 }
 
