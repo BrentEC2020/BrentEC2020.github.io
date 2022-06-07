@@ -155,13 +155,14 @@ room4.map = [
   [0,0,0,0,0,0,0,0]
 ]
 
+// for room5, 4 is the user input option
 room5.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,3,0,0,0],
   [0,1,3,0,0,0,0,0],
   [0,0,0,0,0,0,0,1],
-  [0,0,1,0,1,3,0,1],
+  [0,0,1,0,1,4,0,1],
   [0,0,1,0,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
@@ -572,7 +573,7 @@ function advanceText() {
 }
 
 function userInput() {
-	if (ePressed == true && message == false && currentRoom == room5) {
+	if (spacebarPressed == true && message == false && currentRoom == room5 && currentRoom.map[playerRow][playerCol]==4) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.write(userMessage + "... That is a great idea!");
 		message = true;
