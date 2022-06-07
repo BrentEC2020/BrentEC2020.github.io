@@ -96,7 +96,7 @@ room1.map = [
 ]
 //this is a test
 var tvRoom1 = new Item();
-tvRoom1.text = "Yuu: What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*Yuu:...What??....";
+tvRoom1.text = "Yuu: What's happening on TV right now? *'Now on News Today, 25 years since New Earth Corp dominated the world. What is next?'*Yuu:...What??....";
 tvRoom1.row =2;
 tvRoom1.col =4;
 
@@ -125,7 +125,7 @@ graffitiRoom2.row=2;
 graffitiRoom2.col=4;
 
 var randomRoom2 = new Item();
-randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our life easier...";
+randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our lives easier...";
 randomRoom2.row=5;
 randomRoom2.col=5;
 
@@ -139,9 +139,23 @@ room3.map = [
   [0,0,0,0,0,9,0,0],
   [8,0,0,0,0,0,0,0],
   [8,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,2,0],
+  [0,0,0,0,0,2,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+var cityRoom3 = new Item();
+cityRoom3.text="Yuu: I just can't believe the world looks like this...*There's so much smog and everything is so broken down...*I thought the future would look colorful and full of flying cars...*New Earth Corp did this?...";
+cityRoom3.row=2;
+cityRoom3.col=1;
+
+room3.items=[cityRoom3,randomRoom2]
+
+var plantRoom3 = new Item();
+plantRoom3.text="Yuu: Even a simple weed struggles to grow in this world.*[Yuu proceed to cough]*I can see why...";
+plantRoom3.row=6;
+plantRoom3.col=5;
+
+room3.items=[cityRoom3,plantRoom3]
+
 
 // for room4, 10 is backward doors
 room4.map = [
