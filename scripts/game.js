@@ -260,12 +260,8 @@ function draw() {
     }
     ctx.drawImage(yuu_walk_left,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
   }
-  // player = green box
-  ctx.fillStyle = "#00ff00";
-//  ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
   //player direction
   ctx.fillStyle = "black";
-  ctx.fillText(playerDirection,playerXPos+tileSize*.25,playerYPos+tileSize*.25);
   //check if player is in dialogue and draw text
   if (inDialogue) {
     drawText(shownString);
