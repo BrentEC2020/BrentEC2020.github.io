@@ -102,7 +102,7 @@ tvRoom1.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!";
+redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!*Yuu: Me, a reporter for Project 1078!! This is going to look so good on my resume.";
 redSquare.row=3;
 redSquare.col=2;
 
@@ -125,7 +125,7 @@ graffitiRoom2.row=2;
 graffitiRoom2.col=4;
 
 var randomRoom2 = new Item();
-randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our lives easier...";
+randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Yuu: Their plastic technology was supposed to make our lives easier...";
 randomRoom2.row=5;
 randomRoom2.col=5;
 
@@ -143,12 +143,12 @@ room3.map = [
   [0,0,0,0,0,0,0,0]
 ]
 var cityRoom3 = new Item();
-cityRoom3.text="Yuu: I just can't believe the world looks like this...*There's so much smog and everything is so broken down...*I thought the future would look colorful and full of flying cars...*New Earth Corp did this?...";
+cityRoom3.text="Yuu: I just can't believe the world looks like this...*Yuu: There's so much smog and everything is so broken down...*Yuu: I thought the future would look colorful and full of flying cars...*Yuu: New Earth Corp did this?...";
 cityRoom3.row=2;
 cityRoom3.col=1;
 
 var plantRoom3 = new Item();
-plantRoom3.text="Yuu: Even a simple weed struggles to grow in this world.*[Yuu proceed to cough]*I can see why...";
+plantRoom3.text="Yuu: Even a simple weed struggles to grow in this world.*[Yuu proceed to cough]*Yuu: I can see why...";
 plantRoom3.row=6;
 plantRoom3.col=5;
 
@@ -167,7 +167,7 @@ room4.map = [
   [0,0,0,0,0,0,0,0]
 ]
 var paperRoom4 = new Item();
-paperRoom4.text="'Date: January 7, 2040'*'Day 6,423 since the End of the World'*'I feel like as each day passes, the air is getting worse. The vet said Tabitha might not make it and the ol'dog isn't even 6 yet.'*'If only New Earth's plan to replace every item on this earth with plastic wasn't approved, life would've been different...'*'I wish I could go back in time and do something...maybe protest against those scheming corporations or talk to our reps about environmental concerns...'*'Heck even just usin a glass mug at the coffee shop could've been good, but New Earth didn't want that!'*Somebody save us...'*'-M.Wodes'*...*Yuu: All of this desolation just because of plastic...*I think I know what I have to do now.";
+paperRoom4.text="'Date: January 7, 2040'*'Day 6,423 since the End of the World'*'I feel like as each day passes, the air is getting worse. The vet said Tabitha might not make it and the ol'dog isn't even 6 yet.'*'If only New Earth's plan to replace every item on this earth with plastic wasn't approved, life would've been different...'*'I wish I could go back in time and do something...maybe protest against those scheming corporations or talk to our reps about environmental concerns...'*'Heck even just usin a glass mug at the coffee shop could've been good, but New Earth didn't want that!'*Somebody save us...'*'-M.Wodes'*...*Yuu: All of this desolation just because of plastic...*Yuu: I think I know what I have to do now.";
 paperRoom4.row=3;
 paperRoom4.col=0;
 
