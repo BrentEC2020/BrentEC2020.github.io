@@ -156,7 +156,6 @@ plantRoom3.col=5;
 
 room3.items=[cityRoom3,plantRoom3]
 
-
 // for room4, 10 is backward doors
 room4.map = [
   [1,1,1,1,1,1,1,1],
@@ -360,8 +359,8 @@ function backwardLab() {
   playerCol = 6;
   playerRow = 2;
   playerXPos = playerCol*tileSize;
-  playerYPos =playerRow*tileSize;
-  currentRoom=room5;
+  playerYPos = playerRow*tileSize;
+  currentRoom = room5;
   playerDirection = 's';
 }
 // WILL IT EVER BE DONE
