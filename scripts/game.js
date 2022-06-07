@@ -181,6 +181,19 @@ room5.map = [
 ]
 currentRoom = room1;
 
+var tvRoom5 = new Item();
+tvRoom5.text = "Yuu: I really should write a report on this rather than watch TV in the future...";
+tvRoom5.row =2;
+tvRoom5.col =4;
+
+//this is a test too
+var redSquare = new Item();
+redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!";
+redSquare.row=3;
+redSquare.col=2;
+
+room1.items=[redSquare,tvRoom5]
+
 // Initializes start screen
 function init() {
   var startScreen1 = new Image();
@@ -383,17 +396,16 @@ function update() {
         }
 
         //check if the player is facing an interactable (non walkable) tile
-        else if ( (playerDirection == 'e') && (currentRoom.map[playerRow][playerCol+1] == 3) ) {
+        else if ( (playerDirection == 'e') && ((currentRoom.map[playerRow][playerCol+1] == 3)||(currentRoom.map[playerRow][playerCol+1] == 4)) ) {
           //call the interact function on the item in the proper position
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol+1)));
-        } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)){
+        } else if(( playerDirection == 'w' )&&((currentRoom.map[playerRow][playerCol-1]==3)||currentRoom.map[playerRow][playerCol-1] == 4)){
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol-1)));
-        } else if (( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==3)) {
+        } else if(( playerDirection == 'n' )&&((currentRoom.map[playerRow-1][playerCol]==3)||currentRoom.map[playerRow-1][playerCol] == 4)){
           interact(currentRoom.items.find( (ite) => ite.row ==(playerRow-1)&&ite.col==playerCol));
-        } else if (( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
+        } else if(( playerDirection == 's' )&&((currentRoom.map[playerRow+1][playerCol]==3)||currentRoom.map[playerRow+1][playerCol] == 4)){
           interact(currentRoom.items.find( (ite) => ite.row ==(playerRow+1)&&ite.col==playerCol));
         }
-
         //if we only want the thing to be interactable once, update the space to 0 or 1
 
 
