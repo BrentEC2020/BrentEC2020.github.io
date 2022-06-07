@@ -34,8 +34,8 @@ yuu_walk_right.src='images/yuu_rightwalk.png'
 // YIKES
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
-var playerCol=0;// player starting column
-var playerRow=5; // player starting row
+var playerCol=4;// player starting column
+var playerRow=4; // player starting row
 var spacebarPressed=false; // are we pressing spacebar?
 var leftPressed=false; // are we pressing LEFT arrow key?
 var rightPressed=false;// are we pressing RIGHT arrow key?
@@ -43,7 +43,7 @@ var upPressed=false; // are we pressing UP arrow key?
 var downPressed=false; // are we pressing DOWN arrow key?
 var ePressed=false; // are we pressing e? Adding a temporary key for user input.
 var message = false;
-var playerDirection = 'w';//what cardinal direction is the player facing
+var playerDirection = 's';//what cardinal direction is the player facing
 var inDialogue = false; //keeps track of if dialogue is taking place
 
 var shownString = "";
