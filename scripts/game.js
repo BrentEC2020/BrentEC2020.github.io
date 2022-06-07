@@ -13,6 +13,8 @@ var third_image = new Image();
 third_image.src = 'images/environments/town2.png';
 var fourth_image = new Image();
 fourth_image.src = 'images/environments/house.png';
+var fifth_image = new Image();
+fifth_image.src = 'images/environments/LAB.png';
 
 text_box = new Image();
 text_box.src = 'images/text_box.png';
@@ -32,15 +34,16 @@ yuu_walk_right.src='images/yuu_rightwalk.png'
 // YIKES
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
-var playerCol=0;// player starting column
-var playerRow=5; // player starting row
+var playerCol=4;// player starting column
+var playerRow=4; // player starting row
 var spacebarPressed=false; // are we pressing spacebar?
 var leftPressed=false; // are we pressing LEFT arrow key?
 var rightPressed=false;// are we pressing RIGHT arrow key?
 var upPressed=false; // are we pressing UP arrow key?
 var downPressed=false; // are we pressing DOWN arrow key?
 var ePressed=false; // are we pressing e? Adding a temporary key for user input.
-var playerDirection = 'w';//what cardinal direction is the player facing
+var message = false;
+var playerDirection = 's';//what cardinal direction is the player facing
 var inDialogue = false; //keeps track of if dialogue is taking place
 
 var shownString = "";
@@ -73,31 +76,33 @@ var room1 = new Room();
 var room2 = new Room();
 var room3 = new Room();
 var room4 = new Room();
+var room5 = new Room();
 room1.image = first_image;
 room2.image = second_image;
 room3.image = third_image;
 room4.image = fourth_image;
+room5.image = fifth_image;
 
 //1 is a boundary, 2 is walkable interactions, 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,3,0,0,0],
-  [0,1,3,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [0,0,3,0,0,0,0,0],
+  [1,0,0,0,0,0,0,1],
+  [1,0,1,1,1,1,0,1],
+  [1,0,1,1,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
 //this is a test
 var tvRoom1 = new Item();
-tvRoom1.text = "What's happening on TV right now? *this is a big string to seee how this is happening i dont think this function is working propperley yet";
+tvRoom1.text = "Yuu: What's happening on TV right now? *'Now on News Today, 25 years since New Earth Corp dominated the world. What is next?'*Yuu:...What??....";
 tvRoom1.row =2;
 tvRoom1.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
+redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 
@@ -108,41 +113,74 @@ room2.map = [
   [6,6,0,1,1,1,1,1],
   [0,0,0,1,1,1,1,1],
   [0,0,0,1,3,1,1,1],
-  [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,7],
-  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,7],
+  [0,0,0,0,0,3,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+var graffitiRoom2 = new Item();
+graffitiRoom2.text="'New Earth = New Evil'*'Plastic ruined us all'";
+graffitiRoom2.row=2;
+graffitiRoom2.col=4;
+
+var randomRoom2 = new Item();
+randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our lives easier...";
+randomRoom2.row=5;
+randomRoom2.col=5;
+
+room2.items=[graffitiRoom2,randomRoom2]
 
 // for room3, 8 is backward doors, 9 is forward doors
 room3.map = [
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,1,3,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,3,1,1,1,1,1,1],
   [0,0,0,0,0,9,0,0],
-  [8,0,0,0,0,0,0,5],
   [8,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [8,0,0,0,0,0,0,0],
+  [0,0,0,0,0,2,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+var cityRoom3 = new Item();
+cityRoom3.text="Yuu: I just can't believe the world looks like this...*There's so much smog and everything is so broken down...*I thought the future would look colorful and full of flying cars...*New Earth Corp did this?...";
+cityRoom3.row=2;
+cityRoom3.col=1;
+
+room3.items=[cityRoom3,randomRoom2]
+
+var plantRoom3 = new Item();
+plantRoom3.text="Yuu: Even a simple weed struggles to grow in this world.*[Yuu proceed to cough]*I can see why...";
+plantRoom3.row=6;
+plantRoom3.col=5;
+
+room3.items=[cityRoom3,plantRoom3]
+
 
 // for room4, 10 is backward doors
 room4.map = [
   [1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,10,10],
-  [1,1,0,0,0,0,0,0],
+  [1,1,1,1,1,1,10,1],
+  [1,1,0,0,1,0,0,0],
   [3,1,0,0,0,0,0,0],
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,0,0,0,1,1],
+  [0,1,0,1,1,1,1,1],
+  [0,1,0,0,0,0,1,1],
   [0,0,0,0,0,0,1,1],
   [0,0,0,0,0,0,0,0]
 ]
 
+// for room5, 4 is the user input option
+room5.map = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,5,1],
+  [0,1,0,0,3,0,0,0],
+  [0,1,3,0,0,0,0,0],
+  [0,0,0,0,0,0,0,1],
+  [0,0,1,0,1,4,0,1],
+  [0,0,1,0,1,1,0,1],
+  [0,0,0,0,0,0,0,0]
+]
 currentRoom = room1;
-
-
-
 
 // Initializes start screen
 function init() {
@@ -156,6 +194,7 @@ function init() {
 function loop() {
   draw();
   update();
+  userInput();
 }
 
 // WILL IT EVER BE DONE
@@ -322,7 +361,7 @@ function backwardLab() {
   playerRow = 2;
   playerXPos = playerCol*tileSize;
   playerYPos =playerRow*tileSize;
-  currentRoom=room1;
+  currentRoom=room5;
   playerDirection = 's';
 }
 // WILL IT EVER BE DONE
@@ -548,9 +587,10 @@ function advanceText() {
 }
 
 function userInput() {
-	if (ePressed == true) {
+	if (spacebarPressed == true && message == false && currentRoom == room5 && currentRoom.map[playerRow][playerCol]==4) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
-		document.write(userMessage + "...That is a great idea!");
+		document.write(userMessage + "... That is a great idea!");
+		message = true;
 	}
 }
 
