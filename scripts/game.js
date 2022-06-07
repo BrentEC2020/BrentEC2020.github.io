@@ -212,7 +212,6 @@ function init() {
 function loop() {
   draw();
   update();
-  userInput();
 }
 
 // WILL IT EVER BE DONE
@@ -412,7 +411,7 @@ function update() {
         } else if(( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
           interact(currentRoom.items.find( (ite) => ite.row ==(playerRow+1)&&ite.col==playerCol));
         }
-        else if ( (playerDirection == 'e') && currentRoom.map[playerRow][playerCol+1] == 4) {
+        if ( (playerDirection == 'e') && currentRoom.map[playerRow][playerCol+1] == 4) {
           userInput();
         } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==4)) {
           userInput();
@@ -613,7 +612,7 @@ function advanceText() {
 }
 
 function userInput() {
-	if (spacebarPressed == true && message == false && currentRoom == room5) {
+	if ((spacebarPressed == true && message == false )&& (currentRoom == room5)) {
     message = true;
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.getElementById("newspaper").innerHTML = userMessage;
