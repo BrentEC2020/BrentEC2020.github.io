@@ -167,7 +167,7 @@ room4.map = [
   [0,0,0,0,0,0,0,0]
 ]
 var paperRoom4 = new Item();
-paperRoom4.text="'Date: January 7, 2040'*'Day 6,423 since the End of the World'*'I feel like as each day passes, the air is getting worse. The vet said Tabitha might not make it and the ol'dog isn't even 6 yet.'*'If only New Earth's plan to replace every item on this earth with plastic wasn't approved, life would've been different...'*'Their plastic littered our streets, our oceans, and our air!'*'I wish I could go back in time and do something...maybe protest against those scheming corporations or talk to our reps about environmental concerns...'*'Heck even just usin a glass mug at the coffee shop could've been good, but New Earth didn't want that!'*Somebody save us...'*'-M.Wodes'*...*Yuu: All of this desolation just because of plastic...*Yuu: I think I know what I have to do now.";
+paperRoom4.text="'Date: January 7, 2040'*'Day 6,423 since the End of the World'*'I feel like as each day passes, the air is getting worse. The vet said Tabitha might not make it and the ol'dog isn't even 6 yet.'*'If only New Earth's plan to replace every item on this earth with plastic wasn't approved, life would've been different...'*'Their plastic littered our streets, our oceans, and our air!'*'I wish I could go back in time and do something...maybe protest against those scheming corporations or talk to our reps about environmental concerns...'*'Heck even just usin a glass mug at the coffee shop could've been good, but New Earth didn't want that!'*Somebody save us...'*'-M.Wodes'*...*Yuu: All of this desolation just because of plastic production...*Yuu: I think I know what I have to do now.";
 paperRoom4.row=3;
 paperRoom4.col=0;
 
