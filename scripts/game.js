@@ -96,7 +96,7 @@ room1.map = [
 ]
 //this is a test
 var tvRoom1 = new Item();
-tvRoom1.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?*...What??....";
+tvRoom1.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*...What??....";
 tvRoom1.row =2;
 tvRoom1.col =4;
 
