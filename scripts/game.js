@@ -168,7 +168,7 @@ function draw() {
 
   for(var i=0;i<levelRows;i++){
     for(var j=0;j<levelCols;j++){
-      if(currentRoom.map[i][j]==3||currentRoom.map[i][j]==2){
+      if((currentRoom.map[i][j]==3||currentRoom.map[i][j]==2)||currentRoom.map[i][j]==4){
         //draw the sprite here
         var sx = (frameIndex-1)*63;
         ctx.drawImage(interactable_object, sx, 0, 63, 63, j*tileSize, i*tileSize, tileSize, tileSize);
@@ -448,7 +448,7 @@ function update() {
 //Check if the designated tile is walkable
 function isPathTile(row, col) {
   if( ( (row>=0)&&(row<levelRows) ) && ( (col>=0)&&(col<levelCols) ) ){
-    if((currentRoom.map[row][col] !== 1)&&(currentRoom.map[row][col] !== 3)){
+    if(((currentRoom.map[row][col] !== 1)&&(currentRoom.map[row][col] !== 3))&&(currentRoom.map[row][col] !== 4)){
       return true;
     }
   }
