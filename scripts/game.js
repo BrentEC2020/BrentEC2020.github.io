@@ -147,8 +147,6 @@ cityRoom3.text="Yuu: I just can't believe the world looks like this...*There's s
 cityRoom3.row=2;
 cityRoom3.col=1;
 
-room3.items=[cityRoom3,randomRoom2]
-
 var plantRoom3 = new Item();
 plantRoom3.text="Yuu: Even a simple weed struggles to grow in this world.*[Yuu proceed to cough]*I can see why...";
 plantRoom3.row=6;
@@ -168,6 +166,13 @@ room4.map = [
   [0,0,0,0,0,0,1,1],
   [0,0,0,0,0,0,0,0]
 ]
+var paperRoom4 = new Item();
+paperRoom4.text="'Date: January 7, 2040'*'Day 6,423 since the End of the World'*'I feel like as each day passes, the air is getting worse. The vet said Tabitha might not make it and the ol'dog isn't even 6 yet.'*'If only New Earth's plan to replace every item on this earth with plastic wasn't approved, life would've been different...'*'I wish I could go back in time and do something...maybe protest against those scheming corporations or talk to our reps about environmental concerns...'*'Heck even just usin a glass mug at the coffee shop could've been good, but New Earth didn't want that!'*Somebody save us...'*'-M.Wodes'";
+paperRoom4.row=3;
+paperRoom4.col=0;
+
+room4.items=[paperRoom4]
+
 
 room5.map = [
   [1,1,1,1,1,1,1,1],
