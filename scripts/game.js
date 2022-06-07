@@ -402,15 +402,24 @@ function update() {
         }
 
         //check if the player is facing an interactable (non walkable) tile
-        else if ( (playerDirection == 'e') && ((currentRoom.map[playerRow][playerCol+1] == 3)||(currentRoom.map[playerRow][playerCol+1] == 4)) ) {
+        else if ( (playerDirection == 'e') && currentRoom.map[playerRow][playerCol+1] == 3) {
           //call the interact function on the item in the proper position
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol+1)));
-        } else if(( playerDirection == 'w' )&&((currentRoom.map[playerRow][playerCol-1]==3)||currentRoom.map[playerRow][playerCol-1] == 4)){
+        } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==3)) {
           interact(currentRoom.items.find( (ite) => ite.row ==playerRow&&ite.col==(playerCol-1)));
-        } else if(( playerDirection == 'n' )&&((currentRoom.map[playerRow-1][playerCol]==3)||currentRoom.map[playerRow-1][playerCol] == 4)){
+        } else if(( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==3)) {
           interact(currentRoom.items.find( (ite) => ite.row ==(playerRow-1)&&ite.col==playerCol));
-        } else if(( playerDirection == 's' )&&((currentRoom.map[playerRow+1][playerCol]==3)||currentRoom.map[playerRow+1][playerCol] == 4)){
+        } else if(( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==3)) {
           interact(currentRoom.items.find( (ite) => ite.row ==(playerRow+1)&&ite.col==playerCol));
+        }
+        else if ( (playerDirection == 'e') && currentRoom.map[playerRow][playerCol+1] == 4) {
+          userInput();
+        } else if(( playerDirection == 'w' )&&(currentRoom.map[playerRow][playerCol-1]==4)) {
+          userInput();
+        } else if(( playerDirection == 'n' )&&(currentRoom.map[playerRow-1][playerCol]==4)) {
+          userInput();
+        } else if(( playerDirection == 's' )&&(currentRoom.map[playerRow+1][playerCol]==4)) {
+          userInput();
         }
         //if we only want the thing to be interactable once, update the space to 0 or 1
 
@@ -604,7 +613,7 @@ function advanceText() {
 }
 
 function userInput() {
-	if (spacebarPressed == true && message == false && currentRoom == room5 && currentRoom.map[playerRow][playerCol]==4) {
+	if (spacebarPressed == true && message == false && currentRoom == room5) {
     message = true;
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.getElementById("newspaper").innerHTML = userMessage;
