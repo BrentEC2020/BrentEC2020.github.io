@@ -88,21 +88,21 @@ room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
   [0,1,0,0,3,0,0,0],
-  [0,1,3,0,0,0,0,0],
-  [0,0,0,0,0,0,0,1],
-  [0,0,1,0,1,1,0,1],
-  [0,0,1,0,1,1,0,1],
+  [0,0,3,0,0,0,0,0],
+  [1,0,0,0,0,0,0,1],
+  [1,0,1,1,1,1,0,1],
+  [1,0,1,1,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
 //this is a test
 var tvRoom1 = new Item();
-tvRoom1.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*...What??....";
+tvRoom1.text = "Yuu: What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*Yuu:...What??....";
 tvRoom1.row =2;
 tvRoom1.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
+redSquare.text= "Yuu: I can't believe I'm the first person on earth to travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
 
@@ -113,33 +113,44 @@ room2.map = [
   [6,6,0,1,1,1,1,1],
   [0,0,0,1,1,1,1,1],
   [0,0,0,1,3,1,1,1],
-  [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,7],
-  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,7],
+  [0,0,0,0,0,3,0,0],
   [0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0]
 ]
+var graffitiRoom2 = new Item();
+graffitiRoom2.text="'New Earth = New Evil'*'Plastic ruined us all'";
+graffitiRoom2.row=2;
+graffitiRoom2.col=4;
+
+var randomRoom2 = new Item();
+randomRoom2.text="Yuu: What is going on? I thought New Earth Corp was doing good!*Their plastic technology was supposed to make our life easier...";
+randomRoom2.row=5;
+randomRoom2.col=5;
+
+room2.items=[graffitiRoom2,randomRoom2]
 
 // for room3, 8 is backward doors, 9 is forward doors
 room3.map = [
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,1,3,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,3,1,1,1,1,1,1],
   [0,0,0,0,0,9,0,0],
-  [8,0,0,0,0,0,0,5],
   [8,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [8,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,2,0],
   [0,0,0,0,0,0,0,0]
 ]
 
 // for room4, 10 is backward doors
 room4.map = [
   [1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,10,10],
-  [1,1,0,0,0,0,0,0],
+  [1,1,1,1,1,1,10,1],
+  [1,1,0,0,1,0,0,0],
   [3,1,0,0,0,0,0,0],
-  [0,0,0,1,1,1,1,1],
-  [0,0,0,0,0,0,1,1],
+  [0,1,0,1,1,1,1,1],
+  [0,1,0,0,0,0,1,1],
   [0,0,0,0,0,0,1,1],
   [0,0,0,0,0,0,0,0]
 ]
@@ -150,7 +161,7 @@ room5.map = [
   [0,1,0,0,3,0,0,0],
   [0,1,3,0,0,0,0,0],
   [0,0,0,0,0,0,0,1],
-  [0,0,1,0,1,1,0,1],
+  [0,0,1,0,1,3,0,1],
   [0,0,1,0,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
