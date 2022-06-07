@@ -572,9 +572,9 @@ function advanceText() {
 }
 
 function userInput() {
-	if (ePressed == true && message == false) {
+	if (ePressed == true && message == false && currentRoom == room5) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
-		document.write(userMessage + "...That is a great idea!");
+		document.write(userMessage + "... That is a great idea!");
 		message = true;
 	}
 }
