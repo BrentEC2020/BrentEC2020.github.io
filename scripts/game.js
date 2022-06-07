@@ -605,9 +605,9 @@ function advanceText() {
 
 function userInput() {
 	if (spacebarPressed == true && message == false && currentRoom == room5 && currentRoom.map[playerRow][playerCol]==4) {
+    message = true;
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
-		document.write(userMessage + "... That is a great idea!");
-		message = true;
+		document.getElementById("newspaper").innerHTML = userMessage;
 	}
 }
 

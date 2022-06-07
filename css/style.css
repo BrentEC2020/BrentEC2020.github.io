@@ -18,6 +18,13 @@ a {
    margin: 0px;
  }
 
+#newspaper {
+  width: 400px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
  #header{
    overflow: hidden;
  }
