@@ -1,3 +1,5 @@
+
+
 // Define canvas, context, and keys variables
 var canvas = document.querySelector("canvas");
 var ctx = canvas.getContext("2d");
@@ -5,6 +7,8 @@ var pixelFont = new FontFace('pixelFont', 'url(css/quan.ttf)');
 var currentRoom; //keeps track of which room we are in
 
 //game data wholy moly
+var startScreen = new Image();
+startScreen.src = 'images/startscreen.png'
 var first_image = new Image();
 first_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
@@ -56,7 +60,7 @@ var frameIndex = 1;
 
 var audioPlay =false;
 
-
+var inStartMenu = true;
 //room object template
 function Room(image, items, doors, map){
   this.image = image;
@@ -200,18 +204,19 @@ redSquare.col=2;
 
 room5.items=[redSquare,tvRoom5]
 
-// Initializes start screen
-function init() {
-  var startScreen1 = new Image();
-  startScreen1.src = 'images/startscreen.png'
-  ctx.drawImage(startScreen1,0,0,canvas.width,canvas.height);
-  console.log('initialized');
-}
+
 
 // Loops every interval
 function loop() {
-  draw();
-  update();
+  if (inStartMenu) {
+    ctx.drawImage(startScreen,0,0,canvas.width,canvas.height);
+    if(spacebarPressed==true){
+      inStartMenu=false;
+    }
+  }else{
+    draw();
+    update();
+  }
 }
 
 // WILL IT EVER BE DONE
