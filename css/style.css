@@ -144,7 +144,7 @@ li {
   margin-left: auto;
   margin-right: auto;
   height: 450px;
-  width: 350px;
+  width: auto;
 }
 
 .things {
@@ -199,7 +199,12 @@ li {
   font-family: pixelFont;
   color: DarkGreen;
 }
-
+#bulb{
+  width: 300px;
+}
+#cep{
+  width: 300px;
+}
 /* .centerp {
 >>>>>>> 330cb6d84464f4f7e65a772a00e320e25548d9e3
   text-align: center;

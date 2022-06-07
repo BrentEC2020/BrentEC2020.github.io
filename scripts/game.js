@@ -4,90 +4,46 @@ var ctx = canvas.getContext("2d");
 var pixelFont = new FontFace('pixelFont', 'url(css/quan.ttf)');
 var currentRoom; //keeps track of which room we are in
 
-// DONE (?)
-//sizes the canvas based on window size
-//i would just collapse this if i were you bc oh god why
-function sizeCanvas(){
-  let header = $("#header"); //use jQuery to get header
-  let footer = $("#footer"); //use jQuery to get footer
-  let inHeight = innerHeight;//innerHeight of the window
-  let inWidth = innerWidth; //innerWidth of the window
-  let headerHeight = header.outerHeight(true); //height of our header
-  let footerHeight = footer.outerHeight(true); //height of our header
-  if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
-    let remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
-    canvas.width = inHeight-headerHeight-footerHeight-remainder;//and then set the width using math
-    canvas.height = canvas.width; //do the same here because its a square
-  }
-  else { //if the witcth is less than or equal to height
-    let remainder = (inWidth)%64;
-    canvas.height = inWidth-remainder; // do the same thing essentially
-    canvas.width = canvas.height;
-  }
-  //recalculate all these variables ;-;
-  tileSize = canvas.width/8;
-  playerSize = tileSize/2;
-  playerYPos = playerRow*tileSize;
-  playerXPos = playerCol*tileSize;
-  moveSpeed = canvas.height/64;
-
-  textAreax = (canvas.height/64)*3;
-  textAreaY1 = (canvas.height/64)*50;
-  textAreaY2 = Math.trunc((canvas.height/64)*(50+(11/3)));
-  textAreaY3 = Math.trunc((canvas.height/64)*(50+(22/3)));
-
-  let fontsize = Math.trunc((canvas.height/64)*1.8);//quick maths
-  ctx.font = fontsize+"px pixelFont"; // set font
-  ctx.textBaseline = "top"; //set
-}
-
-
-// DONE
-//when every dom element on the page loads
-window.addEventListener('load',function(){
-  console.log('loaded');
-  //set the font
-  pixelFont.load().then(function(font) {
-    document.fonts.add(font);
-    //annalivia test here
-    let fontsize = Math.trunc((canvas.height/64)*1.8);
-    ctx.font = fontsize+"px pixelFont"; // set font
-    ctx.textAlign = "left";
-    ctx.textBaseline = "top";
-  });
-  sizeCanvas();
-  //initialize
-  init();
-});
-//when the user resizes the page resize the canvas
-window.addEventListener('resize', sizeCanvas);
-
-
-var current_image = new Image();
-current_image.src = 'images/environments/LAB.png';
+//game data wholy moly
+var first_image = new Image();
+first_image.src = 'images/environments/LAB.png';
 var second_image = new Image();
-second_image.src = 'images/environment.png';
+second_image.src = 'images/environments/town1.png';
+var third_image = new Image();
+third_image.src = 'images/environments/town2.png';
+var fourth_image = new Image();
+fourth_image.src = 'images/environments/house.png';
+var fifth_image = new Image();
+fifth_image.src = 'images/environments/LAB.png';
 
 text_box = new Image();
 text_box.src = 'images/text_box.png';
 
 var interactable_object = new Image();
-interactable_object.src = 'images/interactable_object.png';
+interactable_object.src = 'images/interactable_objectmovingPADDED8frames.png';
 
+var yuu_walk_up = new Image();
+yuu_walk_up.src='images/yuu_backwalk.png'
+var yuu_walk_down = new Image();
+yuu_walk_down.src='images/yuu_frontwalk.png'
+var yuu_walk_left = new Image();
+yuu_walk_left.src ='images/yuu_leftwalk.png'
+var yuu_walk_right = new Image();
+yuu_walk_right.src='images/yuu_rightwalk.png'
 
 // YIKES
-
 const levelCols=8;// level width, in tiles
 const levelRows=8; // level height, in tiles
-var playerCol=0;// player starting column
-var playerRow=5; // player starting row
+var playerCol=4;// player starting column
+var playerRow=4; // player starting row
 var spacebarPressed=false; // are we pressing spacebar?
 var leftPressed=false; // are we pressing LEFT arrow key?
 var rightPressed=false;// are we pressing RIGHT arrow key?
 var upPressed=false; // are we pressing UP arrow key?
 var downPressed=false; // are we pressing DOWN arrow key?
 var ePressed=false; // are we pressing e? Adding a temporary key for user input.
-var playerDirection = 'w';//what cardinal direction is the player facing
+var message = false;
+var playerDirection = 's';//what cardinal direction is the player facing
 var inDialogue = false; //keeps track of if dialogue is taking place
 
 var shownString = "";
@@ -96,6 +52,9 @@ var pageCount = 1;
 var currentPage = 1;
 var stringFrameIndex = 0;
 var interactionCooldownFrames = 20;
+var frameIndex = 1;
+
+var audioPlay =false;
 
 
 //room object template
@@ -106,75 +65,96 @@ function Room(image, items, doors, map){
   this.map = map;
 }
 
+//item object template
+function Item(text,  row, col, ) {
+  this.text = text;
+  this.row = row;
+  this.col = col;
+}
+
 var room1 = new Room();
 var room2 = new Room();
-room1.image = current_image;
+var room3 = new Room();
+var room4 = new Room();
+var room5 = new Room();
+room1.image = first_image;
 room2.image = second_image;
+room3.image = third_image;
+room4.image = fourth_image;
+room5.image = fifth_image;
+
 //1 is a boundary, 2 is walkable interactions, 3 is nonwalkable interactions and 5 is doors
 room1.map = [
   [1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,5,1],
-  [0,1,0,0,1,0,0,0],
-  [0,1,3,0,2,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
+  [0,1,0,0,3,0,0,0],
+  [0,1,3,0,0,0,0,0],
+  [0,0,0,0,0,0,0,1],
+  [0,0,1,0,1,1,0,1],
+  [0,0,1,0,1,1,0,1],
   [0,0,0,0,0,0,0,0]
 ]
-
-room2.map = [
-  [1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,5,1],
-  [0,1,0,0,1,0,0,0],
-  [0,1,3,0,2,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0]
-]
-// room3.map = [
-//     [1,1,1,1,1,1,1,1],
-//     [1,1,1,1,1,1,5,1],
-//     [0,1,0,0,1,0,0,0],
-//     [0,1,3,0,2,0,0,0],
-//     [0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0]
-// ]
-// room4.map = [
-//       [1,1,1,1,1,1,1,1],
-//       [1,1,1,1,1,1,5,1],
-//       [0,1,0,0,1,0,0,0],
-//       [0,1,3,0,2,0,0,0],
-//       [0,0,0,0,0,0,0,0],
-//       [0,0,0,0,0,0,0,0],
-//       [0,0,0,0,0,0,0,0],
-//       [0,0,0,0,0,0,0,0]
-//     ]
-currentRoom = room1;
-
-//item object template
-function Item(image, text, interacted, row, col, walkable) {
-  this.image = image;
-  this.text = text;
-  this.interacted = interacted;
-  this.row = row;
-  this.col = col;
-  this.walkable = walkable;
-}
 //this is a test
-var blackSquare = new Item();
-blackSquare.text = "What's happening on TV right now?";
-blackSquare.row =3;
-blackSquare.col =4;
+var tvRoom1 = new Item();
+tvRoom1.text = "What's happening on TV right now? *'Now on News Today, New Earth Corp dominates the world. What is next?'*...What??....";
+tvRoom1.row =2;
+tvRoom1.col =4;
 
 //this is a test too
 var redSquare = new Item();
-redSquare.text= "I can't believe I'm going to be the first person on earth to    travel into the future!";
+redSquare.text= "I can't believe I'm going to be the first person on earth to travel into the future!";
 redSquare.row=3;
 redSquare.col=2;
-currentRoom.items=[redSquare,blackSquare]
+
+room1.items=[redSquare,tvRoom1]
+
+// for room2, 6 is backward doors, 7 is forward doors
+room2.map = [
+  [6,6,0,1,1,1,1,1],
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,3,1,1,1],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,7],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
+
+// for room3, 8 is backward doors, 9 is forward doors
+room3.map = [
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,1,3,1,1,1],
+  [0,0,0,0,0,9,0,0],
+  [8,0,0,0,0,0,0,5],
+  [8,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0]
+]
+
+// for room4, 10 is backward doors
+room4.map = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,10,10],
+  [1,1,0,0,0,0,0,0],
+  [3,1,0,0,0,0,0,0],
+  [0,0,0,1,1,1,1,1],
+  [0,0,0,0,0,0,1,1],
+  [0,0,0,0,0,0,1,1],
+  [0,0,0,0,0,0,0,0]
+]
+
+room5.map = [
+  [1,1,1,1,1,1,1,1],
+  [1,1,1,1,1,1,5,1],
+  [0,1,0,0,3,0,0,0],
+  [0,1,3,0,0,0,0,0],
+  [0,0,0,0,0,0,0,1],
+  [0,0,1,0,1,1,0,1],
+  [0,0,1,0,1,1,0,1],
+  [0,0,0,0,0,0,0,0]
+]
+currentRoom = room1;
 
 // Initializes start screen
 function init() {
@@ -188,8 +168,70 @@ function init() {
 function loop() {
   draw();
   update();
+  userInput();
 }
 
+// WILL IT EVER BE DONE
+// Draws the player and interactive object
+function draw() {
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
+  ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);//draw current room background
+  //this code shows the interactable objects
+
+  for(var i=0;i<levelRows;i++){
+    for(var j=0;j<levelCols;j++){
+      if(currentRoom.map[i][j]==3||currentRoom.map[i][j]==2){
+        //draw the sprite here
+        var sx = (frameIndex-1)*63;
+        ctx.drawImage(interactable_object, sx, 0, 63, 63, j*tileSize, i*tileSize, tileSize, tileSize);
+      }
+    }
+  }
+
+  if (playerDirection=='n') {//
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_up,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
+  else if (playerDirection=='s') {
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_down,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
+  else if (playerDirection=='e') {
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_right,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
+  else if (playerDirection=='w') {
+    var sx = 0;
+    if(!((playerYPos==(playerRow*tileSize))&&(playerXPos==(playerCol*tileSize)))){
+      sx=(frameIndex-1)*72;
+    }
+    ctx.drawImage(yuu_walk_left,sx,0,72,104,playerXPos,playerYPos-tileSize,tileSize,2*tileSize);
+  }
+  // player = green box
+  ctx.fillStyle = "#00ff00";
+//  ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
+  //player direction
+  ctx.fillStyle = "black";
+  ctx.fillText(playerDirection,playerXPos+tileSize*.25,playerYPos+tileSize*.25);
+  //check if player is in dialogue and draw text
+  if (inDialogue) {
+    drawText(shownString);
+  }
+  frameIndex ++;
+  if (frameIndex==9) {
+    frameIndex=1;
+  }
+}
 //  DONE
 //draws text box and text
 function drawText(pageStr){
@@ -242,88 +284,60 @@ function drawText(pageStr){
 
 }
 
-// WILL IT EVER BE DONE
-// Draws the player and interactive object
-function draw() {
+function forwardTownOne() {
+  playerCol = 1;
+  playerRow = 1;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom = room2;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height); //clear canvas
-  ctx.drawImage(currentRoom.image, 0, 0, canvas.width,canvas.height);//draw current room background
-  //this code shows test map
-  for(var i=0;i<levelRows;i++){
-    for(var j=0;j<levelCols;j++){
-      if(currentRoom.map[i][j]==3){
-        //draw the sprite here
-        ctx.drawImage(interactable_object, j*tileSize,i*tileSize,tileSize,tileSize);
-      } else if (currentRoom.map[i][j]==2) {
-        //draw the sprite here too
-        ctx.drawImage(interactable_object, j*tileSize,i*tileSize,tileSize,tileSize);
-      }
-    }
-  }
-  // player = green box
-  ctx.fillStyle = "#00ff00";
-  ctx.fillRect(playerXPos+tileSize*.25, playerYPos+tileSize*.25, tileSize*.5, tileSize*.5);
-  //player direction
-  ctx.fillStyle = "black";
-  ctx.fillText(playerDirection,playerXPos+tileSize*.25,playerYPos+tileSize*.25);
-  //check if player is in dialogue and draw text
-  if (inDialogue) {
-    drawText(shownString);
-  }
+  playerDirection = 's';
 }
 
-// DONE
-// simple WASD listeners
-document.addEventListener("keydown", function(e){
-  switch(e.keyCode){
-    case 32:
-    spacebarPressed=true;
-    break;
-    case 65:
-    leftPressed=true;
-    break;
-    case 87:
-    upPressed=true;
-    break;
-    case 68:
-    rightPressed=true;
-    break;
-    case 83:
-    downPressed=true;
-    break;
-	case 69:
-	ePressed=true;
-	break;
-  }
-}, false);
-// DONE
-document.addEventListener("keyup", function(e){
-  switch(e.keyCode){
-    case 32:
-    spacebarPressed=false;
-    break;
-    case 65:
-    leftPressed=false;
-    break;
-    case 87:
-    upPressed=false;
-    break;
-    case 68:
-    rightPressed=false;
-    break;
-    case 83:
-    downPressed=false;
-    break;
-	case 69:
-	ePressed=false;
-	break;
-  }
-}, false);
-
-function transitionRoom(fromDoor) {
-  transitionRoom(currentRoom.doors.find( (ite) => ite.row == playerRow && ite.col == playerCol))
+function forwardTownTwo() {
+  playerCol = 1;
+  playerRow = 5;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom = room3;
+  playerDirection = 'e';
 }
 
+function forwardHouse() {
+  playerCol = 7;
+  playerRow = 2;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom = room4;
+  playerDirection = 's';
+}
+
+function backwardTownTwo() {
+  playerCol = 5;
+  playerRow = 5;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom=room3
+  playerDirection = 's';
+}
+
+function backwardTownOne() {
+  playerCol = 6;
+  playerRow = 4;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom=room2;
+  playerDirection = 'w';
+}
+
+function backwardLab() {
+  playerCol = 6;
+  playerRow = 2;
+  playerXPos = playerCol*tileSize;
+  playerYPos =playerRow*tileSize;
+  currentRoom=room5;
+  playerDirection = 's';
+}
 // WILL IT EVER BE DONE
 //updates game variables, runs every frame
 function update() {
@@ -419,13 +433,28 @@ function update() {
     }
     else if (currentRoom.map[playerRow][playerCol]==5) {
       //transition room
+      forwardTownOne();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==7){
+      forwardTownTwo();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==9){
+      forwardHouse();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==10){
+      backwardTownTwo();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==8){
+      backwardTownOne();
+    }
+    else if (currentRoom.map[playerRow][playerCol]==6){
+      backwardLab();
     }
     if (interactionCooldownFrames>0) {
       interactionCooldownFrames--;
     }
   }
 }
-
 
 
 //DONE
@@ -478,23 +507,31 @@ function formatText(string){
   var startingIndex=0;
   for(var i=1; i<=string.length; i++){//reads through the string character by character, measuring if the string will fit in our text box
     let builder = "";
-    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*55)){
+    if(string.charAt(i)=='*'){
+      builder = string.slice(startingIndex,i)+"^~";
+      startingIndex=i+1;
+      lines = 1
+      pages++;
+    }
+    if((ctx.measureText(string.substring(startingIndex, i)).width)>((canvas.width/64)*56)){
       if((lines%3)==0){
+        while(string.charAt(i-1)!==" "){
+          i--;
+        }
         builder = string.slice(startingIndex,i)+"^~";
         startingIndex= i;
-        if(string.charAt(startingIndex)==" "){
-          startingIndex++;
-        }
-        lines++;
+
+        lines=1;
         pages++;
       }else{
+        while(string.charAt(i-1)!==" "){
+          i--;
+        }
         builder = string.slice(startingIndex,i)+"^";
         startingIndex= i;
-        if(string.charAt(startingIndex)==" "){
-          startingIndex++;
-        }
-        lines++;
+
       }
+      lines++;
     }else if(i==string.length){
       builder = string.slice(startingIndex, i)+"^~";
     }
@@ -524,11 +561,133 @@ function advanceText() {
 }
 
 function userInput() {
-	if (ePressed == true) {
+	if (ePressed == true && message == false) {
 		var userMessage = window.prompt("What can we do to help prevent Climate Change?");
 		document.write(userMessage + "...That is a great idea!");
+		message = true;
 	}
 }
+
+// DONE (?)
+//sizes the canvas based on window size
+//i would just collapse this if i were you bc oh god why
+function sizeCanvas(){
+  let header = $("#header"); //use jQuery to get header
+  let footer = $("#footer"); //use jQuery to get footer
+  let inHeight = innerHeight;//innerHeight of the window
+  let inWidth = innerWidth; //innerWidth of the window
+  let headerHeight = header.outerHeight(true); //height of our header
+  let footerHeight = footer.outerHeight(true); //height of our header
+  if((inHeight-headerHeight-footerHeight)<=inWidth){ //if the height is less than the width
+    let remainder = (inHeight-headerHeight-footerHeight)%64;// do this math
+    canvas.width = inHeight-headerHeight-footerHeight-remainder;//and then set the width using math
+    canvas.height = canvas.width; //do the same here because its a square
+  }
+  else { //if the witcth is less than or equal to height
+    let remainder = (inWidth)%64;
+    canvas.height = inWidth-remainder; // do the same thing essentially
+    canvas.width = canvas.height;
+  }
+  //recalculate all these variables ;-;
+  tileSize = canvas.width/8;
+  playerSize = tileSize/2;
+  playerYPos = playerRow*tileSize;
+  playerXPos = playerCol*tileSize;
+  moveSpeed = canvas.height/64;
+
+  textAreax = (canvas.height/64)*3;
+  textAreaY1 = (canvas.height/64)*50;
+  textAreaY2 = Math.trunc((canvas.height/64)*(50+(11/3)));
+  textAreaY3 = Math.trunc((canvas.height/64)*(50+(22/3)));
+
+  let fontsize = Math.trunc((canvas.height/64)*1.8);//quick maths
+  ctx.font = fontsize+"px pixelFont"; // set font
+  ctx.textBaseline = "top"; //set
+}
+
+sizeCanvas();
+// DONE
+//when every dom element on the page loads
+window.addEventListener('load',function(){
+  console.log('loaded');
+  //set the font
+  pixelFont.load().then(function(font) {
+    document.fonts.add(font);
+    //annalivia test here
+    let fontsize = Math.trunc((canvas.height/64)*1.8);
+    ctx.font = fontsize+"px pixelFont"; // set font
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+  });
+  sizeCanvas();
+  //initialize
+
+});
+
+
+//when the user resizes the page resize the canvas
+window.addEventListener('resize', sizeCanvas);
+// DONE
+// simple WASD listeners
+document.addEventListener("keydown", function(e){
+  switch(e.keyCode){
+    case 32:
+    spacebarPressed=true;
+    break;
+    case 65:
+    leftPressed=true;
+    break;
+    case 87:
+    upPressed=true;
+    break;
+    case 68:
+    rightPressed=true;
+    break;
+    case 83:
+    downPressed=true;
+    break;
+	case 69:
+	ePressed=true;
+  break;
+  case 80:
+  audioPlay = !audioPlay;
+  const audio = document.querySelector("audio");
+   if(audioPlay)
+   {
+     audio.play();
+     audio.volume = 0.2;
+
+   }
+   if (!audioPlay) {
+     audio.pause();
+   }
+	break;
+
+  }
+}, false);
+// DONE
+document.addEventListener("keyup", function(e){
+  switch(e.keyCode){
+    case 32:
+    spacebarPressed=false;
+    break;
+    case 65:
+    leftPressed=false;
+    break;
+    case 87:
+    upPressed=false;
+    break;
+    case 68:
+    rightPressed=false;
+    break;
+    case 83:
+    downPressed=false;
+    break;
+	case 69:
+	ePressed=false;
+	break;
+  }
+}, false);
 
 // Refreshes State, so site doesn't crash (Calls Loop function every 1000/30 milliseconds(30fps))
 window.setInterval(loop, 1000/30);
